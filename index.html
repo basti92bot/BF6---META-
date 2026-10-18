@@ -11,21 +11,21 @@
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
-<link rel="stylesheet" href="./loadouts.css?v=0.6.0">
-<script src="./loadouts.js?v=0.6.0" defer></script>
+<link rel="stylesheet" href="./loadouts.css?v=0.7.0">
+<script src="./loadouts.js?v=0.7.0" defer></script>
 <title>BF6 META | Loadouts, die sich lohnen</title>
 </head>
 <body>
 <div class="shell">
 <header class="top">
-  <div class="brand"><span class="brand-icon">B6</span><span><strong>BF6 <em>META</em></strong><small>LOADOUT LAB</small></span></div>
+  <div class="brand"><span class="brand-icon">B6</span><span><strong>BF6 <em>META</em></strong><small>KLASSEN & LOADOUTS</small></span></div>
   <a class="header-source" href="#sources">DATEN & QUELLEN ↓</a>
 </header>
 <main>
   <section class="hero">
     <div class="eyebrow"><span class="signal"></span> BATTLEFIELD 6 · SEASON 5</div>
     <h1>WENIGER ZAHLEN.<br><span>MEHR KILLS.</span></h1>
-    <p>Wähle deinen Modus. Such dir einen Spielstil. Und bau die Waffe mit konkreten Aufsätzen nach.</p>
+    <p>Wähle Spielmodus, Soldatenklasse und Waffenklasse. Darunter findest du passende Loadouts mit allen Aufsätzen.</p>
     <div class="status" id="status" role="status">Lade Loadouts und Quellen…</div>
   </section>
 
@@ -37,15 +37,28 @@
       <button type="button" data-mode="br" role="tab" aria-selected="false">BATTLE ROYALE</button>
     </div>
     <div class="mode-info" id="mode-info"></div>
-    <label class="filter-title filter-second">02 <span>WIE WILLST DU SPIELEN?</span></label>
-    <div class="style-tabs" id="style-tabs" role="group" aria-label="Spielstil">
+    <label class="filter-title filter-second">02 <span>SOLDATENKLASSE WÄHLEN</span></label>
+    <div class="role-tabs" id="role-tabs" role="group" aria-label="Soldatenklasse">
+      <button type="button" data-role="all" class="active" aria-pressed="true">Alle Klassen</button>
+      <button type="button" data-role="assault" aria-pressed="false">Sturm</button>
+      <button type="button" data-role="engineer" aria-pressed="false">Pionier</button>
+      <button type="button" data-role="support" aria-pressed="false">Versorgung</button>
+      <button type="button" data-role="recon" aria-pressed="false">Aufklärung</button>
+    </div>
+    <div id="role-info" class="role-info"></div>
+    <label class="filter-title filter-second">03 <span>WAFFENKLASSE WÄHLEN</span></label>
+    <div id="weapon-tabs" class="weapon-tabs" role="group" aria-label="Waffenklasse"></div>
+    <details class="style-option">
+      <summary>Spielstil zusätzlich filtern <span aria-hidden="true">⌄</span></summary>
+      <div class="style-tabs" id="style-tabs" role="group" aria-label="Spielstil">
       <button type="button" data-style="all" class="active" aria-pressed="true">Alle</button>
       <button type="button" data-style="aggressive" aria-pressed="false">Aggressiv</button>
       <button type="button" data-style="allround" aria-pressed="false">Allround</button>
       <button type="button" data-style="control" aria-pressed="false">Wenig Rückstoß</button>
       <button type="button" data-style="range" aria-pressed="false">Distanz</button>
       <button type="button" data-style="sniper" aria-pressed="false">Sniper</button>
-    </div>
+      </div>
+    </details>
   </section>
 
   <section class="results" id="results-section">
@@ -59,7 +72,7 @@
 
   <details class="sources" id="sources"><summary>Woher kommen die Builds und Zahlen? <span aria-hidden="true">⌄</span></summary><div id="source-content"></div></details>
 </main>
-<footer>BF6 META · V0.6.0 · UNABHÄNGIGES FAN-PROJEKT · OHNE LOGIN</footer>
+<footer>BF6 META · V0.7.0 · UNABHÄNGIGES FAN-PROJEKT · OHNE LOGIN</footer>
 </div>
 </body>
 </html>
