@@ -1,8 +1,8 @@
-// BF6 Meta PWA v0.8.0: network-first HTML/JS/CSS to prevent mixed versions.
-const CACHE = "bf6meta-v12";
+// BF6 Meta PWA v0.8.1: network-first HTML/JS/CSS to prevent mixed versions.
+const CACHE = "bf6meta-v13";
 const APP_FILES = [
-  "./", "./index.html", "./loadouts.css?v=0.8.0", "./loadouts.js?v=0.8.0",
-  "./data/loadouts.json", "./data/weapons.json", "./data/catalog.json",
+  "./", "./index.html", "./loadouts.css?v=0.8.1", "./loadouts.js?v=0.8.1",
+  "./data/loadouts.json", "./data/weapon-evidence.json", "./data/weapons.json", "./data/catalog.json",
   "./data/status.json", "./manifest.webmanifest", "./icons/icon.svg",
   "./icons/icon-192.png", "./icons/icon-512.png"
 ];
