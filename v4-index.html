@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#11151a">
+<meta name="description" content="Battlefield 6 Waffen: Was wird gespielt? Was ist gut? Übersichtliche Klassen, Builds und echte Pick-Rates.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BF6 Meta">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="stylesheet" href="./simple.css">
+<script src="./simple.js" defer></script>
+<title>BF6 Meta · Waffen & Trends</title>
+</head>
+<body>
+<div class="site">
+<header class="header"><div class="logo"><span class="logo-sign">B6</span><span>BF6 <b>META</b></span></div><a class="patch-link" href="https://www.ea.com/games/battlefield/battlefield-6/news" target="_blank" rel="noopener noreferrer">Patches ↗</a></header>
+<main>
+  <div class="intro"><span class="eyebrow">BATTLEFIELD 6 · SAISON 5</span><h1>Welche Waffe lohnt sich?</h1><p>Beliebtheit und Leistung getrennt. Finde schnell eine Waffe und sieh dir die verfügbaren Builds an.</p><div id="data-note" class="note">Lade Datenstand ...</div></div>
+  <nav class="nav" aria-label="App-Bereiche">
+  <button type="button" class="nav-link active" data-view="popular" aria-selected="true">Beliebt</button>
+  <button type="button" class="nav-link" data-view="classes" aria-selected="false">Waffenklassen</button>
+  <button type="button" class="nav-link" data-view="best" aria-selected="false">Beste Waffen</button>
+  <button type="button" class="nav-link" data-view="updates" aria-selected="false">Updates</button>
+  </nav>
+  <section id="popular" class="view active"><div class="section-header"><div><span class="eyebrow">NUTZUNG IN MATCHES</span><h2>Am meisten gespielt</h2></div><span class="tiny">PICK-RATE</span></div><p class="subline">Welche Waffen am häufigsten eingesetzt werden. Das bedeutet nicht automatisch, dass sie die stärksten sind.</p><div id="popular-list" class="list" aria-live="polite"></div><p class="disclaimer">Momentaufnahme aus INT.GG. Kein offizieller EA-Gesamtwert und keine automatisch live synchronisierten Nutzungszahlen.</p></section>
+  <section id="classes" class="view"><div class="section-header"><div><span class="eyebrow">ARSENAL</span><h2>Waffen nach Klasse</h2></div></div><div id="class-filters" class="filter-scroller" aria-label="Waffenklasse"></div><label class="search"><span>⌕</span><input id="weapon-search" type="search" placeholder="Waffe suchen" autocomplete="off" aria-label="Waffe suchen"></label><div id="class-list" class="list"></div></section>
+  <section id="best" class="view"><div class="section-header"><div><span class="eyebrow">LEISTUNG IM SPIEL</span><h2>Beste Waffen</h2></div><span class="tiny">META-SCORE</span></div><p class="subline">Von INT.GG berechneter Meta-Score. Er nutzt mehrere Leistungswerte und ist nicht mit der Pick-Rate gleichzusetzen.</p><div id="best-list" class="list"></div><p class="disclaimer">Der Meta-Score ist die Bewertung des Drittanbieters, keine offizielle DICE-Tierlist.</p></section>
+  <section id="updates" class="view"><div class="section-header"><div><span class="eyebrow">DATENSTAND</span><h2>Quellen & Updates</h2></div></div><div id="update-list"></div></section>
+</main>
+<footer>BF6 META · V0.4 · UNABHÄNGIGES FANPROJEKT · KEIN EA-PRODUKT</footer>
+</div>
+<div id="modal-backdrop" class="modal-backdrop" hidden></div>
+<div id="weapon-modal" class="modal" role="dialog" aria-label="Waffendetails" aria-modal="true" aria-hidden="true" hidden><button id="modal-close" class="modal-close" type="button" aria-label="Schließen">×</button><div id="modal-content"></div></div>
+</body></html>
