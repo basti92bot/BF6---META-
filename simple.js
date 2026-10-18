@@ -156,8 +156,9 @@ async function init(){
     if(!state.modes?.modes?.rapid?.recommendations||!state.catalog?.classes?.length)throw new Error("Unvollständiger Datenbestand");
     sourceLinks();switchMode("mp");setView("popular");
   }catch(error){
-    $("data-note").textContent="Datenfehler: "+error.message;
-    for(const id of ["popular-list","class-list","best-list"])$(id).innerHTML='<div class="empty">Daten konnten nicht geladen werden.</div>';
+    console.error("BF6 Meta: data loading failed", error);
+    $("data-note").textContent="Die Daten konnten nicht geladen werden. Bitte Seite neu laden.";
+    for(const id of ["popular-list","class-list","best-list"])$(id).innerHTML='<div class="empty">Daten derzeit nicht verfügbar.</div>';
   }
 }
 if("serviceWorker" in navigator && location.protocol!=="file:")
