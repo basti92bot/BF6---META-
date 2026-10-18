@@ -137,6 +137,7 @@
     for(const b of document.querySelectorAll("[data-style]")){
       const active=b.dataset.style===state.style;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));
     }
+    const activeRole=roles[state.role];
     const types=availableTypes();
     if(state.weaponClass!=="all"&&!types.includes(state.weaponClass))state.weaponClass="all";
     const topName=state.role==="all" ? "Alle Waffen" : "Alle passenden Waffen";
