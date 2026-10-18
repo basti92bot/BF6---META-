@@ -4,7 +4,7 @@
   const safe = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const norm = value => String(value || "").toLowerCase().replace(/[^a-z0-9]/g, "");
   const fmt = value => Math.round(value).toLocaleString("de-DE");
-  const state = { mode:"mp", role:"all", weaponClass:"all", style:"all", catalog:null, loadouts:null, weapons:null, status:null };
+  const state = { mode:"mp", role:"all", weaponClass:"all", style:"all", catalog:null, loadouts:null, weapons:null, status:null, evidence:null };
   const modes = {
     mp: { title:"Mehrspieler",description:"Normale BF6-Matches. Hier dürfen wir TTK-Messwerte von Multiplayer-Grundwaffen vergleichen." },
     rapid: { title:"Rapid Royale",description:"Schnelle REDSEC-Runden. Diese Builds sind aus passenden Community-Setups abgeleitet, aber nicht separat in Rapid Royale vermessen." },
@@ -32,7 +32,21 @@
     const type=catOf(build), role=roles[state.role];
     return type===role.signature || sharedTypes.includes(type);
   };
-  const eligibleBuilds = () => state.loadouts.builds.filter(b=>b.modes.includes(state.mode) && roleAllows(b));
+  const currentScore = build => {
+    if (state.mode === "br" || catOf(build) !== "smg") return null;
+    const scores = state.evidence?.season5SMSGScore || {};
+    const matched = Object.entries(scores).find(([name])=>norm(name)===norm(build.weapon));
+    return matched ? Number(matched[1]) : null;
+  };
+  // Quality gate: old community tiers cannot override significantly worse Season 5 observations.
+  // Not a measured score for the attachment build itself.
+  const reliableBuild = build => {
+    if(build.recommendationStatus==="not_recommended")return false;
+    if(state.mode==="br")return true;
+    const score=currentScore(build);
+    return score===null || score >= (state.evidence?.minScoreToRecommend ?? 45);
+  };
+  const eligibleBuilds = () => state.loadouts.builds.filter(b=>b.modes.includes(state.mode) && roleAllows(b) && reliableBuild(b));
   const priority = build => state.role==="all" ? 1 : catOf(build)===roles[state.role].signature ? 0 : 1;
   const orderIndex = build => {const i=order[state.mode].indexOf(build.id);return i<0?999:i;};
   const tierWeight = b => ({S:0,A:1,B:2,C:3,D:4})[b.guideTier] ?? 5;
@@ -42,6 +56,12 @@
     .sort((a,b) => {
       const signatureFirst=priority(a)-priority(b);
       if(signatureFirst) return signatureFirst;
+      if(state.mode!=="br" && catOf(a)==="smg" && catOf(b)==="smg"){
+        const sa=currentScore(a),sb=currentScore(b);
+        if(sa!==null && sb!==null && sa!==sb)return sb-sa;
+        if(sa!==null && sb===null)return -1;
+        if(sa===null && sb!==null)return 1;
+      }
       // The default all-classes overview keeps diverse editorial starting options.
       // A chosen role or weapon category prioritizes documented source tiers.
       const curatedOverview=state.role==="all" && state.weaponClass==="all";
@@ -137,7 +157,7 @@
     const builds=visibleBuilds();
     const available=rankedBuilds().length;
     $("results-count").textContent=builds.length+" VORSCHLÄGE";
-    $("results-count").title="Aus "+available+" dokumentierten Builds. Es werden maximal 4 unterschiedliche Waffen gezeigt.";
+    $("results-count").title="Aus "+available+" nach Quellen-Gegenprüfung geeigneten Builds. Maximal 4 verschiedene Waffen, ohne ungeprüfte Top-Platzierungen.";
     $("build-list").innerHTML=builds.length ? builds.map((b,i)=>card(b,i)).join("") :
       '<div class="no-builds">Für diese Kombination ist noch kein ausreichend belegtes Loadout vorhanden. Wähle eine andere Waffen- oder Soldatenklasse.</div>';
   }
@@ -147,11 +167,12 @@
       '<p><strong>Klassenauswahl nach EA:</strong> Sturm = AR, Pionier = SMG, Versorgung = LMG, Aufklärung = Sniper. '+ 
       '<a href="https://www.ea.com/games/battlefield/battlefield-6/news/loadout-creation-and-weapon-classes" target="_blank" rel="noopener noreferrer">Offizieller EA-Guide ↗</a>. '+
       'In offenen Waffenregeln sind weitere Typen verwendbar. Die angezeigte Reihenfolge ist unsere redaktionelle Einstiegsempfehlung nach Spielstil und Quellendeckung, kein mathematisch belegtes globales Ranking. Pro Auswahl werden vier verschiedenartige, belegte Waffen-Builds priorisiert; bei geringerer Quellenlage entsprechend weniger.</p>'+
+      '<p><strong>Gegenprüfung:</strong> Ältere Tierlists zählen nicht mehr allein. Bei MPs vergleichen wir sie mit Season-5-Matchdaten von <a href="https://int.gg/bf6/weapons" target="_blank" rel="noopener noreferrer">INT.GG ↗</a>. SL9 ist wegen deutlich schwächerer aktueller Daten nicht mehr unter den empfohlenen Builds. Die Daten sind eine Stichprobe und betreffen die Grundwaffe, nicht den Gunsmith-Build.</p>'+
       '<p><strong>Wichtig:</strong> Kein aktuell gespeicherter Aufsatz-Build ist unabhängig mit Patch 2.1.1.0 vermessen und bestätigt. Community-Quellen können sich widersprechen. Wo Daten fehlen, erfinden wir keinen Score. Tägliche Quellenprüfung ≠ automatische Aktualisierung der Builds.</p>';
   }
   function status(){
     const patch=state.status?.latestPatch?.version||state.loadouts.patchAtCompilation;
-    $("status").textContent="PATCH "+patch+" · "+state.loadouts.builds.length+" QUELLEN-BUILDS · Stand "+formatDate(state.loadouts.createdOn);
+    $("status").textContent="PATCH "+patch+" · "+state.loadouts.builds.length+" QUELLEN-BUILDS · Season-5-Quellenabgleich: "+formatDate(state.evidence?.observedAt);
   }
   async function copyBuild(id,button){
     const b=state.loadouts.builds.find(b=>b.id===id);
@@ -185,10 +206,10 @@
   async function start(){
     events();
     try{
-      const names=["loadouts","weapons","catalog","status"];
+      const names=["loadouts","weapons","catalog","status","weapon-evidence"];
       const responses=await Promise.all(names.map(name=>fetch("./data/"+name+".json",{cache:"no-store"})));
-      if(!responses[0].ok || !responses[2].ok)throw new Error("Build-Dateien nicht erreichbar.");
-      [state.loadouts,state.weapons,state.catalog,state.status]=await Promise.all(responses.map(r=>r.ok?r.json():null));
+      if(!responses[0].ok || !responses[2].ok || !responses[4].ok)throw new Error("Build- oder Quellenprüfungsdaten nicht erreichbar.");
+      [state.loadouts,state.weapons,state.catalog,state.status,state.evidence]=await Promise.all(responses.map(r=>r.ok?r.json():null));
       if(!state.loadouts?.builds?.length||!state.catalog?.classes?.length)throw new Error("Build-Daten unvollständig.");
       status();sourceSection();render();
     }catch(e){
