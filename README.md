@@ -1,6 +1,6 @@
 # BF6 META – Loadout Lab
 
-Aktuelle App-Version **0.8.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **0.8.1**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
 
 ## Die App: Loadouts zuerst
 
@@ -49,11 +49,11 @@ Neue Balance-Patches können TTK-Daten oder Build-Empfehlungen ungültig machen.
 
 GitHub Pages: Settings > Pages > Deploy from branch `main`, Ordner `/(root)`.
 
-Service-Worker-Cache-Version: `bf6meta-v12`; statische App-Dateien werden bevorzugt aus dem Netzwerk geladen, um Versionskonflikte zu vermeiden.
+Service-Worker-Cache-Version: `bf6meta-v13`; statische App-Dateien werden bevorzugt aus dem Netzwerk geladen, um Versionskonflikte zu vermeiden.
 
 Kein Nutzerkonto und keine eigenen gespeicherten Loadouts.
 
-## 0.8.0 – vier Waffen statt einer
+## 0.8.1 – vier Waffen statt einer
 
 Für Spielmodus, Soldatenklasse und Waffenklasse werden jetzt **maximal vier unterschiedliche Waffen-Builds** angezeigt. Die Auswahl berücksichtigt zuerst die zur Soldatenklasse passende Signaturwaffenkategorie, danach die **Tier-Einstufungen der dokumentierten Community-Guides** und eine redaktionelle Reihenfolge. Ohne Soldaten- und Waffenklasse zeigt die App vier bewusst unterschiedliche Einstiegsempfehlungen.
 
@@ -62,3 +62,15 @@ Für Spielmodus, Soldatenklasse und Waffenklasse werden jetzt **maximal vier unt
 - Rapid Royale: MP-Aufbau als qualitativ übertragene Empfehlung, **keine Rapid-spezifische Messung**.
 
 Aktuell sind 62 Quellen-Builds hinterlegt. Auf dem Bildschirm erscheinen abhängig von den Filtern höchstens vier. Es gibt keinen Anspruch, dass eine Guide-Einstufung einen objektiv besten Aufsatz-Build beweist. TTK-Werte beschreiben weiterhin Grundwaffe/Quellenmodell, nicht die Aufsatz-Kombination. Bei weniger als vier belegten Builds wird kein Füllmaterial erfunden.
+
+## 0.8.1 – Konsequente Qualitätsprüfung statt alter S-Tiers
+
+**Warum SL9 nicht mehr empfohlen wird:** Der BF-Tactics-Tierguide vom 21.09.2026 führte die SL9 als S. Eine neuere Season-5-Matchstichprobe von INT.GG (Stand 18.10.2026) zeigt jedoch Meta-Score 26 von 100, KD 1,0 und 0,81 Kills/Minute. Ein Season-5-Tierguide (13.10.2026) bewertet sie als D. Dies sind Grundwaffen-Indikatoren aus einer Stichprobe, kein Aufsatz-Build-Beweis.
+
+- Die Konfiguration ist in der Datenbasis aus Gründen der Nachvollziehbarkeit enthalten, aber als `not_recommended` markiert und erscheint nicht in Top-Build-Empfehlungen.
+- Neue Datenquelle `data/weapon-evidence.json` enthält den Season-5-Abgleich für MPs. Im Multiplayer und Rapid (nur übertragene Empfehlungen) werden MP-Loadouts mit dokumentiertem Season-5-Meta-Score unter 45/100 vorerst nicht als Top-Pick angeboten. Dieser Qualitätsfilter ist eine redaktionelle Sicherheitsgrenze, keine offizielle Meta-Tier-Klassifikation und nicht für REDSEC-Rankings übertragbar.
+- Bei der MP-Sortierung gewinnt die aktuelle Match-Stichprobe gegenüber der älteren Guide-Tier-Stufe. RSPR, SCW-10 und CZ3A1 werden vor schwach belegten Alt-Empfehlungen angeboten.
+- PW7A2 ergänzt als vierte MP-Alternative mit vollständigem Gunsmith-Guide von BF Tactics.
+- Weitere Klassen haben noch keinen vergleichbar vollständigen aktuellen Gegencheck. Dort können einzelne alte Tier-Bewertungen weiter unzuverlässig sein; diese sollen nach und nach modusspezifisch geprüft werden.
+
+Quelle: https://int.gg/bf6/weapons (Season 5), https://worstguidesever.com/battlefield-6-siege-of-vegas-tier-list/ (13.10.), https://www.bftactics.com/weapon-tier-list (21.09.) und https://www.bftactics.com/weapons-database.
