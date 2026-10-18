@@ -2,8 +2,11 @@
 
 Mobile-first Battlefield 6 Waffenanalyse als installierbare Progressive Web App (PWA).
 
-## Version 0.2
+## Version 0.3
 
+- Neue visuelle Übersicht mit acht Waffenklassen und 64 Waffen aus dem offiziellen EA-Waffenguide (ergänzt um zwei Season-5-Waffen)
+- Klassenbilder aus EA-Bildmaterial, fünf eindeutig zuordenbare Waffenmotive
+- Einzelansicht pro Waffe mit Build, Freischaltung (soweit bekannt) und Messwerten
 - 9 Season-5-Meta-Empfehlungen mit Spielstil-Filtern (Allround, Aggressiv, wenig Rückstoß, Distanz, Support, Sniper)
 - 9 fertige Waffen-Builds mit konkreten Aufsätzen (keine eigenen Loadouts)
 - 31 Waffen aus einer frei verfügbaren Community-Messreihe
@@ -33,6 +36,7 @@ Die täglichen Checks laufen per GitHub Actions um 07:17 UTC. GitHub kann geplan
 
 ## Dateien
 
+- data/catalog.json: acht Waffenklassen, 64 Waffen und Bildverweise auf offizielles EA-Material
 - data/meta.json: kuratierte Season-5-Waffenempfehlungen und Aufsatzkombinationen
 - meta.js: neue Meta- und Builds-Seiten
 - data/weapons.json: gespeicherte Messwerte
@@ -48,3 +52,17 @@ Die täglichen Checks laufen per GitHub Actions um 07:17 UTC. GitHub kann geplan
 4. Auf dem iPhone in Safari öffnen und Zum Home-Bildschirm hinzufügen.
 
 Bei privaten Repositories ist GitHub Pages vom GitHub-Plan abhängig. Alternativ über einen anderen statischen Hoster bereitstellen.
+
+## Bilder und Quellenstand
+
+Die offiziellen Bilder stammen aus dem EA-Leitfaden „Loadout Creation and Weapon Classes“:
+https://www.ea.com/games/battlefield/battlefield-6/news/loadout-creation-and-weapon-classes
+
+Bei den meisten Waffen ist das Bild **nur ein Klassenmotiv**, keine individualisierte Waffenabbildung. Die App kennzeichnet solche Bilder ausdrücklich. Fünf Motive konnten konkreten Waffen zugeordnet werden. Wir nutzen keine Bilddateien oder Bild-URLs von battlefieldmeta.gg.
+
+EA erlaubt nach den allgemeinen Fan-Content-Richtlinien persönliche, nichtkommerzielle Fanseiten unter Bedingungen:
+https://help.ea.com/de/articles/security-and-rules/ea-content-policy/
+
+BF6 Meta ist ein unabhängiges, kostenloses Fanprojekt ohne Zugehörigkeit zu EA oder Battlefield Studios. Marken, Namen und Bildrechte liegen bei den jeweiligen Rechteinhabern.
+
+Der offizielle Klassenguide ist eine Basis für die Kategorisierung. **64 gelistete Waffen bedeutet nicht, dass jeder zukünftige Patch automatisch sämtliche Neuzugänge ergänzt.** Neue Patches und Datenquellen werden täglich überprüft. Ungesicherte Neuerungen müssen fachlich bestätigt und in den Katalog übernommen werden. Daten aus anderen Fan-Guides werden nicht mit offiziellen EA-Daten verwechselt.
