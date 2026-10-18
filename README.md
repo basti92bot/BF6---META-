@@ -2,7 +2,7 @@
 
 Unabhängige, mobile Battlefield-6-Fan-App.
 
-## Version 0.5: drei Spielmodi, getrennte Daten
+## Version 0.5.1: drei Spielmodi, getrennte Daten
 
 Oben drei Spielmodus-Reiter: **Mehrspieler**, **Rapid Royale** und **Battle Royale (REDSEC Elite als Datenbasis)**. Darunter unverändert drei Bereiche:
 
@@ -54,10 +54,14 @@ Der bestehende Workflow `.github/workflows/daily-check.yml` prüft täglich EA-P
 
 GitHub Pages unter Settings > Pages: Deploy from a branch, `main`, `/(root)`.
 
-Die PWA nutzt `sw.js` mit Cache-Version `bf6meta-v7`.
+Die PWA nutzt `sw.js` mit Cache-Version `bf6meta-v8`.
 
 ## Technische Details
 
 Statisches HTML/CSS/JavaScript, keine Nutzerkonten oder eigenen Loadouts. Der aktuelle Einstieg ist `index.html` mit `simple.css` und `simple.js`.
 
 Ein unabhängiges Fan-Projekt, nicht von EA, DICE oder den Drittanbieter-Datenquellen betrieben.
+
+## Cache-Fix 0.5.1
+
+Versionsparameter `?v=0.5.1` für `simple.js`/`simple.css` verhindert altes JavaScript bei neuem HTML. Service Worker `bf6meta-v8` lädt App-Shell und Daten zuerst übers Netz und nutzt Cache nur als Offline-Fallback. Das korrigiert den zuvor auf iOS sichtbaren Fehler des bereits entfernten Updates-Reiters. Modus-Tabs auf Smartphones sind nun dreispaltig und kompakt.
