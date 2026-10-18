@@ -42,3 +42,83 @@
 .more-builds-toggle:hover,.more-builds-toggle:focus-visible{background:#2f4034}
 .more-caption{font-size:11px;color:#9daea7;margin:11px 0 0;text-align:center}
 .more-build-list{margin:15px 0 0}
+
+/* 0.9.0 — compact, distraction-free weapon selector */
+.top{height:61px}
+.brand-icon{height:36px;width:36px;font-size:16px}
+.brand strong{font-size:17px}
+.brand small{font-size:8px;letter-spacing:1px}
+.header-source{font-size:10px;padding:7px 9px}
+.hero{padding:15px 0 13px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hero h1{font-size:24px;letter-spacing:-.5px;line-height:1.1;margin:0}
+.hero .status{background:transparent;border:0;border-radius:0;color:#98ad9e;font-size:10px;white-space:normal;max-width:57%;padding:0;text-align:right;font-weight:700}
+.chooser{padding:13px 14px;margin-bottom:20px;border-radius:7px}
+.filter-title{margin:0 0 7px;font-size:9px;letter-spacing:1px}
+.filter-title span{padding-left:4px}
+.filter-second{margin-top:13px}
+.mode-tabs{gap:6px}
+.mode-tabs button{min-height:39px;padding:9px 5px;font-size:11px;border-radius:5px}
+.role-tabs{gap:6px}
+.role-tabs button{min-height:37px;padding:8px 6px;font-size:11px;border-radius:5px}
+.weapon-tabs{gap:5px;padding-bottom:2px}
+.weapon-tabs button{font-size:11px;padding:8px 11px;border-radius:5px}
+.style-option{margin-top:10px;padding-top:0}
+.style-option>summary{padding:9px 0 2px;font-size:11px}
+.style-option .style-tabs{padding-top:9px}
+.style-tabs button{padding:7px 10px;font-size:11px}
+.results-header{margin:0 0 11px}
+.results-header h2{font-size:20px;letter-spacing:-.4px}
+.result-count{font-size:10px;padding:5px 8px}
+.build-list{gap:10px}
+.loadout-card{border-radius:7px}
+.card-heading{min-height:0;padding:12px 14px 10px}
+.card-overline{font-size:9px;gap:7px}
+.num{height:21px;width:22px;font-size:11px}
+.card-heading h3{font-size:24px;margin:8px 0 2px}
+.build-shortlabel{font-size:11px;color:#d1e1cf}
+.compact-signature{background:#465b35;color:var(--lime);border:1px solid #6f8c5a;font-weight:800;border-radius:3px;font-size:9px;padding:3px 5px;margin-left:auto}
+.card-body{padding:9px 14px 12px}
+.compact-metrics{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 9px}
+.compact-metrics>span{background:#141d20;border:1px solid #3c5047;border-radius:4px;padding:5px 8px;font-size:12px}
+.compact-metrics b{color:var(--lime);font-size:13px}
+.compact-metrics small{font-size:10px;color:#acbab0;margin-left:3px}
+.parts-head{margin:9px 0 5px;font-size:10px}
+.parts-head small{font-size:10px}
+.part{padding:6px 0;gap:8px}
+.part span{font-size:10px}
+.part strong{font-size:11px}
+.more-parts{margin-top:0}
+.more-parts summary{padding:9px 0;font-size:11px;letter-spacing:0}
+.loadout-actions{margin-top:9px;gap:6px}
+.copy-build,.loadout-actions>a{min-height:34px;padding:8px 9px;font-size:10px;justify-content:center}
+.copy-build span{font-size:13px}
+.loadout-actions>a{flex:0 0 31%}
+.short-caveat{display:block;margin-top:7px;color:#889c95;font-size:9px;line-height:1.3}
+.extra-builds{margin-top:10px}
+.more-builds-toggle{padding:12px;font-size:11px;border-radius:5px}
+.more-build-list{margin-top:10px}
+.sources{margin-top:20px}
+.sources summary{font-size:11px}
+footer{margin-top:15px;padding:16px 0 24px;font-size:9px}
+@media(max-width:650px){
+  .shell{padding:0 12px}
+  .role-tabs{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}
+  .role-tabs button{min-height:43px;font-size:10px;padding:6px 2px}
+  .role-tabs button:first-child{grid-column:auto;min-height:43px}
+  .role-tabs button:nth-child(5){font-size:9px}
+  .weapon-tabs{margin-right:-12px;padding-right:12px}
+  .chooser{padding:12px 10px}
+  .mode-tabs button{min-height:42px;font-size:10px;padding:8px 3px}
+  .card-heading{padding:11px 12px 9px}
+  .card-body{padding:8px 12px 11px}
+  .hero h1{font-size:23px}
+  .hero .status{font-size:9px}
+}
+@media(max-width:380px){
+  .role-tabs{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+  .role-tabs button:first-child{grid-column:1/-1;min-height:30px}
+  .role-tabs button:nth-child(5){font-size:10px}
+  .role-tabs button{min-height:36px;font-size:10px}
+  .mode-tabs button{font-size:9px}
+  .hero h1{font-size:22px}
+}
