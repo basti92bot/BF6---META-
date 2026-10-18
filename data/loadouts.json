@@ -1444,6 +1444,628 @@
       "kind": "community",
       "guideTier": "A",
       "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-kord-6p67",
+      "weapon": "KORD 6P67",
+      "title": "Langstrecke",
+      "subtitle": "Hohe Kadenz und Stabilität, aber aktives Rückstoßmanagement notwendig.",
+      "why": "Hohe Kadenz und Stabilität, aber aktives Rückstoßmanagement notwendig.",
+      "styles": [
+        "range",
+        "allround"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Long Suppressor",
+        "Lauf": "415MM Prototype",
+        "Unterlauf": "Classic Vertical",
+        "Magazin": "36RND Magazine",
+        "Munition": "FMJ",
+        "Visier": "Baker 3.00x"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/kord-6p67",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "A",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-m433",
+      "weapon": "M433",
+      "title": "Sturmgewehr",
+      "subtitle": "Bekanntes Gewehr für aggressivere Distanzen, mit Stabilitätsaufsätzen.",
+      "why": "Bekanntes Gewehr für aggressivere Distanzen, mit Stabilitätsaufsätzen.",
+      "styles": [
+        "allround",
+        "aggressive"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "18.9\" Prototype",
+        "Unterlauf": "Classic Vertical",
+        "Magazin": "36RND Magazine",
+        "Munition": "FMJ",
+        "Visier": "Baker 3.00x"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/m433",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "B",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-sor-556-mk2",
+      "weapon": "SOR-556 MK2",
+      "title": "Kontrollierte Distanz",
+      "subtitle": "Präzisionsorientierter 36-Schuss-Build mit größerem Visier.",
+      "why": "Präzisionsorientierter 36-Schuss-Build mit größerem Visier.",
+      "styles": [
+        "range",
+        "control"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "18\" Custom",
+        "Unterlauf": "6H64 Vertical",
+        "Magazin": "36RND Magazine",
+        "Munition": "FMJ",
+        "Ergonomie": "Aftermarket Buffer",
+        "Visier": "Baker 3.00x"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/sor-556-mk2",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "B",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-b36a4",
+      "weapon": "B36A4",
+      "title": "Distanz",
+      "subtitle": "REDSEC-Aufbau mit Distanzlauf und Rückstoßgriff.",
+      "why": "REDSEC-Aufbau mit Distanzlauf und Rückstoßgriff.",
+      "styles": [
+        "range",
+        "control",
+        "allround"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "510MM DMR",
+        "Unterlauf": "6H64 Vertical",
+        "Magazin": "36RND Magazine",
+        "Munition": "FMJ",
+        "Ergonomie": "Aftermarket Buffer",
+        "Visier": "Baker 3.00x"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/b36a4",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "A",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-sgx",
+      "weapon": "SGX",
+      "title": "Nahkampf",
+      "subtitle": "Schnelle MP mit 36-Schuss-Magazin und kurzer Visierung.",
+      "why": "Schnelle MP mit 36-Schuss-Magazin und kurzer Visierung.",
+      "styles": [
+        "aggressive",
+        "allround"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "8\" Extended",
+        "Unterlauf": "Slim Angled",
+        "Magazin": "36RND Magazine",
+        "Munition": "FMJ",
+        "Visier": "Iron Sights",
+        "Rechtes Zubehör": "50 MW Blue"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/sgx",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "S",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-cz3a1",
+      "weapon": "CZ3A1",
+      "title": "Nahkampf",
+      "subtitle": "Hohe Feuerrate auf kurze Distanz, unterstützt durch 35-Schuss-Magazin.",
+      "why": "Hohe Feuerrate auf kurze Distanz, unterstützt durch 35-Schuss-Magazin.",
+      "styles": [
+        "aggressive"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "16.2\" Cut",
+        "Unterlauf": "Classic Vertical",
+        "Magazin": "35RND Magazine",
+        "Munition": "FMJ",
+        "Visier": "Mini Flex 1.00x"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/cz3a1",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "A",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-pw5a3",
+      "weapon": "PW5A3",
+      "title": "Kontrollierbarer Nahkampf",
+      "subtitle": "Solide MP mit 40er Magazin und guter Kontrollierbarkeit.",
+      "why": "Solide MP mit 40er Magazin und guter Kontrollierbarkeit.",
+      "styles": [
+        "aggressive",
+        "control"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "245MM Custom",
+        "Unterlauf": "Slim Angled",
+        "Magazin": "40RND Magazine",
+        "Munition": "FMJ",
+        "Visier": "Iron Sights",
+        "Rechtes Zubehör": "5 MW Green"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/pw5a3",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "C",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-m250",
+      "weapon": "M250",
+      "title": "LMG Distanz",
+      "subtitle": "Großes Magazin und Distanzlauf für langes Halten von Positionen.",
+      "why": "Großes Magazin und Distanzlauf für langes Halten von Positionen.",
+      "styles": [
+        "range",
+        "control"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "556MM Prototype",
+        "Unterlauf": "Classic Vertical",
+        "Magazin": "50RND Belt Pouch",
+        "Munition": "FMJ",
+        "Optik-Zubehör": "Canted Iron Sights",
+        "Visier": "Baker 3.00x"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/m250",
+        "reviewedDate": "2026-07-23",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "C",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-m123k",
+      "weapon": "M123K",
+      "title": "Feuerkraft",
+      "subtitle": "100-Schuss-Gurtbehälter für lange REDSEC-Feuerphasen.",
+      "why": "100-Schuss-Gurtbehälter für lange REDSEC-Feuerphasen.",
+      "styles": [
+        "allround",
+        "range"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "612MM VMW",
+        "Unterlauf": "Ribbed Stubby",
+        "Magazin": "100RND Belt Pouch",
+        "Munition": "FMJ",
+        "Visier": "Baker 3.00x",
+        "Rechtes Zubehör": "50 MW Violet"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/m123k",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "C",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-kts100-mk8",
+      "weapon": "KTS100 MK8",
+      "title": "Präzisions-LMG",
+      "subtitle": "Stabiler Distanz-Build mit 45-Schuss-Schnellmagazin.",
+      "why": "Stabiler Distanz-Build mit 45-Schuss-Schnellmagazin.",
+      "styles": [
+        "range",
+        "control",
+        "allround"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "508MM MK8",
+        "Unterlauf": "Classic Vertical",
+        "Magazin": "45RND Fast Mag",
+        "Munition": "FMJ",
+        "Visier": "Baker 3.00x"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/kts100-mk8",
+        "reviewedDate": "2026-06-12",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "S",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-m2010-esr",
+      "weapon": "M2010 ESR",
+      "title": "Distanz-Sniper",
+      "subtitle": "Sniper für weite Distanzen mit Entfernungsmesser und schnellem Verschluss.",
+      "why": "Sniper für weite Distanzen mit Entfernungsmesser und schnellem Verschluss.",
+      "styles": [
+        "sniper",
+        "range"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Standard Suppressor",
+        "Lauf": "26\" Carbon",
+        "Unterlauf": "Full Angled",
+        "Magazin": "5RND Magazine",
+        "Munition": "Match Grade",
+        "Ergonomie": "DLC Bolt",
+        "Visier": "NFX 8.00x",
+        "Linkes Zubehör": "Range Finder"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/m2010-esr",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "S",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-mini-scout",
+      "weapon": "MINI SCOUT",
+      "title": "Mobile Sniper",
+      "subtitle": "Schnelleres Repetieren und viel Beweglichkeit, geringerer Schaden.",
+      "why": "Schnelleres Repetieren und viel Beweglichkeit, geringerer Schaden.",
+      "styles": [
+        "sniper",
+        "range"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "18\" Extended",
+        "Unterlauf": "Full Angled",
+        "Magazin": "10RND Magazine",
+        "Munition": "Frangible",
+        "Optik-Zubehör": "Anti-Glare Coating",
+        "Visier": "S-VPS 6.00x",
+        "Linkes Zubehör": "Range Finder"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/mini-scout",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "C",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-sv-98",
+      "weapon": "SV-98",
+      "title": "Präzisions-Sniper",
+      "subtitle": "Klassische Sniper mit 8-facher Vergrößerung.",
+      "why": "Klassische Sniper mit 8-facher Vergrößerung.",
+      "styles": [
+        "sniper",
+        "range"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "730MM 3LR",
+        "Magazin": "10RND Magazine",
+        "Munition": "FMJ",
+        "Ergonomie": "DLC Bolt",
+        "Visier": "NFX 8.00x",
+        "Linkes Zubehör": "Range Finder"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/sv-98",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "B",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-m277",
+      "weapon": "M277",
+      "title": "Langstrecken-Karabiner",
+      "subtitle": "Karabiner mit Distanzlauf und 25-Schuss-Schnellmagazin.",
+      "why": "Karabiner mit Distanzlauf und 25-Schuss-Schnellmagazin.",
+      "styles": [
+        "range",
+        "allround"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Long Suppressor",
+        "Lauf": "16\" Custom",
+        "Unterlauf": "6H64 Vertical",
+        "Magazin": "25RND Fast Mag",
+        "Munition": "FMJ",
+        "Visier": "Baker 3.00x"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/m277",
+        "reviewedDate": "2026-07-23",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "C",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-m87a1",
+      "weapon": "M87A1",
+      "title": "Pumpgun",
+      "subtitle": "Nahkampf-Setup für enge Gebäude und schnelle Begegnungen.",
+      "why": "Nahkampf-Setup für enge Gebäude und schnelle Begegnungen.",
+      "styles": [
+        "aggressive"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "CQB Suppressor",
+        "Lauf": "20\" Factory",
+        "Unterlauf": "Slim Handstop",
+        "Magazin": "7 Shell Tube",
+        "Munition": "#00 Buckshot",
+        "Visier": "Iron Sights",
+        "Rechtes Zubehör": "5 MW Green",
+        "Linkes Zubehör": "Taclight - Aimed"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/m87a1",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "C",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-m1014",
+      "weapon": "M1014",
+      "title": "Halbautomatische Schrotflinte",
+      "subtitle": "Für enge Räume und kurze Distanzen.",
+      "why": "Für enge Räume und kurze Distanzen.",
+      "styles": [
+        "aggressive"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "CQB Suppressor",
+        "Lauf": "18.5\" Factory",
+        "Unterlauf": "Slim Handstop",
+        "Magazin": "6 Shell Tube",
+        "Munition": "#00 Buckshot",
+        "Visier": "Iron Sights",
+        "Rechtes Zubehör": "5 MW Green",
+        "Linkes Zubehör": "Taclight - Aimed"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/m1014",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "C",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-db-12",
+      "weapon": "DB-12",
+      "title": "Schrotflinte",
+      "subtitle": "Großer Doppelmagazin-Behälter für kurze Begegnungen.",
+      "why": "Großer Doppelmagazin-Behälter für kurze Begegnungen.",
+      "styles": [
+        "aggressive"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "CQB Suppressor",
+        "Lauf": "18.9\" Factory",
+        "Unterlauf": "Slim Handstop",
+        "Magazin": "7 Shell Dual Tubes",
+        "Munition": "#00 Buckshot",
+        "Visier": "2PRO 1.25x",
+        "Rechtes Zubehör": "5 MW Green"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/db-12",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "D",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-svk-8-6",
+      "weapon": "SVK-8.6",
+      "title": "DMR Präzision",
+      "subtitle": "Distanzauslegung mit 4-facher Vergrößerung.",
+      "why": "Distanzauslegung mit 4-facher Vergrößerung.",
+      "styles": [
+        "range",
+        "sniper"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "560MM Factory",
+        "Unterlauf": "Stippled Stubby",
+        "Magazin": "10RND Fast Mag",
+        "Munition": "Match Grade",
+        "Visier": "PVQ-31 4.00x"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/svk-86",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "C",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-grt-cps",
+      "weapon": "GRT-CPS",
+      "title": "DMR Kontrolle",
+      "subtitle": "Ruhige halbautomatische Schüsse bei mittlerer Distanz.",
+      "why": "Ruhige halbautomatische Schüsse bei mittlerer Distanz.",
+      "styles": [
+        "range",
+        "control"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "20\" Factory",
+        "Unterlauf": "Ribbed Vertical",
+        "Magazin": "20RND Magazine",
+        "Munition": "Synthetic Tip",
+        "Visier": "PVQ-31 4.00x"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/grt-cps",
+        "reviewedDate": "2026-07-03",
+        "mode": "REDSEC-spezifische Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "C",
+      "verifiedForCurrentPatch": false
     }
   ]
 }
