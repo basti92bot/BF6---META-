@@ -7,15 +7,18 @@ const fmt = (n,d=1) => Number.isFinite(Number(n)) ? Number(n).toLocaleString("de
 const state = {mode:"mp",view:"popular",trend:null,modes:null,catalog:null,builds:null,status:null,weaponClass:"all",search:"",focus:null};
 const cur = () => state.modes?.modes[state.mode];
 const cat = id => state.catalog?.classes.find(c=>c.id===id);
-const findCat = n => state.catalog?.classes.find(c=>c.weapons.some(w=>norm(w)===norm(n)));
-const findBuild = n => state.builds?.recommendations.find(w=>norm(w.name)===norm(n));
+const canonical = name => state.catalog?.aliases?.[name] || name;
+const displayName = name => norm(name) === "hti" ? "Interdictor (HTI)" : name;
+const findCat = n => state.catalog?.classes.find(c=>c.weapons.some(w=>norm(w)===norm(canonical(n))));
+const findBuild = n => state.builds?.recommendations.find(w=>norm(w.name)===norm(canonical(n)));
 const modeRecords = () => state.mode==="mp" ? [...(state.trend?.popular||[]),...(state.trend?.meta||[])] : state.mode==="br" ? (cur()?.weapons||[]) : [];
-const findTracked = n => modeRecords().find(w=>norm(w.name)===norm(n));
+const findTracked = n => modeRecords().find(w=>norm(canonical(w.name))===norm(canonical(n)));
 const findRapid = n => cur()?.recommendations?.find(w=>norm(w.name)===norm(n));
 function picture(name,c){
-  const exact=state.catalog?.exactImages?.[name], imageUrl=exact||c?.image;
-  if(!imageUrl)return '<div class="picture"><span>BF6</span></div>';
-  return '<div class="picture"><img src="'+safe(imageUrl)+'" loading="lazy" alt="'+safe(exact?"Waffenmotiv "+name:"Klassenmotiv "+(c?.label||"BF6"))+'" onerror="this.hidden=true"><i>'+(exact?"WAFFENMOTIV":"KLASSENMOTIV")+'</i></div>';
+  const normalized=canonical(name);
+  const exact=state.catalog?.exactImages?.[normalized] || state.catalog?.exactImages?.[name];
+  if (!exact) return '<div class="picture picture-missing" aria-hidden="true"><span>'+safe(c?.code||"BF6")+'</span></div>';
+  return '<div class="picture"><img src="'+safe(exact)+'" loading="lazy" alt="Waffenbild '+safe(displayName(name))+'" onerror="this.hidden=true"></div>';
 }
 function row(item,i,type){
   const name=item.name,c=cat(item.category)||findCat(name);
@@ -34,7 +37,7 @@ function row(item,i,type){
   }
   return '<button class="weapon-row" type="button" data-weapon="'+safe(name)+'">'+
    '<span class="row-position">'+position+'</span>'+picture(name,c)+
-   '<span><strong class="row-name">'+safe(name)+'</strong><span class="row-class">'+safe(c?.label||"Waffe")+'</span></span>'+
+   '<span><strong class="row-name">'+safe(displayName(name))+'</strong><span class="row-class">'+safe(c?.label||"Waffe")+'</span></span>'+
    '<span>'+right+'</span></button>';
 }
 function popList(){
@@ -113,21 +116,40 @@ function detailStats(data){
   return '<div class="info-card"><p>Für Rapid Royale ist keine verlässliche Waffen-Pick-Rate verfügbar. Keine Werte aus anderen Modi übernommen.</p></div>';
 }
 function details(name){
-  const c=findCat(name),build=findBuild(name),tracked=findTracked(name),rapid=findRapid(name),pic=picture(name,c);
-  const attachments=build?Object.entries(build.attachments).map(([type,val])=>'<div class="attachment"><span>'+safe(type)+'</span><strong>'+safe(val)+'</strong></div>').join(""):"";
-  let topMessage=state.mode==="rapid"?(rapid?rapid.reason:"Für Rapid Royale liegt noch keine spezifische Empfehlung zu dieser Waffe vor."):
-    state.mode==="br"?"REDSEC-Elite-Werte. Andere Battle-Royale-Playlists können abweichen.":
-    build?.pitch||"Wähle diese Waffe passend zu deinem Spielstil.";
-  let buildHtml=build?
-    '<h3>Community-Aufsätze (allgemein)</h3>'+attachments+
-    '<p class="notice-mini">Diese Aufsätze stammen aus einem Community-Guide. Die Kombination ist nicht gesondert für '+safe(cur().title)+' und den aktuellen Patch bestätigt.</p>'+
-    '<a class="linkline" target="_blank" rel="noopener noreferrer" href="'+safe(state.builds.sourceBuilds)+'">Original-Build prüfen ↗</a>':
-    '<div class="info-card"><p>Kein geprüfter Build gespeichert. Fehlende Aufsätze werden nicht geschätzt.</p></div>';
-  $("modal-content").innerHTML='<div class="detail-photo">'+pic+'</div><div class="detail"><span class="eyebrow">'+safe(cur().title)+' · '+safe(c?.label||"Waffe")+'</span><h2>'+safe(name)+'</h2>'+
-   '<p>'+safe(topMessage)+'</p>'+detailStats(tracked)+
-   '<p class="notice-mini">'+safe(cur().note)+'</p>'+
-   buildHtml+
-   '<h3>Modus-Quelle</h3><a class="linkline" href="'+safe(cur().source)+'" target="_blank" rel="noopener noreferrer">Daten für '+safe(cur().title)+' prüfen ↗</a></div>';
+  const category=findCat(name),build=findBuild(name),tracked=findTracked(name),rapid=findRapid(name);
+  const title=displayName(name);
+  const exact=state.catalog?.exactImages?.[canonical(name)] || state.catalog?.exactImages?.[name];
+  const art=exact ? '<div class="detail-photo">'+picture(name,category)+'</div>' : '';
+  const mode=cur();
+  const sourceUrl=state.mode==="mp" ? state.trend?.detailSource : mode.source;
+  const buildUrl=build?.sourceBuild || state.builds?.sourceBuilds;
+  const communityDate=build?.sourceDate ? new Date(build.sourceDate+"T12:00:00Z").toLocaleDateString("de-DE") : "unbestätigt";
+  const attachments=build ? Object.entries(build.attachments).map(([slot,value])=>
+    '<div class="attachment"><span>'+safe(slot)+'</span><strong>'+safe(value)+'</strong></div>').join("") : '';
+  const introduction = state.mode==="rapid"
+    ? rapid?.reason || "Für diesen Modus liegt noch keine konkrete Waffen-Empfehlung vor."
+    : build?.pitch || (state.mode==="br" ? "REDSEC Elite: beobachtete Matchdaten, keine offizielle Tierlist." : "Waffendaten aus der beobachteten Multiplayer-Stichprobe.");
+  const buildSection = build ?
+    '<h3>Empfohlener Build</h3>'+
+    (build?.buildLabel ? '<p class="build-origin">'+safe(build.buildLabel)+'</p>' : '<p class="build-origin">Allgemeiner Community-Build</p>')+
+    '<div class="attachment-list">'+attachments+'</div>'+
+    '<p class="detail-muted">Community-Empfehlung, nicht gesondert für '+safe(mode.title)+' geprüft.'+
+      (build.sourceDate?' Stand: '+safe(communityDate)+'.':'')+'</p>'+
+    '<a class="linkline" href="'+safe(buildUrl)+'" target="_blank" rel="noopener noreferrer">Original-Build ansehen ↗</a>'
+    : '<h3>Aufsätze</h3><p class="detail-muted">Für diese Waffe ist noch kein belegter Build hinterlegt.</p>';
+  $("modal-content").innerHTML=art+
+    '<div class="detail '+(exact?"":"without-image")+'">'+
+    '<span class="eyebrow">'+safe(mode.title)+' · '+safe(category?.label||"Waffe")+'</span>'+
+    '<h2>'+safe(title)+'</h2>'+
+    (norm(name)==="hti" || norm(name)==="interdictor"
+      ? '<p class="weapon-alias">INT.GG: HTI · Im Spiel: Interdictor</p>' : '')+
+    detailStats(tracked)+
+    '<p class="detail-lead">'+safe(introduction)+'</p>'+
+    buildSection+
+    '<div class="detail-references"><a href="'+safe(sourceUrl)+'" target="_blank" rel="noopener noreferrer">Matchdaten / Modus-Quelle ↗</a>'+
+    ((norm(name)==="hti"||norm(name)==="interdictor")
+      ? '<a href="https://www.ea.com/games/battlefield/battlefield-6/news/season-4-roadmap-everything-you-need-to-know" target="_blank" rel="noopener noreferrer">Offizielle Interdictor-Infos von EA ↗</a>':'')+
+    '</div></div>';
   $("modal-backdrop").hidden=false;$("weapon-modal").hidden=false;$("weapon-modal").setAttribute("aria-hidden","false");
   document.body.classList.add("modal-open");$("modal-close").focus();
 }
