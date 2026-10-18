@@ -1,6 +1,6 @@
 # BF6 META – Loadout Lab
 
-Aktuelle App-Version **0.8.1**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **0.8.2**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
 
 ## Die App: Loadouts zuerst
 
@@ -49,11 +49,11 @@ Neue Balance-Patches können TTK-Daten oder Build-Empfehlungen ungültig machen.
 
 GitHub Pages: Settings > Pages > Deploy from branch `main`, Ordner `/(root)`.
 
-Service-Worker-Cache-Version: `bf6meta-v13`; statische App-Dateien werden bevorzugt aus dem Netzwerk geladen, um Versionskonflikte zu vermeiden.
+Service-Worker-Cache-Version: `bf6meta-v14`; statische App-Dateien werden bevorzugt aus dem Netzwerk geladen, um Versionskonflikte zu vermeiden.
 
 Kein Nutzerkonto und keine eigenen gespeicherten Loadouts.
 
-## 0.8.1 – vier Waffen statt einer
+## 0.8.2 – vier Waffen statt einer
 
 Für Spielmodus, Soldatenklasse und Waffenklasse werden jetzt **maximal vier unterschiedliche Waffen-Builds** angezeigt. Die Auswahl berücksichtigt zuerst die zur Soldatenklasse passende Signaturwaffenkategorie, danach die **Tier-Einstufungen der dokumentierten Community-Guides** und eine redaktionelle Reihenfolge. Ohne Soldaten- und Waffenklasse zeigt die App vier bewusst unterschiedliche Einstiegsempfehlungen.
 
@@ -63,7 +63,7 @@ Für Spielmodus, Soldatenklasse und Waffenklasse werden jetzt **maximal vier unt
 
 Aktuell sind 62 Quellen-Builds hinterlegt. Auf dem Bildschirm erscheinen abhängig von den Filtern höchstens vier. Es gibt keinen Anspruch, dass eine Guide-Einstufung einen objektiv besten Aufsatz-Build beweist. TTK-Werte beschreiben weiterhin Grundwaffe/Quellenmodell, nicht die Aufsatz-Kombination. Bei weniger als vier belegten Builds wird kein Füllmaterial erfunden.
 
-## 0.8.1 – Konsequente Qualitätsprüfung statt alter S-Tiers
+## 0.8.2 – Konsequente Qualitätsprüfung statt alter S-Tiers
 
 **Warum SL9 nicht mehr empfohlen wird:** Der BF-Tactics-Tierguide vom 21.09.2026 führte die SL9 als S. Eine neuere Season-5-Matchstichprobe von INT.GG (Stand 18.10.2026) zeigt jedoch Meta-Score 26 von 100, KD 1,0 und 0,81 Kills/Minute. Ein Season-5-Tierguide (13.10.2026) bewertet sie als D. Dies sind Grundwaffen-Indikatoren aus einer Stichprobe, kein Aufsatz-Build-Beweis.
 
@@ -74,3 +74,11 @@ Aktuell sind 62 Quellen-Builds hinterlegt. Auf dem Bildschirm erscheinen abhäng
 - Weitere Klassen haben noch keinen vergleichbar vollständigen aktuellen Gegencheck. Dort können einzelne alte Tier-Bewertungen weiter unzuverlässig sein; diese sollen nach und nach modusspezifisch geprüft werden.
 
 Quelle: https://int.gg/bf6/weapons (Season 5), https://worstguidesever.com/battlefield-6-siege-of-vegas-tier-list/ (13.10.), https://www.bftactics.com/weapon-tier-list (21.09.) und https://www.bftactics.com/weapons-database.
+
+## 0.8.2: KTS100 MK8 und aktuelle LMG-Gegenprüfung
+
+- Die KTS100 MK8 ist nun zusätzlich im Multiplayer und als nach MP abgeleitete Rapid-Empfehlung mit vollständigem, quellengestütztem BF-Tactics-Build hinterlegt (60er Magazin, schwerer 508-mm-Lauf, Stippled Stubby). Sie war bereits bei REDSEC vorhanden.
+- Ein aktueller Z84M-Build wurde separat für MP/Rapid und REDSEC übernommen. Quelle: https://battlefinity.gg/weapon/BF6/z84m, Community-Loadout vom 14.10.2026.
+- Für MP und Rapid wird die LMG-Reihenfolge anhand der neueren INT.GG-Season-5-Grundwaffenwerte gegengeprüft (Z84M 97, DRS-IAR 91, M123K 79, L110 72, KTS100 46). Diese Zahlen sind **keine Build-spezifischen** TTK-/Rückstoßmessungen und gelten nicht für REDSEC.
+- Standardansicht weiterhin **vier Top-Empfehlungen**. Ein neuer Button „Weitere Waffen ansehen“ zeigt alle zusätzlichen Builds innerhalb der aktuellen Auswahl; bei Versorgung/LMGs weist der Button auf die KTS100 hin, sofern diese unter den Alternativen ist.
+- Quelle: https://int.gg/bf6/tier-list (Season 5), https://bftactics.com/weapons-database (KTS100-Gunsmith), https://battlefinity.gg/weapon/BF6/kts100-mk8 (REDSEC-Build, teils älter).
