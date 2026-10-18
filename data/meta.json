@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 1,
+  "version": "0.2.0",
+  "patch": "2.1.1.0",
+  "rankingDate": "2026-10-13",
+  "buildsDate": "2026-10-15",
+  "verifiedOn": "2026-10-18",
+  "notice": "Redaktionelle Empfehlungen externer Guides. Unterschiedliche Quellen können unterschiedliche Tiers vergeben. Builds nicht automatisch nach jedem Patch validiert.",
+  "sourceRanking": "https://worstguidesever.com/battlefield-6-siege-of-vegas-tier-list/",
+  "sourceBuilds": "https://www.bftactics.com/weapons-database",
+  "officialPatch": "https://www.ea.com/de/games/battlefield/redsec/news/battlefield-6-game-update-2-1-1-0",
+  "recommendations": [
+    {
+      "id": "sg-553r",
+      "name": "SG 553R",
+      "category": "Karabiner",
+      "tier": "S",
+      "tags": [
+        "Allround",
+        "Mittlere Distanz"
+      ],
+      "styles": [
+        "allround",
+        "range",
+        "controller"
+      ],
+      "pitch": "Vielseitiger Karabiner für nahezu jede Klasse. Starke Wahl für mittlere Distanzen.",
+      "unlock": "DANGER CLOSE 2 (laut Guide)",
+      "attachments": {
+        "Mündung": "STANDARD SUPPRESSOR",
+        "Lauf": "EXTENDED 303MM",
+        "Unterlauf": "STIPPLED STUBBY",
+        "Magazin": "30 RND",
+        "Munition": "STANDARD",
+        "Visier": "2.0x oder 3.0x",
+        "Rechtes Zubehör": "50MW VIOLET LASER"
+      }
+    },
+    {
+      "id": "drs-iar",
+      "name": "DRS-IAR",
+      "category": "LMG",
+      "tier": "S",
+      "tags": [
+        "Allround",
+        "Support"
+      ],
+      "styles": [
+        "support",
+        "allround",
+        "range"
+      ],
+      "pitch": "Support-Waffe für stabile Feuerkraft auf mittlere Entfernung.",
+      "unlock": "Karriererang 9 (laut Guide)",
+      "attachments": {
+        "Mündung": "LONG SUPPRESSOR",
+        "Lauf": "HEAVY EXT 20''",
+        "Unterlauf": "RIBBED STUBBY",
+        "Magazin": "30 FAST",
+        "Munition": "STANDARD",
+        "Visier": "3.0x oder 4.0x",
+        "Oberes Zubehör": "50MW VIOLET LASER"
+      }
+    },
+    {
+      "id": "m4a1",
+      "name": "M4A1",
+      "category": "Karabiner",
+      "tier": "S",
+      "tags": [
+        "Wenig Rückstoß",
+        "Controller"
+      ],
+      "styles": [
+        "controller",
+        "allround"
+      ],
+      "pitch": "Kontrollierbarer Karabiner, gut für Controller und zuverlässige Feuerstöße.",
+      "unlock": null,
+      "attachments": {
+        "Mündung": "STANDARD SUPPRESSOR",
+        "Lauf": "12.5'' FLUTED",
+        "Unterlauf": "RIBBED VERTICAL",
+        "Magazin": "30 FAST",
+        "Munition": "STANDARD",
+        "Visier": "1.25x",
+        "Oberes Zubehör": "50MW VIOLET LASER"
+      }
+    },
+    {
+      "id": "scw-10",
+      "name": "SCW-10",
+      "category": "MP",
+      "tier": "S",
+      "tags": [
+        "Nahkampf",
+        "Aggressiv"
+      ],
+      "styles": [
+        "aggressive"
+      ],
+      "pitch": "Starke Nahkampf-MP für Räume, enge Wege und schnelles Pushen.",
+      "unlock": "CLOSE QUARTERS 1 (laut Guide)",
+      "attachments": {
+        "Mündung": "STANDARD SUPPRESSOR",
+        "Lauf": "EXTENDED 200MM",
+        "Unterlauf": "FOLDING VERTICAL",
+        "Magazin": "20 RND",
+        "Munition": "STANDARD",
+        "Visier": "1.25x",
+        "Oberes Zubehör": "50MW BLUE LASER"
+      }
+    },
+    {
+      "id": "m87a1",
+      "name": "M87A1",
+      "category": "Schrotflinte",
+      "tier": "S",
+      "tags": [
+        "Extremer Nahkampf"
+      ],
+      "styles": [
+        "aggressive"
+      ],
+      "pitch": "Für sehr kurze Distanzen und Innenräume. Weniger flexibel auf offenen Karten.",
+      "unlock": null,
+      "attachments": {
+        "Lauf": "BASIC 20''",
+        "Unterlauf": "SLIM ANGLED",
+        "Magazin": "7 RND",
+        "Munition": "BUCKSHOT",
+        "Visier": "frei wählbar",
+        "Rechtes Zubehör": "120MW BLUE LASER",
+        "Linkes Zubehör": "FLASHLIGHT"
+      }
+    },
+    {
+      "id": "rspr",
+      "name": "RSPR",
+      "category": "MP",
+      "tier": "A",
+      "tags": [
+        "Neue Waffe",
+        "Aggressiv"
+      ],
+      "styles": [
+        "aggressive",
+        "range"
+      ],
+      "pitch": "Season-5-PDW mit besserer Reichweite, aber stärkerem Rückstoß. Neue Datenlage noch begrenzt.",
+      "unlock": "Season 5, Freischaltung im Spiel prüfen",
+      "attachments": {
+        "Mündung": "CQB SUPPRESSOR",
+        "Lauf": "LIGHT 7.75''",
+        "Unterlauf": "ALLOY VERTICAL",
+        "Magazin": "20 RND",
+        "Munition": "STANDARD",
+        "Visier": "1.0x oder 1.25x",
+        "Oberes Zubehör": "5 MW GREEN LASER"
+      }
+    },
+    {
+      "id": "mk-24",
+      "name": "Mk 24",
+      "category": "Sturmgewehr",
+      "tier": "A",
+      "tags": [
+        "Neue Waffe",
+        "Distanz"
+      ],
+      "styles": [
+        "range"
+      ],
+      "pitch": "Season-5-Sturmgewehr für größere Distanzen. Magazinkapazität ist ein Nachteil.",
+      "unlock": "Season 5, Freischaltung im Spiel prüfen",
+      "attachments": {
+        "Mündung": "LIGHTENED SUPPRESSOR",
+        "Lauf": "BASIC 16''",
+        "Unterlauf": "RIBBED STUBBY",
+        "Magazin": "20 RND",
+        "Munition": "STANDARD",
+        "Visier": "frei wählbar",
+        "Oberes Zubehör": "50MW VIOLET LASER"
+      }
+    },
+    {
+      "id": "mini-scout",
+      "name": "MINI SCOUT",
+      "category": "Scharfschütze",
+      "tier": "A",
+      "tags": [
+        "Mobil",
+        "Aufklärung"
+      ],
+      "styles": [
+        "sniper",
+        "range"
+      ],
+      "pitch": "Bewegliche Sniper-Option statt stationärer Langstreckenlösung.",
+      "unlock": null,
+      "attachments": {
+        "Mündung": "LONG SUPPRESSOR",
+        "Lauf": "EXTENDED 18''",
+        "Magazin": "10 FAST",
+        "Munition": "STANDARD",
+        "Optik-Zubehör": "ANTI-GLARE",
+        "Visier": "6.0x oder höher",
+        "Rechtes Zubehör": "50MW VIOLET LASER",
+        "Linkes Zubehör": "RANGE FINDER"
+      }
+    },
+    {
+      "id": "m433",
+      "name": "M433",
+      "category": "Sturmgewehr",
+      "tier": "A",
+      "tags": [
+        "Einsteiger",
+        "Allround"
+      ],
+      "styles": [
+        "controller",
+        "allround"
+      ],
+      "pitch": "Solide Einstiegswaffe und einfacher Start, ohne lange Freischaltung.",
+      "unlock": "Standardwaffe (laut Guide)",
+      "attachments": {
+        "Mündung": "LIGHTENED SUPPRESSOR",
+        "Lauf": "EXTENDED 18.9''",
+        "Unterlauf": "RIBBED STUBBY",
+        "Magazin": "30 FAST",
+        "Munition": "STANDARD",
+        "Visier": "frei wählbar",
+        "Oberes Zubehör": "50MW VIOLET LASER"
+      }
+    }
+  ],
+  "playstyles": [
+    {
+      "id": "allround",
+      "label": "Allround",
+      "description": "Eine Waffe für viele Situationen."
+    },
+    {
+      "id": "aggressive",
+      "label": "Aggressiv",
+      "description": "Schnelle Kämpfe, enge Räume."
+    },
+    {
+      "id": "controller",
+      "label": "Wenig Rückstoß",
+      "description": "Kontrollierbare Waffen, auch mit Controller."
+    },
+    {
+      "id": "range",
+      "label": "Distanz",
+      "description": "Mittlere und weite Entfernungen."
+    },
+    {
+      "id": "support",
+      "label": "Support",
+      "description": "Ziele halten und Team unterstützen."
+    },
+    {
+      "id": "sniper",
+      "label": "Sniper",
+      "description": "Aufklärung und präzise Schüsse."
+    }
+  ]
+}
