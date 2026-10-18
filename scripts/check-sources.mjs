@@ -2,6 +2,7 @@ import { readFile, writeFile } from "node:fs/promises";
 
 const DATA_PATH = "data/weapons.json";
 const STATUS_PATH = "data/status.json";
+const META_PATH = "data/meta.json";
 const WEAPONS_URL = "https://raw.githubusercontent.com/bdeland/bf6_guns/main/data.csv";
 const PATCH_URL = "https://www.ea.com/games/battlefield/battlefield-6/news?type=game-updates";
 const now = new Date().toISOString();
@@ -70,12 +71,16 @@ function newestPatchVersion(html) {
   const withoutScripts = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ").replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ");
   const clean = withoutScripts.replace(/<[^>]+>/g, " ").replace(/&nbsp;|&#160;/gi, " ").replace(/\s+/g, " ");
   const matches = [...clean.matchAll(/(?:BATTLEFIELD\s*6\s*(?:GAME\s*)?UPDATE|BATTLEFIELD\s*6\s*[-–]?\s*SPIELUPDATE|SPIELUPDATE)\s*(\d+(?:\.\d+){3})/gi)].map((m) => m[1]);
+  for (const match of html.matchAll(/battlefield-6-game-update-(\d+)-(\d+)-(\d+)-(\d+)/gi)) {
+    matches.push([match[1], match[2], match[3], match[4]].join("."));
+  }
   if (!matches.length) throw new Error("Keine Patch-Versionsnummer in EA-News gefunden");
   matches.sort((a, b) => { const x = a.split(".").map(Number), y = b.split(".").map(Number); for (let i = 0; i < 4; i++) { if (x[i] !== y[i]) return y[i] - x[i]; } return 0; });
   return matches[0];
 }
 const data = await readJson(DATA_PATH);
 const status = await readJson(STATUS_PATH);
+const meta = await readJson(META_PATH);
 status.checkedAt = now;
 let communityOk = false, officialOk = false;
 try {
@@ -104,9 +109,28 @@ try {
   }
   officialOk = true;
 } catch (error) { errors.push("EA Patchnotes: " + error.message); }
+if (status.latestPatch?.version && status.latestPatch.version !== meta.patch) {
+  status.reviewNeeded = true;
+  status.reviewReason = "Meta-Empfehlungen basieren auf Patch " + meta.patch + "; aktueller Patch " + status.latestPatch.version + ". Bitte fachlich aktualisieren.";
+}
+const guideSources = [
+  { name: "Meta-Guide Season 5", url: meta.sourceRanking },
+  { name: "Build-Guide BF Tactics", url: meta.sourceBuilds }
+];
+for (const source of guideSources) {
+  try {
+    const html = await download(source.url);
+    if (!/battlefield\s*6|bf6/i.test(html)) throw new Error("Seiteninhalt nicht eindeutig");
+    source.ok = true;
+  } catch (error) {
+    source.ok = false;
+    errors.push(source.name + ": " + error.message);
+  }
+}
 status.sources = [
   { name: "EA Patchnotes", url: PATCH_URL, ok: officialOk },
-  { name: "BF6 Community Waffenwerte", url: "https://github.com/bdeland/bf6_guns", ok: communityOk }
+  { name: "BF6 Community Waffenwerte", url: "https://github.com/bdeland/bf6_guns", ok: communityOk },
+  ...guideSources
 ];
 status.errors = errors;
 if (officialOk && communityOk) status.lastSuccessAt = now;
