@@ -1,5 +1,5 @@
 {
-  "version": "2026-10-18-smg-s5",
+  "version": "2026-10-18-s5-smg-lmg",
   "observedAt": "2026-10-18",
   "source": "https://int.gg/bf6/weapons",
   "sourceKind": "observed sample, some environments may be mixed",
@@ -27,5 +27,18 @@
     "newScore": 26,
     "season5GuideTier": "D"
   },
-  "policy": "For MP and Rapid only: If Season-5 SMG Meta Score is known and under 45, do not recommend it. REDSEC should use separate data. Score is a reliability gate, not a claim that the associated loadout performs at this score."
+  "policy": "For MP and Rapid only: If Season-5 SMG Meta Score is known and under 45, do not recommend it. REDSEC should use separate data. Score is a reliability gate, not a claim that the associated loadout performs at this score.",
+  "season5LMGMetaScore": {
+    "Z84M": 97,
+    "DRS-IAR": 91,
+    "M123K": 79,
+    "L110": 72,
+    "M250": 55,
+    "M121 A2": 50,
+    "KTS100 MK8": 46,
+    "M240L": 44,
+    "RPK-74M": 41
+  },
+  "lmgMetaSource": "https://int.gg/bf6/tier-list",
+  "lmgPolicy": "Multiplayer and Rapid LMGs use newer observed Season 5 scores before older guide S/A tiers. Scores refer to weapons, not builds, and Rapid is not independently measured. REDSEC uses separate source tiers."
 }
