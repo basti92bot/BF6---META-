@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "buildsetVersion": "0.8.1",
+  "buildsetVersion": "0.8.2",
   "createdOn": "2026-10-18",
   "patchAtCompilation": "2.1.1.0",
   "disclaimer": "Die Top-4-Reihenfolge verwendet die Klassenpassung, Quellen-Tier-Einstufungen und eine redaktionelle Auswahl; kein statistisch errechnetes globales Ranking. TTK-Werte beziehen sich auf Grundwaffen/Quellenmodelle, nicht auf die Aufsatz-Konfiguration.",
@@ -2177,6 +2177,108 @@
         "reviewedDate": "2026-09-21",
         "mode": "MP-Guide; Rapid nicht separat getestet"
       }
+    },
+    {
+      "id": "mp-kts100-mk8",
+      "weapon": "KTS100 MK8",
+      "title": "Kontrollierte Feuerunterstützung",
+      "subtitle": "60-Schuss-LMG mit Distanzlauf: sinnvoll zum Halten von Positionen, aber im Season-5-Meta-Score klar hinter DRS-IAR, M123K und L110.",
+      "why": "60-Schuss-LMG mit Distanzlauf: sinnvoll zum Halten von Positionen, aber im Season-5-Meta-Score klar hinter DRS-IAR, M123K und L110.",
+      "modes": [
+        "mp",
+        "rapid"
+      ],
+      "styles": [
+        "allround",
+        "range",
+        "control"
+      ],
+      "attachments": {
+        "Mündung": "LONG SUPPRESSOR",
+        "Lauf": "HEAVY EXT 508MM",
+        "Unterlauf": "STIPPLED STUBBY",
+        "Magazin": "60 RND",
+        "Munition": "STANDARD",
+        "Visier": "2.5x oder 3.0x",
+        "Rechtes Zubehör": "50MW VIOLET LASER"
+      },
+      "source": {
+        "name": "BF Tactics – KTS100 MK8 Build",
+        "url": "https://bftactics.com/weapons-database",
+        "reviewedDate": null,
+        "mode": "Multiplayer-Gunsmith, Rapid nicht separat validiert"
+      },
+      "metric": null,
+      "kind": "community",
+      "verifiedForCurrentPatch": false,
+      "guideTier": "A"
+    },
+    {
+      "id": "mp-z84m",
+      "weapon": "Z84M",
+      "title": "Neue Season-5-LMG",
+      "subtitle": "Großes Magazin und sehr starke aktuelle Season-5-Statistik; Handling und Nachladezeit beachten.",
+      "why": "Großes Magazin und sehr starke aktuelle Season-5-Statistik; Handling und Nachladezeit beachten.",
+      "modes": [
+        "mp",
+        "rapid"
+      ],
+      "styles": [
+        "allround",
+        "range",
+        "control"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "603mm Factory",
+        "Unterlauf": "Classic Vertical",
+        "Magazin": "100RND Canvas Pouch",
+        "Munition": "FMJ",
+        "Visier": "Baker 3.00x"
+      },
+      "source": {
+        "name": "Battlefinity – Z84M 100-Punkte-Build",
+        "url": "https://battlefinity.gg/weapon/BF6/z84m",
+        "reviewedDate": "2026-10-14",
+        "mode": "Community-Build, nicht separat auf aktuelle Balance vermessen"
+      },
+      "metric": null,
+      "kind": "community",
+      "verifiedForCurrentPatch": false,
+      "guideTier": "A"
+    },
+    {
+      "id": "br-z84m",
+      "weapon": "Z84M",
+      "title": "Großes Magazin für REDSEC",
+      "subtitle": "Season-5-LMG mit 100-Schuss-Magazin. Für längere REDSEC-Feuergefechte; Build aus Battlefinity.",
+      "why": "Season-5-LMG mit 100-Schuss-Magazin. Für längere REDSEC-Feuergefechte; Build aus Battlefinity.",
+      "modes": [
+        "br"
+      ],
+      "styles": [
+        "allround",
+        "range",
+        "control"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "603mm Factory",
+        "Unterlauf": "Classic Vertical",
+        "Magazin": "100RND Canvas Pouch",
+        "Munition": "FMJ",
+        "Visier": "Baker 3.00x"
+      },
+      "source": {
+        "name": "Battlefinity – Z84M 100-Punkte-Build",
+        "url": "https://battlefinity.gg/weapon/BF6/z84m",
+        "reviewedDate": "2026-10-14",
+        "mode": "Community-Build, nicht separat auf aktuelle Balance vermessen"
+      },
+      "metric": null,
+      "kind": "community",
+      "verifiedForCurrentPatch": false,
+      "guideTier": "A"
     }
   ]
 }
