@@ -1,10 +1,10 @@
 // BF6 Meta PWA v0.5.1: network-first HTML/JS/CSS to prevent mixed versions.
-const CACHE = "bf6meta-v9";
+const CACHE = "bf6meta-v10";
 const APP_FILES = [
-  "./", "./index.html", "./simple.css?v=0.5.2", "./simple.js?v=0.5.2",
-  "./data/popularity.json", "./data/modes.json", "./data/meta.json",
-  "./data/catalog.json", "./data/status.json", "./manifest.webmanifest",
-  "./icons/icon.svg", "./icons/icon-192.png", "./icons/icon-512.png"
+  "./", "./index.html", "./loadouts.css?v=0.6.0", "./loadouts.js?v=0.6.0",
+  "./data/loadouts.json", "./data/weapons.json", "./data/catalog.json",
+  "./data/status.json", "./manifest.webmanifest", "./icons/icon.svg",
+  "./icons/icon-192.png", "./icons/icon-512.png"
 ];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE)
@@ -22,7 +22,7 @@ self.addEventListener("fetch", event => {
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
   const isCurrentAppShell = event.request.mode === "navigate" ||
-    /\/(?:index\.html|simple\.js|simple\.css)$/.test(url.pathname);
+    /\/(?:index\.html|loadouts\.js|loadouts\.css)$/.test(url.pathname);
   const isData = url.pathname.includes("/data/");
   const networkFirst = isCurrentAppShell || isData;
   if (networkFirst) {
