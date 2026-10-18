@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#101317">
-  <meta name="description" content="BF6 Waffenranking, TTK-Vergleich und Patch-Updates. Transparent mit Quellen.">
+  <meta name="description" content="BF6 Meta-Empfehlungen, fertige Waffen-Builds, TTK-Vergleich und tägliche Patch-Prüfung.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="BF6 Meta">
@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="./styles.css">
   <title>BF6 Meta | Waffenranking</title>
   <script src="./app.js" defer></script>
+  <script src="./meta.js" defer></script>
 </head>
 <body>
   <div class="ambient" aria-hidden="true"></div>
@@ -30,7 +31,7 @@
       <section class="hero">
         <p class="eyebrow"><span class="pulse"></span> BATTLEFIELD 6 · WAFFENANALYSE</p>
         <h1>Finde deine <span>stärkste Waffe.</span></h1>
-        <p class="subtitle">Ranglisten nach Distanz, messbare TTK-Werte und direkter Vergleich. Keine erfundenen Meta-Rankings.</p>
+        <p class="subtitle">Aktuelle Meta-Empfehlungen, fertige Waffen-Builds, Spielstil-Beratung und Messwerte zum Nachprüfen.</p>
         <div id="notice" class="notice" role="status">Lade Daten und Quellenstatus ...</div>
       </section>
 
@@ -41,13 +42,31 @@
       </section>
 
       <nav class="tabs" aria-label="Bereiche">
-        <button type="button" class="tab active" data-tab="ranking" aria-selected="true">▤ <span>Ranking</span></button>
+        <button type="button" class="tab active" data-tab="meta" aria-selected="true">★ <span>Meta</span></button>
+        <button type="button" class="tab" data-tab="builds" aria-selected="false">⚙ <span>Builds</span></button>
+        <button type="button" class="tab" data-tab="ranking" aria-selected="false">▤ <span>Werte</span></button>
         <button type="button" class="tab" data-tab="compare" aria-selected="false">⇄ <span>Vergleich</span></button>
         <button type="button" class="tab" data-tab="updates" aria-selected="false">◷ <span>Updates</span></button>
         <button type="button" class="tab" data-tab="sources" aria-selected="false">ⓘ <span>Quellen</span></button>
       </nav>
 
-      <section id="ranking" class="view active" aria-labelledby="ranking-title">
+      <section id="meta" class="view active" aria-labelledby="meta-title">
+        <div class="section-head"><div><p class="eyebrow">SEASON 5 · PATCH 2.1.1.0</p><h2 id="meta-title">Die besten Waffen für dich</h2></div><span class="section-label">GUIDE-BASIERTE EMPFEHLUNGEN</span></div>
+        <p class="subtitle section-subtitle">Wähle deinen Spielstil. Wir zeigen dir passende Waffen und geprüfte Empfehlungen aus aktuellen Community-Guides.</p>
+        <div id="meta-freshness" class="meta-status" role="status">Lade Meta-Daten ...</div>
+        <div id="playstyles" class="style-pills" aria-label="Spielstil wählen"></div>
+        <div id="meta-picks" class="pick-grid"></div>
+        <div class="method">Diese Auswahl basiert auf einem Season-5-Guide vom 13.10.2026. Die Tier-Wertungen stammen nicht von EA und unterscheiden sich je nach Quelle. Aufsätze aus einem gesonderten Guide vom 15.10.2026.</div>
+      </section>
+
+      <section id="builds" class="view" aria-labelledby="builds-title">
+        <div class="section-head"><div><p class="eyebrow">GUNSMITH · 100 PUNKTE</p><h2 id="builds-title">Fertige Waffen-Builds</h2></div><span class="section-label">KEINE EIGENEN LOADOUTS</span></div>
+        <p class="subtitle section-subtitle">Konkrete Aufsätze direkt nachbaubar. Die Empfehlungen stammen aus einem Community-Guide. Benötigte Aufsatzlevel sind noch nicht vollständig geprüft.</p>
+        <label class="build-filter">WAFFE AUSWÄHLEN<select id="build-weapon"><option value="all">Alle Builds</option></select></label>
+        <div id="build-cards" class="build-grid"></div>
+      </section>
+
+      <section id="ranking" class="view" aria-labelledby="ranking-title">
         <div class="section-head"><div><p class="eyebrow">PERFORMANCE INDEX</p><h2 id="ranking-title">Waffen-Ranking</h2></div><span class="section-label">MODELL, KEINE OFFIZIELLE META</span></div>
         <div class="filters">
           <label class="search-field"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Waffe suchen..." autocomplete="off"></label>
