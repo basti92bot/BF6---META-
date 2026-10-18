@@ -1,6 +1,6 @@
 # BF6 META – Loadout Lab
 
-Aktuelle App-Version **0.7.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **0.8.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
 
 ## Die App: Loadouts zuerst
 
@@ -49,6 +49,16 @@ Neue Balance-Patches können TTK-Daten oder Build-Empfehlungen ungültig machen.
 
 GitHub Pages: Settings > Pages > Deploy from branch `main`, Ordner `/(root)`.
 
-Service-Worker-Cache-Version: `bf6meta-v11`; statische App-Dateien werden bevorzugt aus dem Netzwerk geladen, um Versionskonflikte zu vermeiden.
+Service-Worker-Cache-Version: `bf6meta-v12`; statische App-Dateien werden bevorzugt aus dem Netzwerk geladen, um Versionskonflikte zu vermeiden.
 
 Kein Nutzerkonto und keine eigenen gespeicherten Loadouts.
+
+## 0.8.0 – vier Waffen statt einer
+
+Für Spielmodus, Soldatenklasse und Waffenklasse werden jetzt **maximal vier unterschiedliche Waffen-Builds** angezeigt. Die Auswahl berücksichtigt zuerst die zur Soldatenklasse passende Signaturwaffenkategorie, danach die **Tier-Einstufungen der dokumentierten Community-Guides** und eine redaktionelle Reihenfolge. Ohne Soldaten- und Waffenklasse zeigt die App vier bewusst unterschiedliche Einstiegsempfehlungen.
+
+- MP: BF Tactics, https://bftactics.com/weapons-database (Stand 15.10.2026), zusätzliche komplette Aufsatz-Builds für Sturmgewehre, SMGs, LMGs, Sniper, Karabiner, DMR und Schrotflinten.
+- REDSEC: Battlefinity, https://battlefinity.gg/ und konkrete Waffen-Unterseiten, davon mehrere eigene REDSEC-Gunsmith-Konfigurationen (unterschiedliche Standdaten, teils älter).
+- Rapid Royale: MP-Aufbau als qualitativ übertragene Empfehlung, **keine Rapid-spezifische Messung**.
+
+Aktuell sind 62 Quellen-Builds hinterlegt. Auf dem Bildschirm erscheinen abhängig von den Filtern höchstens vier. Es gibt keinen Anspruch, dass eine Guide-Einstufung einen objektiv besten Aufsatz-Build beweist. TTK-Werte beschreiben weiterhin Grundwaffe/Quellenmodell, nicht die Aufsatz-Kombination. Bei weniger als vier belegten Builds wird kein Füllmaterial erfunden.
