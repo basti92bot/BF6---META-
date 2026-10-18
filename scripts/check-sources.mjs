@@ -3,6 +3,7 @@ import { readFile, writeFile } from "node:fs/promises";
 const DATA_PATH = "data/weapons.json";
 const STATUS_PATH = "data/status.json";
 const META_PATH = "data/meta.json";
+const MODES_PATH = "data/modes.json";
 const WEAPONS_URL = "https://raw.githubusercontent.com/bdeland/bf6_guns/main/data.csv";
 const PATCH_URL = "https://www.ea.com/games/battlefield/battlefield-6/news?type=game-updates";
 const now = new Date().toISOString();
@@ -81,6 +82,7 @@ function newestPatchVersion(html) {
 const data = await readJson(DATA_PATH);
 const status = await readJson(STATUS_PATH);
 const meta = await readJson(META_PATH);
+const modes = await readJson(MODES_PATH);
 status.checkedAt = now;
 let communityOk = false, officialOk = false;
 try {
@@ -127,10 +129,28 @@ for (const source of guideSources) {
     errors.push(source.name + ": " + error.message);
   }
 }
+
+const coreModeSources = [
+  { name: "INT.GG Multiplayer Waffen", url: modes.modes.mp.source },
+  { name: "INT.GG REDSEC Elite Waffen", url: modes.modes.br.source },
+  { name: "EA Rapid Royale Guide", url: modes.modes.rapid.source }
+];
+for (const source of coreModeSources) {
+  try {
+    const page = await download(source.url);
+    if (!/battlefield|redsec|rapid royale|pickrate|meta score|bf6/i.test(page)) throw new Error("Seiteninhalt nicht eindeutig");
+    source.ok = true;
+  } catch (error) {
+    source.ok = false;
+    errors.push(source.name + ": " + error.message);
+  }
+}
+status.modeSourceCheckOnly = "INT.GG Verfügbarkeit täglich geprüft. Pick-Rates bleiben manuell übernommene Momentaufnahmen; keine automatische Zahlensynchronisierung.";
 status.sources = [
   { name: "EA Patchnotes", url: PATCH_URL, ok: officialOk },
   { name: "BF6 Community Waffenwerte", url: "https://github.com/bdeland/bf6_guns", ok: communityOk },
-  ...guideSources
+  ...guideSources,
+  ...coreModeSources
 ];
 status.errors = errors;
 if (officialOk && communityOk) status.lastSuccessAt = now;
