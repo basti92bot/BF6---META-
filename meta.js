@@ -30,6 +30,15 @@
   }
   function renderCategories() {
     const selected = state.activeClass;
+    const roles = [
+      {id:"ar",role:"Sturmsoldat",weapon:"Sturmgewehre"},
+      {id:"smg",role:"Pionier",weapon:"Maschinenpistolen"},
+      {id:"lmg",role:"Versorgung",weapon:"Leichte MGs"},
+      {id:"sniper",role:"Aufklärung",weapon:"Scharfschützen"}
+    ];
+    $("role-buttons").innerHTML = roles.map(r =>
+      '<button type="button" data-role-class="'+esc(r.id)+'" class="'+(selected===r.id?"active":"")+'"><strong>'+esc(r.role)+'</strong><small>'+esc(r.weapon)+'</small></button>'
+    ).join("");
     $("category-bar").innerHTML = [
       '<button type="button" data-arsenal-class="all" class="'+(selected==="all"?"active":"")+'">Alle Klassen</button>',
       ...categories().map(c => '<button type="button" data-arsenal-class="'+esc(c.id)+'" class="'+(selected===c.id?"active":"")+'">'+esc(c.label)+'</button>')
@@ -165,6 +174,7 @@
   }
   function events() {
     $("category-bar").addEventListener("click",e=>{const b=e.target.closest("[data-arsenal-class]");if(b)setClass(b.dataset.arsenalClass);});
+    $("role-buttons").addEventListener("click",e=>{const b=e.target.closest("[data-role-class]");if(b)setClass(b.dataset.roleClass);});
     $("category-grid").addEventListener("click",e=>{const b=e.target.closest("[data-arsenal-class]");if(b)setClass(b.dataset.arsenalClass);});
     $("playstyles").addEventListener("click",e=>{const b=e.target.closest("[data-arsenal-style]");if(b){state.activeStyle=b.dataset.arsenalStyle;renderStyles();renderFeatured();}});
     for(const id of ["meta-picks","category-selection","build-cards"]){
