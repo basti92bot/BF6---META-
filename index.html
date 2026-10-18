@@ -1,117 +1,38 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#101317">
-  <meta name="description" content="BF6 Meta-Empfehlungen, fertige Waffen-Builds, TTK-Vergleich und tägliche Patch-Prüfung.">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="BF6 Meta">
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
-  <link rel="apple-touch-icon" href="./icons/icon.svg">
-  <link rel="stylesheet" href="./styles.css">
-  <title>BF6 Meta | Waffenranking</title>
-  <script src="./app.js" defer></script>
-  <script src="./meta.js" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#11151a">
+<meta name="description" content="Battlefield 6 Waffen: Was wird gespielt? Was ist gut? Übersichtliche Klassen, Builds und echte Pick-Rates.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BF6 Meta">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="stylesheet" href="./simple.css">
+<script src="./simple.js" defer></script>
+<title>BF6 Meta · Waffen & Trends</title>
 </head>
 <body>
-  <div class="ambient" aria-hidden="true"></div>
-  <div class="layout">
-    <header class="topbar">
-      <div class="brand">
-        <span class="brand-mark">B<span>6</span></span>
-        <span class="brand-text"><strong>BF6 <em>META</em></strong><small>WEAPON INTELLIGENCE</small></span>
-      </div>
-      <a class="external" href="https://www.ea.com/games/battlefield/battlefield-6/news?type=game-updates" target="_blank" rel="noopener noreferrer">EA PATCHNOTES <span aria-hidden="true">↗</span></a>
-    </header>
-
-    <main>
-      <section class="hero">
-        <p class="eyebrow"><span class="pulse"></span> BATTLEFIELD 6 · WAFFENANALYSE</p>
-        <h1>Dein Arsenal. <span>Deine Meta.</span></h1>
-        <p class="subtitle">Alle Waffenklassen mit Bildern, Meta-Empfehlungen, Aufsätzen und direkten Waffenvergleichen.</p>
-        <div id="notice" class="notice" role="status">Lade Daten und Quellenstatus ...</div>
-      </section>
-
-      <section class="stats-grid" aria-label="Statusübersicht">
-        <div class="stat"><span>ERFASSTE WAFFEN</span><strong id="stat-count">–</strong><small>Community-Datensatz</small></div>
-        <div class="stat"><span>LETZTER EA PATCH</span><strong id="stat-patch">–</strong><small>Offizielle Patchnotes</small></div>
-        <div class="stat"><span>QUELLENPRÜFUNG</span><strong id="stat-check">–</strong><small>Einmal täglich</small></div>
-      </section>
-
-      <nav class="tabs" aria-label="Bereiche">
-        <button type="button" class="tab active" data-tab="meta" aria-selected="true">★ <span>Meta</span></button>
-        <button type="button" class="tab" data-tab="builds" aria-selected="false">⚙ <span>Builds</span></button>
-        <button type="button" class="tab" data-tab="ranking" aria-selected="false">▤ <span>Werte</span></button>
-        <button type="button" class="tab" data-tab="compare" aria-selected="false">⇄ <span>Vergleich</span></button>
-        <button type="button" class="tab" data-tab="updates" aria-selected="false">◷ <span>Updates</span></button>
-        <button type="button" class="tab" data-tab="sources" aria-selected="false">ⓘ <span>Quellen</span></button>
-      </nav>
-
-      <section id="meta" class="view active" aria-labelledby="meta-title">
-        <div class="section-head"><div><p class="eyebrow">SEASON 5 · PATCH 2.1.1.0</p><h2 id="meta-title">Die besten Waffen für dich</h2></div><span class="section-label">GUIDE-BASIERTE EMPFEHLUNGEN</span></div>
-        <p class="subtitle section-subtitle">Wähle deinen Spielstil. Wir zeigen dir passende Waffen und geprüfte Empfehlungen aus aktuellen Community-Guides.</p>
-        <div id="meta-freshness" class="meta-status" role="status">Lade Meta-Daten ...</div>
-        <div class="role-shortcuts"><span>KLASSENWAFFEN</span><div id="role-buttons" class="role-buttons"></div></div>
-        <div id="category-bar" class="category-bar" aria-label="Waffenklasse auswählen"></div>
-        <div id="category-grid" class="category-grid"></div>
-        <div id="category-selection"></div>
-        <div id="featured-section"><div class="section-head inner-section"><div><p class="eyebrow">EMPFEHLUNGEN</p><h2 id="feature-title">Meta-Waffen</h2></div><span class="section-label">GUIDE TIER S / A</span></div>
-        <div class="filter-caption">SPIELSTIL WÄHLEN</div><div id="playstyles" class="style-pills" aria-label="Spielstil wählen"></div>
-        <div id="meta-picks" class="pick-grid"></div></div>
-        <div class="method">Waffenbilder stammen aus einem offiziellen EA-Klassenguide. Wo kein eindeutiges Einzelmotiv vorliegt, wird nur das Klassenmotiv gezeigt. Die Auswahl basiert auf einem Season-5-Guide vom 13.10.2026. Die Tier-Wertungen stammen nicht von EA und unterscheiden sich je nach Quelle. Aufsätze aus einem gesonderten Guide vom 15.10.2026.</div>
-      </section>
-
-      <section id="builds" class="view" aria-labelledby="builds-title">
-        <div class="section-head"><div><p class="eyebrow">GUNSMITH · 100 PUNKTE</p><h2 id="builds-title">Fertige Waffen-Builds</h2></div><span class="section-label">KEINE EIGENEN LOADOUTS</span></div>
-        <p class="subtitle section-subtitle">Konkrete Aufsätze direkt nachbaubar. Die Empfehlungen stammen aus einem Community-Guide. Benötigte Aufsatzlevel sind noch nicht vollständig geprüft.</p>
-        <label class="build-filter">WAFFE AUSWÄHLEN<select id="build-weapon"><option value="all">Alle Builds</option></select></label>
-        <div id="build-class-filter" class="build-class-filter" aria-label="Builds nach Klasse filtern"></div>
-        <div id="build-cards" class="build-grid"></div>
-      </section>
-
-      <section id="ranking" class="view" aria-labelledby="ranking-title">
-        <div class="section-head"><div><p class="eyebrow">PERFORMANCE INDEX</p><h2 id="ranking-title">Waffen-Ranking</h2></div><span class="section-label">MODELL, KEINE OFFIZIELLE META</span></div>
-        <div class="filters">
-          <label class="search-field"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Waffe suchen..." autocomplete="off"></label>
-          <label class="filter-field">KLASSE<select id="category"><option value="ALL">Alle Klassen</option><option value="AR">Sturmgewehre</option><option value="SMG">Maschinenpistolen</option><option value="LMG">LMGs</option><option value="CRB">Karabiner</option></select></label>
-        </div>
-        <div class="distance-wrap"><span>ENTFERNUNG</span><div id="distances" class="distance-group"><button data-distance="0" class="chosen">0 M</button><button data-distance="1">20 M</button><button data-distance="2">35 M</button><button data-distance="3">75 M</button></div></div>
-        <div class="sortline"><span id="result-count">Waffen werden geladen</span><span>Score berücksichtigt TTK & Treffgenauigkeit</span></div>
-        <div id="weapons" class="weapon-list"></div>
-        <div class="method">Der Score ist eine eigene Heuristik aus gemessener TTK und Genauigkeitskoeffizienten. Niedriger ist besser. Unterschiede bei Aufsätzen, Spielmodus und realen Matches sind darin nicht vollständig berücksichtigt.</div>
-      </section>
-
-      <section id="compare" class="view" aria-labelledby="compare-title">
-        <div class="section-head"><div><p class="eyebrow">HEAD TO HEAD</p><h2 id="compare-title">Waffenvergleich</h2></div></div>
-        <p class="subtitle section-subtitle">Wähle zwei Waffen und vergleiche die verfügbaren Messwerte. Alle vier Distanzen auf einen Blick.</p>
-        <div class="compare-selects"><label>WAFFE A<select id="compare-a"></select></label><span class="versus">VS</span><label>WAFFE B<select id="compare-b"></select></label></div>
-        <div id="compare-result"></div>
-      </section>
-
-      <section id="updates" class="view" aria-labelledby="updates-title">
-        <div class="section-head"><div><p class="eyebrow">CHANGELOG</p><h2 id="updates-title">Battlefield Updates</h2></div></div>
-        <div class="source-card"><h3>Season 5: Belagerung von Vegas</h3>
-          <p>Patch 2.1.1.0, veröffentlicht am 13.10.2026. Neue Waffen: Mk 24, RSPR, Z84M und ELR-40.</p>
-          <p>Für Controller-Spieler relevant: Die Rückstoßkompensation wurde reduziert. Waffen mit starkem Rückstoß sind dadurch schwieriger zu kontrollieren.</p>
-          <a href="https://www.ea.com/de/games/battlefield/redsec/news/battlefield-6-game-update-2-1-1-0" target="_blank" rel="noopener noreferrer">Offizielles Update lesen ↗</a>
-        </div>
-        <div id="updates-content"></div>
-      </section>
-
-      <section id="sources" class="view" aria-labelledby="sources-title">
-        <div class="section-head"><div><p class="eyebrow">TRANSPARENZ</p><h2 id="sources-title">Datenquellen</h2></div></div>
-        <div id="sources-content"></div>
-      </section>
-    </main>
-    <div id="weapon-detail-backdrop" class="detail-backdrop" hidden></div>
-    <section id="weapon-detail" class="detail-panel" role="dialog" aria-modal="true" aria-label="Waffendetails" aria-hidden="true" hidden>
-      <button id="weapon-detail-close" class="detail-close" type="button" aria-label="Waffendetails schließen">×</button>
-      <div id="weapon-detail-body"></div>
-    </section>
-    <footer>BF6 META · V0.3.1 · COMMUNITY-DATEN · UNABHÄNGIGES FAN-PROJEKT</footer>
-  </div>
-</body>
-</html>
+<div class="site">
+<header class="header"><div class="logo"><span class="logo-sign">B6</span><span>BF6 <b>META</b></span></div><a class="patch-link" href="https://www.ea.com/games/battlefield/battlefield-6/news" target="_blank" rel="noopener noreferrer">Patches ↗</a></header>
+<main>
+  <div class="intro"><span class="eyebrow">BATTLEFIELD 6 · SAISON 5</span><h1>Welche Waffe lohnt sich?</h1><p>Beliebtheit und Leistung getrennt. Finde schnell eine Waffe und sieh dir die verfügbaren Builds an.</p><div id="data-note" class="note">Lade Datenstand ...</div></div>
+  <nav class="nav" aria-label="App-Bereiche">
+  <button type="button" class="nav-link active" data-view="popular" aria-selected="true">Beliebt</button>
+  <button type="button" class="nav-link" data-view="classes" aria-selected="false">Waffenklassen</button>
+  <button type="button" class="nav-link" data-view="best" aria-selected="false">Beste Waffen</button>
+  <button type="button" class="nav-link" data-view="updates" aria-selected="false">Updates</button>
+  </nav>
+  <section id="popular" class="view active"><div class="section-header"><div><span class="eyebrow">NUTZUNG IN MATCHES</span><h2>Am meisten gespielt</h2></div><span class="tiny">PICK-RATE</span></div><p class="subline">Welche Waffen am häufigsten eingesetzt werden. Das bedeutet nicht automatisch, dass sie die stärksten sind.</p><div id="popular-list" class="list" aria-live="polite"></div><p class="disclaimer">Momentaufnahme aus INT.GG. Kein offizieller EA-Gesamtwert und keine automatisch live synchronisierten Nutzungszahlen.</p></section>
+  <section id="classes" class="view"><div class="section-header"><div><span class="eyebrow">ARSENAL</span><h2>Waffen nach Klasse</h2></div></div><div id="class-filters" class="filter-scroller" aria-label="Waffenklasse"></div><label class="search"><span>⌕</span><input id="weapon-search" type="search" placeholder="Waffe suchen" autocomplete="off" aria-label="Waffe suchen"></label><div id="class-list" class="list"></div></section>
+  <section id="best" class="view"><div class="section-header"><div><span class="eyebrow">LEISTUNG IM SPIEL</span><h2>Beste Waffen</h2></div><span class="tiny">META-SCORE</span></div><p class="subline">Von INT.GG berechneter Meta-Score. Er nutzt mehrere Leistungswerte und ist nicht mit der Pick-Rate gleichzusetzen.</p><div id="best-list" class="list"></div><p class="disclaimer">Der Meta-Score ist die Bewertung des Drittanbieters, keine offizielle DICE-Tierlist.</p></section>
+  <section id="updates" class="view"><div class="section-header"><div><span class="eyebrow">DATENSTAND</span><h2>Quellen & Updates</h2></div></div><div id="update-list"></div></section>
+</main>
+<footer>BF6 META · V0.4 · UNABHÄNGIGES FANPROJEKT · KEIN EA-PRODUKT</footer>
+</div>
+<div id="modal-backdrop" class="modal-backdrop" hidden></div>
+<div id="weapon-modal" class="modal" role="dialog" aria-label="Waffendetails" aria-modal="true" aria-hidden="true" hidden><button id="modal-close" class="modal-close" type="button" aria-label="Schließen">×</button><div id="modal-content"></div></div>
+</body></html>
