@@ -172,3 +172,5 @@ body.compare-active{overflow:hidden}
   .compare-row span{font-size:10px}
   .compare-opts{font-size:9px}
 }
+
+.compare-default-mag{color:#8fa69c;font-size:10px;line-height:1.45;display:block;width:100%}
