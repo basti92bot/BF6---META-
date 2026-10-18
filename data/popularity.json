@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "observedAt": "2026-10-18",
+  "period": "Season 5",
+  "source": "https://int.gg/bf6/",
+  "detailSource": "https://int.gg/bf6/weapons",
+  "metric": "Pick-Rate aus von INT.GG ausgewerteten Matches, keine weltweite EA-Gesamtstatistik.",
+  "autoUpdated": false,
+  "popular": [
+    {
+      "name": "ELR-40",
+      "category": "sniper",
+      "pickRate": 11.4,
+      "metaScore": 79
+    },
+    {
+      "name": "Mk 24",
+      "category": "ar",
+      "pickRate": 10.2,
+      "metaScore": 100
+    },
+    {
+      "name": "DRS-IAR",
+      "category": "lmg",
+      "pickRate": 5,
+      "metaScore": 89
+    },
+    {
+      "name": "Bren 3",
+      "category": "crb",
+      "pickRate": 3.4,
+      "metaScore": 75
+    },
+    {
+      "name": "KORD 6P67",
+      "category": "ar",
+      "pickRate": 3.1,
+      "metaScore": 45
+    }
+  ],
+  "meta": [
+    {
+      "name": "Mk 24",
+      "category": "ar",
+      "metaScore": 100,
+      "pickRate": 10.2
+    },
+    {
+      "name": "RSPR",
+      "category": "smg",
+      "metaScore": 98,
+      "pickRate": 2.9
+    },
+    {
+      "name": "Z84M",
+      "category": "lmg",
+      "metaScore": 97,
+      "pickRate": 1.9
+    },
+    {
+      "name": "SG 553R",
+      "category": "crb",
+      "metaScore": 90,
+      "pickRate": 2
+    },
+    {
+      "name": "DRS-IAR",
+      "category": "lmg",
+      "metaScore": 89,
+      "pickRate": 5
+    }
+  ]
+}
