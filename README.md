@@ -54,7 +54,7 @@ Der bestehende Workflow `.github/workflows/daily-check.yml` prüft täglich EA-P
 
 GitHub Pages unter Settings > Pages: Deploy from a branch, `main`, `/(root)`.
 
-Die PWA nutzt `sw.js` mit Cache-Version `bf6meta-v8`.
+Die PWA nutzt `sw.js` mit Cache-Version `bf6meta-v9`.
 
 ## Technische Details
 
@@ -64,4 +64,11 @@ Ein unabhängiges Fan-Projekt, nicht von EA, DICE oder den Drittanbieter-Datenqu
 
 ## Cache-Fix 0.5.1
 
-Versionsparameter `?v=0.5.1` für `simple.js`/`simple.css` verhindert altes JavaScript bei neuem HTML. Service Worker `bf6meta-v8` lädt App-Shell und Daten zuerst übers Netz und nutzt Cache nur als Offline-Fallback. Das korrigiert den zuvor auf iOS sichtbaren Fehler des bereits entfernten Updates-Reiters. Modus-Tabs auf Smartphones sind nun dreispaltig und kompakt.
+Versionsparameter `?v=0.5.1` für `simple.js`/`simple.css` verhindert altes JavaScript bei neuem HTML. Service Worker `bf6meta-v9` lädt App-Shell und Daten zuerst übers Netz und nutzt Cache nur als Offline-Fallback. Das korrigiert den zuvor auf iOS sichtbaren Fehler des bereits entfernten Updates-Reiters. Modus-Tabs auf Smartphones sind nun dreispaltig und kompakt.
+
+## Korrektur 0.5.2: HTI / Interdictor
+
+- Die INT.GG-Bezeichnung HTI und der offizielle BF6-Waffenname Interdictor meinen dasselbe Scharfschützengewehr. Die App ordnet beide intern einer Waffe zu und zeigt keine doppelte Klassenwaffe mehr.
+- Für Interdictor liegt ein Community-Long-Range-Build von Rogue (14.10.2026) mit konkreten Aufsätzen vor: https://battlefinity.gg/profile/Roguey (nicht unabhängig im aktuellen Spiel geprüft).
+- Wenn kein eindeutig passendes Einzelwaffenbild vorhanden ist, zeigen Waffenkarten nur noch ein neutrales Kürzel. Falsche Kategorienfotos werden nicht mehr als große Waffenbilder ausgegeben.
+- Die Detailansicht stellt echte Moduswerte und verfügbare Aufsätze vor Quellen- und Datenhinweise.
