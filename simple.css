@@ -35,3 +35,19 @@
   .mode-tab strong{font-size:11px}
   .mode-selector{gap:4px}
 }
+
+/* v0.5.2: correct weapon identity, no generic rifle photos in details */
+.picture-missing{background:linear-gradient(135deg,#293832,#1b252a);border:1px solid #46564a}
+.picture-missing span{font-size:13px;letter-spacing:.8px;font-weight:850;color:var(--lime)}
+.detail.without-image{padding-top:67px}
+.detail.without-image h2{font-size:clamp(29px,5vw,37px);line-height:1.12;margin:5px 0 6px}
+.detail .weapon-alias{color:var(--lime);font-size:12px;margin:2px 0 16px}
+.detail .detail-lead{font-size:14px;color:#d9dedf;margin:18px 0 23px}
+.detail .build-origin{font-size:12px;color:#c8d5d8;margin:2px 0 16px;font-weight:750}
+.attachment-list{border-top:1px solid var(--border)}
+.detail .detail-muted{font-size:12px;color:var(--secondary);line-height:1.5;margin:14px 0 8px}
+.detail-references{display:grid;gap:9px;border-top:1px solid var(--border);padding-top:18px;margin-top:22px}
+.detail-references a{color:var(--lime);font-size:12px;text-decoration:underline}
+.detail .info-chips{margin:15px 0 16px}
+.detail .info-chips span{font-size:13px;font-weight:750}
+.modal-close{z-index:25}
