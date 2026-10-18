@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-10-18",
-  "version": "0.4",
+  "version": "0.5",
   "officialGuide": "https://www.ea.com/games/battlefield/battlefield-6/news/loadout-creation-and-weapon-classes",
   "imagePolicy": "Nichtkommerzielles Fanprojekt. EA-Bilder aus offizieller BF6-Übersicht; sonst nur Klassenmotiv. Kein direkter Zugriff auf andere Meta-App-Assets.",
   "classes": [
@@ -66,7 +66,7 @@
         "SCW-10",
         "SL9",
         "CZ3A1",
-        "PP-19",
+        "PP19",
         "RSPR"
       ]
     },
@@ -123,7 +123,8 @@
         "PSR",
         "MINI SCOUT",
         "L115",
-        "INTERDICTOR"
+        "INTERDICTOR",
+        "HTI"
       ]
     },
     {
