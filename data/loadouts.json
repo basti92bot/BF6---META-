@@ -3,7 +3,7 @@
   "buildsetVersion": "0.8.0",
   "createdOn": "2026-10-18",
   "patchAtCompilation": "2.1.1.0",
-  "disclaimer": "Empfehlungen aus unabhängigen Loadout-Guides. Keine Aussage über ein garantiert optimales Setup oder identische Spielwerte nach dem aktuellen Patch. Grundwaffen-TTK und REDSEC-Simulationswerte sind KEINE Messungen des angezeigten Aufsatz-Builds.",
+  "disclaimer": "Die Top-4-Reihenfolge verwendet die Klassenpassung, Quellen-Tier-Einstufungen und eine redaktionelle Auswahl; kein statistisch errechnetes globales Ranking. TTK-Werte beziehen sich auf Grundwaffen/Quellenmodelle, nicht auf die Aufsatz-Konfiguration.",
   "metricsPolicy": "Nur belastbare, quellengestützte MP-Grundwaffenwerte oder REDSEC-Modellwerte. Nie Multiplayer-TTK auf gepanzerte REDSEC-Spieler anwenden.",
   "sources": [
     {
@@ -70,7 +70,8 @@
         "description": "Mittlere TTK nach Distanz laut Battlefinity, kein Aufsatz-spezifischer Nachweis"
       },
       "kind": "community",
-      "verifiedForCurrentPatch": false
+      "verifiedForCurrentPatch": false,
+      "guideTier": "A"
     },
     {
       "id": "mp-m4a1",
@@ -103,7 +104,8 @@
       },
       "metric": null,
       "kind": "community",
-      "verifiedForCurrentPatch": false
+      "verifiedForCurrentPatch": false,
+      "guideTier": "S"
     },
     {
       "id": "mp-scw",
@@ -135,7 +137,8 @@
       },
       "metric": null,
       "kind": "community",
-      "verifiedForCurrentPatch": false
+      "verifiedForCurrentPatch": false,
+      "guideTier": "B"
     },
     {
       "id": "mp-drs",
@@ -175,7 +178,8 @@
         "description": "Mittlere TTK nach Distanz laut Battlefinity, kein Aufsatz-spezifischer Nachweis"
       },
       "kind": "community",
-      "verifiedForCurrentPatch": false
+      "verifiedForCurrentPatch": false,
+      "guideTier": "S"
     },
     {
       "id": "mp-sg",
@@ -208,7 +212,8 @@
       },
       "metric": null,
       "kind": "community",
-      "verifiedForCurrentPatch": false
+      "verifiedForCurrentPatch": false,
+      "guideTier": "S"
     },
     {
       "id": "mp-mk24",
@@ -247,7 +252,8 @@
         "description": "Mittlere TTK nach Distanz laut Battlefinity, kein Aufsatz-spezifischer Nachweis"
       },
       "kind": "community",
-      "verifiedForCurrentPatch": false
+      "verifiedForCurrentPatch": false,
+      "guideTier": "A"
     },
     {
       "id": "mp-rspr",
@@ -279,7 +285,8 @@
       },
       "metric": null,
       "kind": "community",
-      "verifiedForCurrentPatch": false
+      "verifiedForCurrentPatch": false,
+      "guideTier": "A"
     },
     {
       "id": "mp-m87",
@@ -311,7 +318,8 @@
       },
       "metric": null,
       "kind": "community",
-      "verifiedForCurrentPatch": false
+      "verifiedForCurrentPatch": false,
+      "guideTier": "S"
     },
     {
       "id": "mp-scout",
@@ -344,7 +352,8 @@
       },
       "metric": null,
       "kind": "community",
-      "verifiedForCurrentPatch": false
+      "verifiedForCurrentPatch": false,
+      "guideTier": "S"
     },
     {
       "id": "br-scw",
