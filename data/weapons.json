@@ -1,0 +1,729 @@
+{
+  "schemaVersion": 1,
+  "source": "https://github.com/bdeland/bf6_guns/blob/main/data.csv",
+  "license": "MIT",
+  "attribution": "bdeland/bf6_guns; Messungen laut Quellprojekt: u/Mastahamma",
+  "snapshotDate": "2026-10-18",
+  "disclaimer": "Community-Messwerte; nicht gegen den jüngsten Battlefield-6-Patch validiert.",
+  "distances": [
+    0,
+    20,
+    35,
+    75
+  ],
+  "weapons": [
+    {
+      "id": "m240l",
+      "name": "M240L",
+      "category": "LMG",
+      "rpm": 600,
+      "velocity": 630,
+      "btk": [
+        3,
+        3,
+        4,
+        4
+      ],
+      "ttk": [
+        200,
+        232,
+        356,
+        419
+      ],
+      "accuracy": {
+        "close": 0.91,
+        "long": 238
+      }
+    },
+    {
+      "id": "tr-7",
+      "name": "TR-7",
+      "category": "AR",
+      "rpm": 720,
+      "velocity": 648,
+      "btk": [
+        3,
+        3,
+        4,
+        4
+      ],
+      "ttk": [
+        167,
+        198,
+        304,
+        366
+      ],
+      "accuracy": {
+        "close": 0.47,
+        "long": 253
+      }
+    },
+    {
+      "id": "m123k",
+      "name": "M123K",
+      "category": "LMG",
+      "rpm": 830,
+      "velocity": 670,
+      "btk": [
+        4,
+        4,
+        5,
+        5
+      ],
+      "ttk": [
+        217,
+        247,
+        341,
+        401
+      ],
+      "accuracy": {
+        "close": 0.83,
+        "long": 261
+      }
+    },
+    {
+      "id": "m-60",
+      "name": "M/60",
+      "category": "LMG",
+      "rpm": 514,
+      "velocity": 720,
+      "btk": [
+        3,
+        3,
+        4,
+        4
+      ],
+      "ttk": [
+        233,
+        261,
+        399,
+        454
+      ],
+      "accuracy": {
+        "close": 1,
+        "long": 261
+      }
+    },
+    {
+      "id": "drs-iar",
+      "name": "DRS-IAR",
+      "category": "LMG",
+      "rpm": 771,
+      "velocity": 720,
+      "btk": [
+        4,
+        4,
+        5,
+        5
+      ],
+      "ttk": [
+        233,
+        261,
+        360,
+        415
+      ],
+      "accuracy": {
+        "close": 0.86,
+        "long": 273
+      }
+    },
+    {
+      "id": "ak4d",
+      "name": "AK4D",
+      "category": "AR",
+      "rpm": 514,
+      "velocity": 720,
+      "btk": [
+        3,
+        3,
+        4,
+        4
+      ],
+      "ttk": [
+        233,
+        261,
+        399,
+        454
+      ],
+      "accuracy": {
+        "close": 0.82,
+        "long": 277
+      }
+    },
+    {
+      "id": "l110",
+      "name": "L110",
+      "category": "LMG",
+      "rpm": 720,
+      "velocity": 780,
+      "btk": [
+        4,
+        4,
+        5,
+        5
+      ],
+      "ttk": [
+        250,
+        276,
+        378,
+        429
+      ],
+      "accuracy": {
+        "close": 0.9,
+        "long": 285
+      }
+    },
+    {
+      "id": "b36a4",
+      "name": "B36A4",
+      "category": "AR",
+      "rpm": 720,
+      "velocity": 780,
+      "btk": [
+        4,
+        4,
+        5,
+        5
+      ],
+      "ttk": [
+        250,
+        276,
+        378,
+        429
+      ],
+      "accuracy": {
+        "close": 0.86,
+        "long": 288
+      }
+    },
+    {
+      "id": "scw-10",
+      "name": "SCW-10",
+      "category": "SMG",
+      "rpm": 800,
+      "velocity": 428,
+      "btk": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "ttk": [
+        150,
+        272,
+        382,
+        550
+      ],
+      "accuracy": {
+        "close": 0.77,
+        "long": 294
+      }
+    },
+    {
+      "id": "kv9",
+      "name": "KV9",
+      "category": "SMG",
+      "rpm": 1080,
+      "velocity": 348,
+      "btk": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "ttk": [
+        167,
+        280,
+        378,
+        549
+      ],
+      "accuracy": {
+        "close": 0.79,
+        "long": 300
+      }
+    },
+    {
+      "id": "m250",
+      "name": "M250",
+      "category": "LMG",
+      "rpm": 675,
+      "velocity": 760,
+      "btk": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "ttk": [
+        267,
+        293,
+        313,
+        365
+      ],
+      "accuracy": {
+        "close": 0.83,
+        "long": 309
+      }
+    },
+    {
+      "id": "l85a3",
+      "name": "L85A3",
+      "category": "AR",
+      "rpm": 635,
+      "velocity": 814,
+      "btk": [
+        4,
+        4,
+        5,
+        5
+      ],
+      "ttk": [
+        283,
+        308,
+        421,
+        470
+      ],
+      "accuracy": {
+        "close": 0.86,
+        "long": 322
+      }
+    },
+    {
+      "id": "nvo-228e",
+      "name": "NVO-228E",
+      "category": "AR",
+      "rpm": 654,
+      "velocity": 671,
+      "btk": [
+        3,
+        4,
+        5,
+        5
+      ],
+      "ttk": [
+        183,
+        305,
+        419,
+        479
+      ],
+      "accuracy": {
+        "close": 0.83,
+        "long": 322
+      }
+    },
+    {
+      "id": "m433",
+      "name": "M433",
+      "category": "AR",
+      "rpm": 830,
+      "velocity": 670,
+      "btk": [
+        4,
+        4,
+        5,
+        5
+      ],
+      "ttk": [
+        217,
+        247,
+        341,
+        401
+      ],
+      "accuracy": {
+        "close": 0.43,
+        "long": 327
+      }
+    },
+    {
+      "id": "sg-53r",
+      "name": "SG 53R",
+      "category": "CRB",
+      "rpm": 720,
+      "velocity": 519,
+      "btk": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "ttk": [
+        167,
+        289,
+        401,
+        561
+      ],
+      "accuracy": {
+        "close": 0.65,
+        "long": 330
+      }
+    },
+    {
+      "id": "sor-556-mk2",
+      "name": "SOR-556 MK2",
+      "category": "AR",
+      "rpm": 568,
+      "velocity": 800,
+      "btk": [
+        4,
+        4,
+        5,
+        5
+      ],
+      "ttk": [
+        317,
+        342,
+        466,
+        516
+      ],
+      "accuracy": {
+        "close": 1,
+        "long": 342
+      }
+    },
+    {
+      "id": "kord-6p67",
+      "name": "KORD 6P67",
+      "category": "AR",
+      "rpm": 900,
+      "velocity": 760,
+      "btk": [
+        5,
+        5,
+        6,
+        6
+      ],
+      "ttk": [
+        267,
+        293,
+        379,
+        432
+      ],
+      "accuracy": {
+        "close": 0.6,
+        "long": 345
+      }
+    },
+    {
+      "id": "sgx",
+      "name": "SGX",
+      "category": "SMG",
+      "rpm": 830,
+      "velocity": 402,
+      "btk": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "ttk": [
+        217,
+        339,
+        449,
+        620
+      ],
+      "accuracy": {
+        "close": 0.92,
+        "long": 348
+      }
+    },
+    {
+      "id": "rpkm",
+      "name": "RPKM",
+      "category": "LMG",
+      "rpm": 553,
+      "velocity": 670,
+      "btk": [
+        3,
+        4,
+        5,
+        5
+      ],
+      "ttk": [
+        217,
+        355,
+        486,
+        546
+      ],
+      "accuracy": {
+        "close": 1,
+        "long": 355
+      }
+    },
+    {
+      "id": "pw7a2",
+      "name": "PW7A2",
+      "category": "SMG",
+      "rpm": 947,
+      "velocity": 600,
+      "btk": [
+        6,
+        6,
+        7,
+        7
+      ],
+      "ttk": [
+        317,
+        350,
+        438,
+        505
+      ],
+      "accuracy": {
+        "close": 0.93,
+        "long": 358
+      }
+    },
+    {
+      "id": "pw5a3",
+      "name": "PW5A3",
+      "category": "SMG",
+      "rpm": 771,
+      "velocity": 432,
+      "btk": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "ttk": [
+        233,
+        358,
+        470,
+        641
+      ],
+      "accuracy": {
+        "close": 0.92,
+        "long": 367
+      }
+    },
+    {
+      "id": "kts100-mk8",
+      "name": "KTS100 MK8",
+      "category": "LMG",
+      "rpm": 514,
+      "velocity": 840,
+      "btk": [
+        4,
+        4,
+        5,
+        5
+      ],
+      "ttk": [
+        350,
+        374,
+        509,
+        556
+      ],
+      "accuracy": {
+        "close": 1,
+        "long": 374
+      }
+    },
+    {
+      "id": "m4a1",
+      "name": "M4A1",
+      "category": "CRB",
+      "rpm": 900,
+      "velocity": 630,
+      "btk": [
+        4,
+        5,
+        6,
+        6
+      ],
+      "ttk": [
+        200,
+        298,
+        389,
+        452
+      ],
+      "accuracy": {
+        "close": 0.46,
+        "long": 383
+      }
+    },
+    {
+      "id": "m417-a2",
+      "name": "M417 A2",
+      "category": "CRB",
+      "rpm": 654,
+      "velocity": 600,
+      "btk": [
+        3,
+        4,
+        5,
+        5
+      ],
+      "ttk": [
+        183,
+        309,
+        425,
+        492
+      ],
+      "accuracy": {
+        "close": 0.51,
+        "long": 384
+      }
+    },
+    {
+      "id": "grt-bc",
+      "name": "GRT-BC",
+      "category": "CRB",
+      "rpm": 830,
+      "velocity": 624,
+      "btk": [
+        4,
+        5,
+        6,
+        6
+      ],
+      "ttk": [
+        217,
+        321,
+        418,
+        482
+      ],
+      "accuracy": {
+        "close": 0.53,
+        "long": 394
+      }
+    },
+    {
+      "id": "m277",
+      "name": "M277",
+      "category": "CRB",
+      "rpm": 720,
+      "velocity": 599,
+      "btk": [
+        4,
+        4,
+        4,
+        4
+      ],
+      "ttk": [
+        250,
+        283,
+        308,
+        375
+      ],
+      "accuracy": {
+        "close": 0.38,
+        "long": 395
+      }
+    },
+    {
+      "id": "sl9",
+      "name": "SL9",
+      "category": "SMG",
+      "rpm": 675,
+      "velocity": 510,
+      "btk": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "ttk": [
+        267,
+        395,
+        513,
+        680
+      ],
+      "accuracy": {
+        "close": 1,
+        "long": 395
+      }
+    },
+    {
+      "id": "usg-90",
+      "name": "USG-90",
+      "category": "SMG",
+      "rpm": 900,
+      "velocity": 570,
+      "btk": [
+        5,
+        6,
+        7,
+        7
+      ],
+      "ttk": [
+        267,
+        368,
+        461,
+        532
+      ],
+      "accuracy": {
+        "close": 0.78,
+        "long": 396
+      }
+    },
+    {
+      "id": "qbz",
+      "name": "QBZ",
+      "category": "CRB",
+      "rpm": 771,
+      "velocity": 644,
+      "btk": [
+        4,
+        5,
+        6,
+        6
+      ],
+      "ttk": [
+        233,
+        342,
+        443,
+        506
+      ],
+      "accuracy": {
+        "close": 0.53,
+        "long": 420
+      }
+    },
+    {
+      "id": "umg-40",
+      "name": "UMG-40",
+      "category": "SMG",
+      "rpm": 635,
+      "velocity": 488,
+      "btk": [
+        4,
+        5,
+        6,
+        6
+      ],
+      "ttk": [
+        283,
+        419,
+        544,
+        626
+      ],
+      "accuracy": {
+        "close": 0.92,
+        "long": 430
+      }
+    },
+    {
+      "id": "ak-205",
+      "name": "AK-205",
+      "category": "CRB",
+      "rpm": 720,
+      "velocity": 737,
+      "btk": [
+        5,
+        6,
+        7,
+        7
+      ],
+      "ttk": [
+        333,
+        444,
+        547,
+        602
+      ],
+      "accuracy": {
+        "close": 1,
+        "long": 444
+      }
+    }
+  ]
+}
