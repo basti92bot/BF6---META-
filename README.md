@@ -2,19 +2,19 @@
 
 Unabhängige, mobile Battlefield-6-Fan-App.
 
-## Version 0.4: einfacher statt überladen
+## Version 0.5: drei Spielmodi, getrennte Daten
 
-Die Hauptansicht ist komplett neu aufgebaut. Nur drei Reiter:
+Oben drei Spielmodus-Reiter: **Mehrspieler**, **Rapid Royale** und **Battle Royale (REDSEC Elite als Datenbasis)**. Darunter unverändert drei Bereiche:
 
-- **Beliebt**: fünf echte Pick-Rates aus einer aktuellen INT.GG-Momentaufnahme, keine Seitenaufrufe
+- **Beliebt**: nur moduseigene, tatsächlich beobachtete Nutzungsanteile; Rapid Royale zeigt eine ehrliche Nichtverfügbarkeit statt falscher Prozentzahlen
 - **Waffenklassen**: acht Kategorien mit Suchfunktion und 66 gelisteten Waffen
-- **Beste Waffen**: fünf Waffen nach dokumentiertem INT.GG Meta-Score
+- **Beste Waffen**: in MP INT.GG Meta-Score, in REDSEC Elite Kills/Minute, in Rapid Royale redaktionelle Empfehlungen ohne vorgetäuschte Messwerte
 
 Bei der Waffe öffnen sich vorhandene Builds und eine übersichtliche Detailansicht. Nicht geprüfte Waffenwerte und fehlende Builds werden ausdrücklich als fehlend gekennzeichnet. Eindeutig identifizierbare Bilder erscheinen als Waffenmotive, sonst offizielle EA-Klassenmotive mit einer deutlichen Beschriftung.
 
 ## Herkunft der Daten
 
-**Pick-Rate und Meta-Score**: https://int.gg/bf6/weapons
+**Mehrspieler-Pick-Rate und Meta-Score**: https://int.gg/bf6/weapons
 
 - Momentaufnahme vom 18.10.2026.
 - Von INT.GG ausgewertete Matches, keine offizielle Gesamterhebung aller BF6-Spieler.
@@ -27,15 +27,34 @@ Bei der Waffe öffnen sich vorhandene Builds und eine übersichtliche Detailansi
 
 **Historische TTK-Messwerte**: https://github.com/bdeland/bf6_guns, unter MIT-Lizenz mit Attribution in `THIRD_PARTY_NOTICES.md`. Diese sind in der neuen Startseite bewusst nicht als aktuelle Meta aufgeführt.
 
+
+### REDSEC und Rapid Royale
+
+- REDSEC-Elite-Waffenstatistiken: https://int.gg/bf6/redsec/weapons. Gespeicherter Snapshot vom 18.10.2026; umfasst nur die in `data/modes.json` übernommenen 16 Waffen. Die angezeigte Pick-Rate gilt für **REDSEC Elite**, nicht für alle normalen Battle-Royale-Spiele.
+- Rapid Royale (offizielle Modusregeln): https://www.ea.com/de/games/battlefield/redsec/news/battlefield-rapid-royale-mode-guide. Bisher keine bestätigte **Rapid-spezifische** Waffen-Pick-Rate. Eine qualitativ begründete Waffen-Auswahl ist deshalb deutlich als Einschätzung gekennzeichnet. Kein falscher Modus-Transfer.
+- Spielermetriken und Crosscheck: https://tracker.gg/bf6.
+- Theoretische TTK, MP/BR mit unterschiedlichen Gesundheit-/Panzerungsprofilen: https://github.com/Riketta/BF6-Weapon-Stats, Modellannahmen beachten.
+- Build-Vergleich für REDSEC: https://wzstats.gg/battlefield-6/loadouts; angezeigte Season-Angaben können veraltet sein.
+- Community-Aufsatztipps: https://www.bftactics.com/weapons-database, nicht automatisch für jeden Modus und Patch verifiziert.
+
+### Quellenlogik
+
+- Offizielle EA-Aussagen bestimmen Modusregeln und Patch-Merkmale.
+- INT.GG liefert gemessene Nutzungs-/Leistungszahlen aus eigenen Samples.
+- Tracker.gg hilft bei Spieler-/Modusstatistiken, belegt aber keine globalen Rapid-Waffenquoten.
+- Technische Waffenmodelle erklären Unterschiede, ersetzen keine echten Matchdaten.
+- Community-Builds sind Hilfen; fehlende Aussagen werden nicht erfunden.
+- Acht Quellengruppen sind im aufklappbaren Bereich **„Quellen & Datenqualität“** in der App verlinkt.
+
 ## Tägliche Prüfung
 
-Der bestehende Workflow `.github/workflows/daily-check.yml` prüft täglich EA-Patchnotes, den Waffen-Messdatensatz und die Guide-Quellen und speichert den Status in `data/status.json`. Das ist **keine** automatisch aktualisierte Pick-Rate- oder Build-Datenbank. Ein erkannter neuer Patch bedeutet, dass die Meta-Daten überprüft werden müssen.
+Der bestehende Workflow `.github/workflows/daily-check.yml` prüft täglich EA-Patchnotes, den Waffen-Messdatensatz, die Guide-Quellen und ob die INT.GG-/Rapid-Quellseiten erreichbar sind und speichert den Status in `data/status.json`. Das ist **keine** automatisch aktualisierte Pick-Rate- oder Build-Datenbank. Ein erkannter neuer Patch bedeutet, dass die Meta-Daten überprüft werden müssen.
 
 ## Installation und Deployment
 
 GitHub Pages unter Settings > Pages: Deploy from a branch, `main`, `/(root)`.
 
-Die PWA nutzt `sw.js` mit Cache-Version `bf6meta-v5`.
+Die PWA nutzt `sw.js` mit Cache-Version `bf6meta-v7`.
 
 ## Technische Details
 
