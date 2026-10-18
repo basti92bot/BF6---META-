@@ -176,8 +176,11 @@
     $("compare-options").innerHTML=variants.map((v,i)=>
       '<span class="compare-choice">'+(i+1)+'. '+safe(v.label)+'</span>').join("");
     const spec=(v,k)=>v?slot(v,k):null;
-    const amag=numberFromAttachment(spec(a,"Magazin"),"magazine");
-    const bmag=b?numberFromAttachment(spec(b,"Magazin"),"magazine"):null;
+    const defaultMag=state.variants?.baseMagazine?.[state.compareWeapon]?.rounds ?? null;
+    const explicitA=numberFromAttachment(spec(a,"Magazin"),"magazine");
+    const explicitB=b?numberFromAttachment(spec(b,"Magazin"),"magazine"):null;
+    const amag=explicitA??defaultMag;
+    const bmag=b?(explicitB??defaultMag):null;
     const az=numberFromAttachment(spec(a,"Visier"),"zoom");
     const bz=b?numberFromAttachment(spec(b,"Visier"),"zoom"):null;
     const stat=(label,x,y,suffix="")=>
@@ -196,7 +199,9 @@
         const different=b && String(left||"")!==String(right||"");
         return '<div class="compare-row'+(different?" changed":"")+'"><span>'+safe(key)+'</span><span>'+safe(left||"—")+'</span><span>'+safe(right||"—")+'</span></div>';
       }).join("");
-    $("compare-source").innerHTML=compareSource(a,"Quelle A:")+ (b?compareSource(b,"Quelle B:"):"");
+    $("compare-source").innerHTML=compareSource(a,"Quelle A:")+ (b?compareSource(b,"Quelle B:"):"")+
+      (!spec(a,"Magazin")|| (b&&!spec(b,"Magazin")) ?
+        '<span class="compare-default-mag">Ohne Magazinaufsatz: '+safe(String(defaultMag??"–"))+' Schuss (Standard laut Waffendatenbank).</span>' : "");
   }
   function closeCompare(){
     $("compare-backdrop").hidden=true;$("compare-modal").hidden=true;
