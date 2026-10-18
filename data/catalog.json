@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-10-18",
-  "version": "0.3",
+  "version": "0.4",
   "officialGuide": "https://www.ea.com/games/battlefield/battlefield-6/news/loadout-creation-and-weapon-classes",
   "imagePolicy": "Nichtkommerzielles Fanprojekt. EA-Bilder aus offizieller BF6-Übersicht; sonst nur Klassenmotiv. Kein direkter Zugriff auf andere Meta-App-Assets.",
   "classes": [
@@ -45,7 +45,7 @@
         "QBZ-192",
         "SG 553R",
         "SOR-300SC",
-        "BROD 3"
+        "Bren 3"
       ]
     },
     {
@@ -79,6 +79,7 @@
       "image": "https://drop-assets.ea.com/images/3AoCiTvIgOPk32STGMGmWs/bb49c803daf5d4a8d7c5d9a8110a5254/BF6_LAU_M240L_LMG.jpg",
       "description": "Unterstützungswaffen mit hoher Feuerkraft.",
       "weapons": [
+        "Z84M",
         "L110",
         "DRS-IAR",
         "M/60",
@@ -116,6 +117,7 @@
       "image": "https://drop-assets.ea.com/images/u7VFhGvuF2by87mhyW07I/1163689859c231f5157451d957bb5a6c/BF6-Signature-Weapon-Sniper-Rifle.jpg",
       "description": "Hohe Reichweite und präzise Einzelziele.",
       "weapons": [
+        "ELR-40",
         "M2010 ESR",
         "SV-98",
         "PSR",
