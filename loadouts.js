@@ -149,7 +149,7 @@
     const genuine=(state.variants?.weapons?.[build.weapon]||[]).filter(v=>v.modes?.includes(state.mode));
     const arr=state.mode==="br"||!genuine.length?[variantFallback(build)]:genuine;
     state.compareWeapon=build.weapon;state.compareSet=arr;state.compareFocus=trigger;
-    $("compare-title").textContent=build.weapon+" · "+arr.length+" Builds";
+    $("compare-title").textContent=build.weapon+" · "+arr.length+" "+(arr.length===1?"Build":"Builds");
     $("compare-note").textContent=state.mode==="rapid" ?
       "Community-Multiplayer-Builds; nicht in Rapid Royale vermessen." :
       state.mode==="br" ? "REDSEC-Build. Ein unabhängiger Aufsatzvergleich fehlt noch." :
