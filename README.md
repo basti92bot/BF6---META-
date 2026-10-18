@@ -86,3 +86,13 @@ Quelle: https://int.gg/bf6/weapons (Season 5), https://worstguidesever.com/battl
 ## V0.9.0 – kompaktere Oberfläche
 
 Große Werbeüberschrift, Modus- und Soldatenklassen-Erklärungen sowie ausführliche Karten-Prosa entfernt. Die App konzentriert sich auf: Modus, Soldatenklasse, Waffenklasse, vier Loadouts, kompakte TTK-Kennzahlen und die drei wichtigsten Aufsätze. Die übrigen Aufsätze sind je Build aufklappbar; Kopieren und Quellen sind weiterhin verfügbar. Die ausführlichen methodischen Hinweise bleiben gesammelt und eingeklappt in „Quellen & Hinweise“. Die vier Top-Builds, KTS100-Zusatzoption und Quellenprüfungslogik bleiben unverändert.
+
+## V1.0.0 – Community-Build-Vergleich
+
+Die Hauptansicht zeigt unverändert die vier priorisierten Waffen pro Filter. Jede Waffenkarte enthält jetzt zusätzlich **Build-Vergleich**: zwei der dokumentierten Community-Gunsmith-Konfigurationen lassen sich miteinander vergleichen. Der Vergleich enthält jede belegte Aufsatzposition, Magazininhalt, Visiervergrößerung und veröffentlichte Attachment Points.
+
+**Belegter Stand 18.10.2026:** `data/build-variants.json` enthält 15 konkret auf individuellen Erstellerseiten geprüfte Konfigurationen für vier Waffen: KTS100 MK8 (4), DRS-IAR (4), M4A1 (4), PSR (3). Alle mit individuellen Quellenlinks zu https://bf6loadouts.com/weapons/builds. Andere Waffen zeigen vorerst nur den bisher hinterlegten Build statt erfundener 3–4 Varianten. REDSEC verwendet wegen abweichender Regeln **nicht** automatisch Multiplayer-Community-Builds; bei Rapid Royale wird ausdrücklich auf fehlende modusspezifische Validierung hingewiesen.
+
+**Statistikdefinition:** Magazine sind aus belegten Produktnamen (z. B. 60RND) abgelesene Kapazitäten, Optik-Zoom ebenso aus den Bezeichnungen (z. B. Baker 3.00x). Attachment Points kommen direkt aus dem veröffentlichten Creator-Build. Die App rechnet Differenzen von Magazinen aus. Es werden **keine erfundenen TTK-, Rückstoß-, Streuungs- oder ADS-Effektprozentzahlen** aus bloßen Community-Builds erzeugt. Für modellgestützte Berechnungen ist der **BF6 Weapon Analyzer** separat verlinkt: https://raymdl.github.io/BF6-Weapon-Analyzer/ . Er kann mit manuell nachgestellten Aufsätzen Recoil, Handling, Spread usw. berechnen. Die Analyzer-Verlinkung ist keine automatisierte Integration oder Übernahme der aktuellen Build-Konfiguration.
+
+**Votes sind nicht Pickrates:** Community-Bewertungen und Seitenaufrufe belegen weder reale Waffennutzung noch die Wirkung der Aufsätze. Die Anzeige vermeidet diese Verwechslung. Weitere vollständige Builds können mit individueller Prüfung nachgetragen werden.
