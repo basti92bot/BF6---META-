@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-10-18",
-  "version": "0.5",
+  "version": "0.5.2",
   "officialGuide": "https://www.ea.com/games/battlefield/battlefield-6/news/loadout-creation-and-weapon-classes",
   "imagePolicy": "Nichtkommerzielles Fanprojekt. EA-Bilder aus offizieller BF6-Übersicht; sonst nur Klassenmotiv. Kein direkter Zugriff auf andere Meta-App-Assets.",
   "classes": [
@@ -123,8 +123,7 @@
         "PSR",
         "MINI SCOUT",
         "L115",
-        "INTERDICTOR",
-        "HTI"
+        "INTERDICTOR"
       ]
     },
     {
@@ -167,5 +166,8 @@
     "LMR27": "https://drop-assets.ea.com/images/4HTltD7q8fOcs2g6bXxqLR/022781839aa9347b5f1aaeff20a7aa65/BF6_weapon_LMR27_BG_16x9.jpg",
     "P18": "https://drop-assets.ea.com/images/6WvG1iaaEiAUws8uyOAIFj/2a10ed908c12be720358dc95bd49080d/P18_V003_0001__1__1.jpg",
     "M87A1": "https://drop-assets.ea.com/images/1jxH4vfgpY10eckFsCngoq/1529c287cabb656d756b291cf6125ef5/GLA_REV_Screenshot_15_M87A1_1920x1080_NoLogo.png"
+  },
+  "aliases": {
+    "HTI": "INTERDICTOR"
   }
 }
