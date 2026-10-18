@@ -2066,6 +2066,71 @@
       "kind": "community",
       "guideTier": "C",
       "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-m39-emr",
+      "weapon": "M39 EMR",
+      "title": "Präzisions-DMR",
+      "subtitle": "REDSEC-Build für kontrollierte Distanztreffer.",
+      "why": "Verbindet Distanzvisier mit größerer Munitionseffizienz.",
+      "styles": [
+        "range",
+        "control"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Mündung": "Lightened Suppressor",
+        "Lauf": "22\" Factory",
+        "Unterlauf": "Stippled Stubby",
+        "Magazin": "15RND Magazine",
+        "Munition": "Match Grade",
+        "Ergonomie": "Aftermarket Buffer",
+        "Visier": "PVQ-31 4.00x"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/m39-emr",
+        "reviewedDate": "2026-10-16",
+        "mode": "REDSEC-Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "C",
+      "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "br-vssm",
+      "weapon": "VSSM",
+      "title": "Schnelles DMR",
+      "subtitle": "REDSEC-Build für kürzere Gefechte mit automatischem Schussmodus.",
+      "why": "Kompakte Spezialkonfiguration, die eher wie eine automatische Waffe eingesetzt wird.",
+      "styles": [
+        "allround",
+        "aggressive"
+      ],
+      "modes": [
+        "br"
+      ],
+      "attachments": {
+        "Lauf": "200MM ASM",
+        "Unterlauf": "Folding Stubby",
+        "Magazin": "20RND Magazine",
+        "Munition": "Tungsten Core",
+        "Ergonomie": "Folding Stock",
+        "Visier": "Mini Flex 1.00x"
+      },
+      "source": {
+        "name": "Battlefinity – REDSEC Gunsmith",
+        "url": "https://battlefinity.gg/weapon/BF6/vssm",
+        "reviewedDate": "2026-07-23",
+        "mode": "REDSEC-Community-Empfehlung"
+      },
+      "metric": null,
+      "kind": "community",
+      "guideTier": "C",
+      "verifiedForCurrentPatch": false
     }
   ]
 }
