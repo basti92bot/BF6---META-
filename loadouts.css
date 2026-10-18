@@ -4,3 +4,29 @@
 @media(max-width:740px){.build-list{grid-template-columns:1fr}.card-heading{min-height:0}.hero{padding:30px 0 24px}.sources-grid{grid-template-columns:1fr}}
 @media(max-width:520px){.shell{padding:0 14px}.top{height:71px}.brand-icon{width:40px;height:40px;font-size:18px}.brand strong{font-size:17px}.header-source{font-size:9px;padding:9px 7px}.hero>p{font-size:13px}.hero h1{font-size:37px;letter-spacing:-1.7px}.chooser{padding:13px 12px 15px;border-radius:8px;margin-bottom:26px}.mode-tabs{gap:5px}.mode-tabs button{font-size:10px;padding:13px 4px;min-height:48px}.style-tabs{gap:5px}.style-tabs button{font-size:11px;padding:9px 10px}.card-heading{padding:17px 16px}.card-heading h3{font-size:27px}.card-body{padding:14px}.metrics strong{font-size:24px}.parts-head{font-size:10px}.results-header h2{font-size:23px}.build-type{margin-left:0}.result-count{font-size:10px}.status{font-size:10px}}
 @media(max-width:360px){.hero h1{font-size:31px}.mode-tabs button{font-size:9px}.loadout-actions{flex-wrap:wrap}.loadout-actions>a{flex:1}.copy-build{flex:1 0 55%}}
+
+/* v0.7.0 – mode → soldier class → weapon category */
+.role-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+.role-tabs button{background:#252f34;border:1px solid #46534d;border-radius:7px;min-width:0;min-height:49px;padding:11px 8px;color:#c9d4cf;font-size:12px;font-weight:850;cursor:pointer;text-align:center;line-height:1.2;overflow-wrap:break-word}
+.role-tabs button.active{background:#d9ff85;color:#182018;border-color:#d9ff85}
+.role-info{background:#202b29;border-left:2px solid #8aa873;padding:10px 12px;color:#c2d2cb;font-size:11px;line-height:1.6;margin:12px 0 1px;border-radius:0 5px 5px 0}
+.weapon-tabs{display:flex;align-items:stretch;gap:8px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:0 0 6px}
+.weapon-tabs::-webkit-scrollbar{display:none}
+.weapon-tabs button{flex:0 0 auto;background:#222a2f;border:1px solid #48554d;border-radius:6px;padding:11px 14px;color:#c1cfc9;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap}
+.weapon-tabs button.active{color:#132017;background:var(--lime);border-color:var(--lime)}
+.weapon-tabs button.signature:not(.active){border-color:#94b170;color:var(--bright)}
+.weapon-tabs button span{font-size:12px;padding-left:4px}
+.style-option{border-top:1px solid #394740;margin:20px 0 0;padding-top:3px}
+.style-option>summary{padding:11px 0 9px;list-style:none;cursor:pointer;font-size:11px;color:#becbc5;display:flex;justify-content:space-between;font-weight:850}
+.style-option>summary::-webkit-details-marker{display:none}
+.style-option[open]>summary>span{transform:rotate(180deg)}
+.style-option .style-tabs{padding-top:7px}
+.results-header{margin-top:3px}
+@media(max-width:650px){
+  .role-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .role-tabs button:first-child{grid-column:1/-1;min-height:36px}
+  .role-tabs button{min-height:42px;font-size:12px;padding:10px 8px}
+  .weapon-tabs{margin-right:-12px;padding-right:12px;gap:6px}
+  .weapon-tabs button{padding:10px 11px;font-size:11px}
+  .role-info{font-size:11px;padding:9px 10px}
+}
