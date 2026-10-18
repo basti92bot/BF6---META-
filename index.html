@@ -11,8 +11,8 @@
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
 <link rel="apple-touch-icon" href="./icons/icon-192.png">
-<link rel="stylesheet" href="./loadouts.css?v=0.9.0">
-<script src="./loadouts.js?v=0.9.0" defer></script>
+<link rel="stylesheet" href="./loadouts.css?v=1.0.0">
+<script src="./loadouts.js?v=1.0.0" defer></script>
 <title>BF6 META | Loadouts, die sich lohnen</title>
 </head>
 <body>
@@ -63,9 +63,23 @@
     <div id="extra-builds" class="extra-builds"></div>
   </section>
 
+  <div id="compare-backdrop" class="compare-backdrop" hidden></div>
+  <section id="compare-modal" class="compare-modal" role="dialog" aria-modal="true" aria-label="Community-Builds vergleichen" aria-hidden="true" hidden>
+    <div class="compare-top"><div><small>COMMUNITY-GUNSMITH</small><h2 id="compare-title">Builds vergleichen</h2></div><button type="button" id="compare-close" class="compare-close" aria-label="Vergleich schließen">×</button></div>
+    <div class="compare-body">
+      <p id="compare-note" class="compare-note"></p>
+      <div id="compare-options" class="compare-options" role="group" aria-label="Community-Build auswählen"></div>
+      <div class="compare-selects"><label>BUILD A<select id="compare-a"></select></label><label>BUILD B<select id="compare-b"></select></label></div>
+      <div id="compare-stats" class="compare-stats"></div>
+      <div id="compare-table" class="compare-table"></div>
+      <div id="compare-source" class="compare-source"></div>
+      <a id="compare-analyzer" class="compare-analyzer" href="https://raymdl.github.io/BF6-Weapon-Analyzer/" target="_blank" rel="noopener noreferrer">RÜCKSTOSS / ADS IM ANALYZER PRÜFEN ↗</a>
+      <p class="compare-caveat">Magazin, Vergrößerung und Aufsatzpunkte kommen aus den jeweiligen Build-Angaben. Rückstoß-/ADS-Prozentwerte sind hier nicht unabhängig berechnet. Votes ≠ echte Nutzungsquote.</p>
+    </div>
+  </section>
   <details class="sources" id="sources"><summary>Quellen & Hinweise <span aria-hidden="true">⌄</span></summary><div id="source-content"></div></details>
 </main>
-<footer>BF6 META · V0.9.0</footer>
+<footer>BF6 META · V1.0.0</footer>
 </div>
 </body>
 </html>
