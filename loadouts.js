@@ -80,50 +80,51 @@
   };
   const formatDate = d => {if(!d)return "nicht angegeben";const date=new Date(d+"T12:00:00Z");return Number.isNaN(date.valueOf())?d:date.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});};
   function metrics(build) {
-    if(state.mode==="rapid") return '<div class="evidence-notice">Für Rapid Royale liegen keine belastbaren Build-TTK-Werte vor.</div>';
-    const data=build.metric;
-    if(data && data.mode===state.mode){
-      return '<div class="metrics"><div><small>TTK 0–10 M</small><strong>'+fmt(data.ttkClose)+' <span>ms</span></strong></div>'+
-        '<div><small>TTK 10–40 M</small><strong>'+fmt(data.ttkMid)+' <span>ms</span></strong></div></div>'+
-        '<p class="metric-foot">Modellwerte laut <a href="'+safe(data.source)+'" target="_blank" rel="noopener noreferrer">Battlefinity</a> · Datenstand '+formatDate(data.sourceDate)+'. Keine gemessene Build-Verbesserung.</p>';
+    if(state.mode==="rapid")return "";
+    const m=build.metric;
+    if(m?.mode===state.mode){
+      return '<div class="compact-metrics" title="Grundwaffen-/Modell-TTK, nicht die Wirkung der Aufsätze">'+
+        '<span><b>'+fmt(m.ttkClose)+'</b> ms <small>0–10 m</small></span>'+
+        '<span><b>'+fmt(m.ttkMid)+'</b> ms <small>10–40 m</small></span></div>';
     }
-    const weapon=base(build.weapon);
-    if(state.mode==="mp" && weapon && Array.isArray(weapon.ttk) && Number.isFinite(weapon.ttk[1])){
-      return '<div class="metrics"><div><small>TTK GRUNDWAFFE · 20 M</small><strong>'+fmt(weapon.ttk[1])+' <span>ms</span></strong></div>'+
-        '<div><small>FEUERRATE</small><strong>'+fmt(weapon.rpm)+' <span>RPM</span></strong></div></div>'+
-        '<p class="metric-foot">Ältere Community-Messreihe <a href="https://github.com/bdeland/bf6_guns" target="_blank" rel="noopener noreferrer">bf6_guns</a> · ohne diesen Build, nicht gegen Season 5 validiert.</p>';
+    const w=base(build.weapon);
+    if(state.mode==="mp"&&w?.ttk?.[1]!=null){
+      return '<div class="compact-metrics" title="Historischer Community-Grundwaffenwert ohne diese Aufsätze">'+
+        '<span><b>'+fmt(w.ttk[1])+'</b> ms <small>TTK 20 m</small></span>'+
+        '<span><b>'+fmt(w.rpm)+'</b> <small>RPM</small></span></div>';
     }
-    return '<div class="evidence-notice">Noch keine belastbaren TTK-Messwerte für diesen Modus und diesen Build.</div>';
+    return "";
   }
   function equipmentRows(entries){
     return entries.map(([slot,part]) => '<div class="part"><span>'+safe(slot)+'</span><strong>'+safe(part)+'</strong></div>').join("");
   }
   function card(build,index) {
     const cat=classByWeapon(build.weapon);
-    const isSignature=state.role!=="all" && catOf(build)===roles[state.role].signature;
+    const isSignature=state.role!=="all"&&catOf(build)===roles[state.role].signature;
     const entries=Object.entries(build.attachments);
-    const preferred=["Mündung","Lauf","Magazin"];
-    const highlights=preferred.map(slot=>entries.find(([s])=>s===slot)).filter(Boolean);
-    if(highlights.length<3)for(const e of entries)if(!highlights.includes(e)&&highlights.length<3)highlights.push(e);
-    const rest=entries.filter(e=>!highlights.includes(e));
-    const copied=entries.map(([slot,p])=>slot+": "+p).join("\n");
+    const priority=["Mündung","Lauf","Magazin"];
+    const featured=priority.map(slot=>entries.find(([s])=>s===slot)).filter(Boolean);
+    if(featured.length<3)for(const entry of entries)if(!featured.includes(entry)&&featured.length<3)featured.push(entry);
+    const others=entries.filter(entry=>!featured.includes(entry));
     const source=build.source||{};
-    const sourceSubtitle=state.mode==="rapid"?"Aus einem MP-Guide abgeleitet · nicht Rapid-getestet":source.mode+" · nicht für aktuellen Patch verifiziert";
-    const summary = rest.length
-      ? '<details class="more-parts"><summary>ALLE '+entries.length+' AUFSÄTZE ANZEIGEN <span aria-hidden="true">⌄</span></summary><div class="hidden-parts">'+equipmentRows(rest)+'</div></details>'
-      : "";
+    const more=others.length ?
+      '<details class="more-parts"><summary>Alle '+entries.length+' Aufsätze <span aria-hidden="true">⌄</span></summary>'+
+      '<div class="hidden-parts">'+equipmentRows(others)+'</div></details>':'';
     return '<article class="loadout-card" id="'+safe(build.id)+'">'+
-      '<div class="card-heading"><div class="card-overline"><span class="num">'+String(index+1).padStart(2,"0")+'</span><span>'+safe(cat?.label||"WAFFE")+'</span><span class="build-type">'+safe(build.title)+'</span></div>'+
-      (isSignature?'<div class="signature-hint">★ SIGNATURWAFFE DIESER KLASSE</div>':'')+
-      (index===0?'<div class="recommend-hint">EMPFEHLUNG #1</div>':'')+
-      '<h3>'+safe(build.weapon)+'</h3><p>'+safe(build.subtitle)+'</p></div>'+
-      '<div class="card-body"><div class="hint"><span class="hint-icon">↗</span><span>'+safe(build.why)+'</span></div>'+
-      metrics(build)+
-      '<div class="parts-head"><strong>GUNSMITH · AUFSÄTZE</strong><small>'+entries.length+' Teile</small></div>'+
-      '<div class="parts-preview">'+equipmentRows(highlights)+'</div>'+summary+
-      '<div class="loadout-actions"><button type="button" data-copy="'+safe(build.id)+'" class="copy-build">LOADOUT KOPIEREN <span>⧉</span></button>'+
-      '<a href="'+safe(source.url)+'" target="_blank" rel="noopener noreferrer">BUILD-QUELLE ↗</a></div>'+
-      '<p class="provenance">'+safe(sourceSubtitle)+(source.reviewedDate?' · '+formatDate(source.reviewedDate):'')+'</p></div></article>';
+      '<div class="card-heading"><div class="card-overline">'+
+      '<span class="num">'+(index+1)+'</span>'+
+      '<span>'+safe(cat?.label||"Waffe")+'</span>'+
+      (isSignature?'<span class="compact-signature">★ SIGNATUR</span>':'')+
+      '</div><h3>'+safe(build.weapon)+'</h3>'+
+      '<div class="build-shortlabel">'+safe(build.title)+'</div></div>'+
+      '<div class="card-body">'+metrics(build)+
+      '<div class="parts-head"><strong>AUFSÄTZE</strong><small>'+entries.length+' Teile</small></div>'+
+      '<div class="parts-preview">'+equipmentRows(featured)+'</div>'+more+
+      '<div class="loadout-actions"><button type="button" data-copy="'+safe(build.id)+'" class="copy-build">KOPIEREN <span>⧉</span></button>'+
+      '<a href="'+safe(source.url)+'" target="_blank" rel="noopener noreferrer">QUELLE ↗</a></div>'+
+      (state.mode==="rapid"?'<span class="short-caveat">MP-Build · Rapid nicht geprüft</span>':
+       '<span class="short-caveat">'+safe(source.reviewedDate?formatDate(source.reviewedDate):"Community-Build")+' · TTK ≠ Aufsatzmessung</span>')+
+      '</div></article>';
   }
   function render(){
     if(!state.loadouts)return;
@@ -136,14 +137,6 @@
     for(const b of document.querySelectorAll("[data-style]")){
       const active=b.dataset.style===state.style;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));
     }
-    $("mode-info").textContent=modes[state.mode].description;
-    const activeRole=roles[state.role];
-    const hasSignature=eligibleBuilds().some(b=>catOf(b)===activeRole.signature);
-    $("role-info").textContent=state.role==="all" ? activeRole.description :
-      activeRole.description+" "+
-      (hasSignature ? "Die Signaturwaffe wird zuerst empfohlen." : "Dafür gibt es in diesem Modus noch keinen belegten Signaturwaffen-Build.")+
-      " "+(state.mode==="mp" ? "Bei offenen Waffenregeln sind auch andere Waffentypen nutzbar." :
-        "REDSEC hat eigene Klassen-Loadouts und Waffen aus Kisten bzw. Custom-Drops.");
     const types=availableTypes();
     if(state.weaponClass!=="all"&&!types.includes(state.weaponClass))state.weaponClass="all";
     const topName=state.role==="all" ? "Alle Waffen" : "Alle passenden Waffen";
@@ -158,18 +151,18 @@
     $("results-title").textContent=rolePrefix+(categoryLabel||"Empfohlene Loadouts");
     const builds=visibleBuilds();
     const available=rankedBuilds().length;
-    $("results-count").textContent=builds.length+" VORSCHLÄGE";
+    $("results-count").textContent=builds.length+" BUILDS";
     $("results-count").title="Aus "+available+" nach Quellen-Gegenprüfung geeigneten Builds. Maximal 4 verschiedene Waffen, ohne ungeprüfte Top-Platzierungen.";
     $("build-list").innerHTML=builds.length ? builds.map((b,i)=>card(b,i)).join("") :
       '<div class="no-builds">Für diese Kombination ist noch kein ausreichend belegtes Loadout vorhanden. Wähle eine andere Waffen- oder Soldatenklasse.</div>';
     const other=rankedBuilds().slice(4);
     if(!other.length){$("extra-builds").innerHTML="";return;}
     const hasKts=other.some(b=>norm(b.weapon)===norm("KTS100 MK8"));
-    const expandTitle="WEITERE "+other.length+" WAFFEN ANSEHEN"+(hasKts?" · INKL. KTS100 MK8":"");
+    const expandTitle="Weitere "+other.length+" Builds"+(hasKts?" · KTS100 MK8":"");
     $("extra-builds").innerHTML='<button type="button" class="more-builds-toggle" data-more-builds aria-expanded="'+String(state.showExtra)+'">'+
       (state.showExtra?"WENIGER ANZEIGEN ↑":expandTitle+" ↓")+'</button>'+
       (state.showExtra?'<div class="build-list more-build-list">'+other.map((b,i)=>card(b,i+4)).join("")+'</div>':
-      '<p class="more-caption">Zusätzliche Waffen mit dokumentierten Builds, aber nicht alle gehören zur aktuellen Top-4-Meta.</p>');
+      "");
 
   }
   function sourceSection(){
@@ -183,7 +176,7 @@
   }
   function status(){
     const patch=state.status?.latestPatch?.version||state.loadouts.patchAtCompilation;
-    $("status").textContent="PATCH "+patch+" · "+state.loadouts.builds.length+" QUELLEN-BUILDS · Season-5-Quellenabgleich: "+formatDate(state.evidence?.observedAt);
+    $("status").textContent="Patch "+patch+" · "+state.loadouts.builds.length+" Builds";
   }
   async function copyBuild(id,button){
     const b=state.loadouts.builds.find(b=>b.id===id);
