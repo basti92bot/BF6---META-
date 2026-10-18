@@ -4,7 +4,7 @@
   const safe = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const norm = value => String(value || "").toLowerCase().replace(/[^a-z0-9]/g, "");
   const fmt = value => Math.round(value).toLocaleString("de-DE");
-  const state = { mode:"mp", role:"all", weaponClass:"all", style:"all", catalog:null, loadouts:null, weapons:null, status:null, evidence:null };
+  const state = { mode:"mp", role:"all", weaponClass:"all", style:"all", showExtra:false, catalog:null, loadouts:null, weapons:null, status:null, evidence:null };
   const modes = {
     mp: { title:"Mehrspieler",description:"Normale BF6-Matches. Hier dürfen wir TTK-Messwerte von Multiplayer-Grundwaffen vergleichen." },
     rapid: { title:"Rapid Royale",description:"Schnelle REDSEC-Runden. Diese Builds sind aus passenden Community-Setups abgeleitet, aber nicht separat in Rapid Royale vermessen." },
@@ -56,11 +56,13 @@
     .sort((a,b) => {
       const signatureFirst=priority(a)-priority(b);
       if(signatureFirst) return signatureFirst;
-      if(state.mode!=="br" && catOf(a)==="smg" && catOf(b)==="smg"){
-        const sa=currentScore(a),sb=currentScore(b);
-        if(sa!==null && sb!==null && sa!==sb)return sb-sa;
-        if(sa!==null && sb===null)return -1;
-        if(sa===null && sb!==null)return 1;
+      if(state.mode!=="br" && catOf(a)===catOf(b) && ["smg","lmg"].includes(catOf(a))){
+        const scores=catOf(a)==="lmg" ? state.evidence?.season5LMGMetaScore : state.evidence?.season5SMSGScore;
+        const lookup=weapon=>Object.entries(scores||{}).find(([name])=>norm(name)===norm(weapon))?.[1];
+        const sa=lookup(a.weapon),sb=lookup(b.weapon);
+        if(sa!=null&&sb!=null&&sa!==sb)return Number(sb)-Number(sa);
+        if(sa!=null&&sb==null)return -1;
+        if(sa==null&&sb!=null)return 1;
       }
       // The default all-classes overview keeps diverse editorial starting options.
       // A chosen role or weapon category prioritizes documented source tiers.
@@ -160,6 +162,15 @@
     $("results-count").title="Aus "+available+" nach Quellen-Gegenprüfung geeigneten Builds. Maximal 4 verschiedene Waffen, ohne ungeprüfte Top-Platzierungen.";
     $("build-list").innerHTML=builds.length ? builds.map((b,i)=>card(b,i)).join("") :
       '<div class="no-builds">Für diese Kombination ist noch kein ausreichend belegtes Loadout vorhanden. Wähle eine andere Waffen- oder Soldatenklasse.</div>';
+    const other=rankedBuilds().slice(4);
+    if(!other.length){$("extra-builds").innerHTML="";return;}
+    const hasKts=other.some(b=>norm(b.weapon)===norm("KTS100 MK8"));
+    const expandTitle="WEITERE "+other.length+" WAFFEN ANSEHEN"+(hasKts?" · INKL. KTS100 MK8":"");
+    $("extra-builds").innerHTML='<button type="button" class="more-builds-toggle" data-more-builds aria-expanded="'+String(state.showExtra)+'">'+
+      (state.showExtra?"WENIGER ANZEIGEN ↑":expandTitle+" ↓")+'</button>'+
+      (state.showExtra?'<div class="build-list more-build-list">'+other.map((b,i)=>card(b,i+4)).join("")+'</div>':
+      '<p class="more-caption">Zusätzliche Waffen mit dokumentierten Builds, aber nicht alle gehören zur aktuellen Top-4-Meta.</p>');
+
   }
   function sourceSection(){
     $("source-content").innerHTML='<p>Wir unterscheiden <strong>Community-Loadouts</strong> von <strong>Waffen-Messwerten</strong>. TTK bedeutet Zeit bis zum Kill bei den jeweiligen Testannahmen. Weniger Millisekunden sind schneller, aber Trefferquote, Rückstoß, Schussentfernung und Panzerung zählen ebenfalls.</p>'+
@@ -167,7 +178,7 @@
       '<p><strong>Klassenauswahl nach EA:</strong> Sturm = AR, Pionier = SMG, Versorgung = LMG, Aufklärung = Sniper. '+ 
       '<a href="https://www.ea.com/games/battlefield/battlefield-6/news/loadout-creation-and-weapon-classes" target="_blank" rel="noopener noreferrer">Offizieller EA-Guide ↗</a>. '+
       'In offenen Waffenregeln sind weitere Typen verwendbar. Die angezeigte Reihenfolge ist unsere redaktionelle Einstiegsempfehlung nach Spielstil und Quellendeckung, kein mathematisch belegtes globales Ranking. Pro Auswahl werden vier verschiedenartige, belegte Waffen-Builds priorisiert; bei geringerer Quellenlage entsprechend weniger.</p>'+
-      '<p><strong>Gegenprüfung:</strong> Ältere Tierlists zählen nicht mehr allein. Bei MPs vergleichen wir sie mit Season-5-Matchdaten von <a href="https://int.gg/bf6/weapons" target="_blank" rel="noopener noreferrer">INT.GG ↗</a>. SL9 ist wegen deutlich schwächerer aktueller Daten nicht mehr unter den empfohlenen Builds. Die Daten sind eine Stichprobe und betreffen die Grundwaffe, nicht den Gunsmith-Build.</p>'+
+      '<p><strong>Gegenprüfung:</strong> Ältere Tierlists zählen nicht mehr allein. Bei MPs vergleichen wir sie mit Season-5-Matchdaten von <a href="https://int.gg/bf6/weapons" target="_blank" rel="noopener noreferrer">INT.GG ↗</a>. SL9 ist wegen deutlich schwächerer aktueller Daten nicht mehr unter den empfohlenen Builds. Das gilt auch für LMGs: KTS100 MK8 ist als alternative Support-Waffe mit Build verfügbar, aber unter den aktuellen vier Top-Empfehlungen werden neuere Season-5-Werte bevorzugt. Die Daten sind eine Stichprobe und betreffen die Grundwaffe, nicht den Gunsmith-Build.</p>'+
       '<p><strong>Wichtig:</strong> Kein aktuell gespeicherter Aufsatz-Build ist unabhängig mit Patch 2.1.1.0 vermessen und bestätigt. Community-Quellen können sich widersprechen. Wo Daten fehlen, erfinden wir keinen Score. Tägliche Quellenprüfung ≠ automatische Aktualisierung der Builds.</p>';
   }
   function status(){
@@ -184,24 +195,28 @@
   function events(){
     $("mode-tabs").addEventListener("click",e=>{
       const b=e.target.closest("[data-mode]");if(!b)return;
-      state.mode=b.dataset.mode;state.weaponClass="all";state.style="all";render();
+      state.mode=b.dataset.mode;state.weaponClass="all";state.style="all";state.showExtra=false;render();
     });
     $("role-tabs").addEventListener("click",e=>{
       const b=e.target.closest("[data-role]");
       if(!b||!roles[b.dataset.role])return;
-      state.role=b.dataset.role;state.weaponClass="all";state.style="all";render();
+      state.role=b.dataset.role;state.weaponClass="all";state.style="all";state.showExtra=false;render();
     });
     $("weapon-tabs").addEventListener("click",e=>{
       const b=e.target.closest("[data-weapon-class]");
-      if(!b)return;state.weaponClass=b.dataset.weaponClass;render();
+      if(!b)return;state.weaponClass=b.dataset.weaponClass;state.showExtra=false;render();
     });
     $("style-tabs").addEventListener("click",e=>{
       const b=e.target.closest("[data-style]");if(!b)return;
-      state.style=b.dataset.style;render();
+      state.style=b.dataset.style;state.showExtra=false;render();
     });
-    $("build-list").addEventListener("click",e=>{
-      const b=e.target.closest("[data-copy]");if(b)copyBuild(b.dataset.copy,b);
-    });
+    for(const id of ["build-list","extra-builds"])
+      $(id).addEventListener("click",e=>{
+        const button=e.target.closest("[data-more-builds]");
+        if(button){state.showExtra=!state.showExtra;render();return;}
+        const b=e.target.closest("[data-copy]");
+        if(b)copyBuild(b.dataset.copy,b);
+      });
   }
   async function start(){
     events();
