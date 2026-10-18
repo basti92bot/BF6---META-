@@ -82,3 +82,7 @@ Quelle: https://int.gg/bf6/weapons (Season 5), https://worstguidesever.com/battl
 - Für MP und Rapid wird die LMG-Reihenfolge anhand der neueren INT.GG-Season-5-Grundwaffenwerte gegengeprüft (Z84M 97, DRS-IAR 91, M123K 79, L110 72, KTS100 46). Diese Zahlen sind **keine Build-spezifischen** TTK-/Rückstoßmessungen und gelten nicht für REDSEC.
 - Standardansicht weiterhin **vier Top-Empfehlungen**. Ein neuer Button „Weitere Waffen ansehen“ zeigt alle zusätzlichen Builds innerhalb der aktuellen Auswahl; bei Versorgung/LMGs weist der Button auf die KTS100 hin, sofern diese unter den Alternativen ist.
 - Quelle: https://int.gg/bf6/tier-list (Season 5), https://bftactics.com/weapons-database (KTS100-Gunsmith), https://battlefinity.gg/weapon/BF6/kts100-mk8 (REDSEC-Build, teils älter).
+
+## V0.9.0 – kompaktere Oberfläche
+
+Große Werbeüberschrift, Modus- und Soldatenklassen-Erklärungen sowie ausführliche Karten-Prosa entfernt. Die App konzentriert sich auf: Modus, Soldatenklasse, Waffenklasse, vier Loadouts, kompakte TTK-Kennzahlen und die drei wichtigsten Aufsätze. Die übrigen Aufsätze sind je Build aufklappbar; Kopieren und Quellen sind weiterhin verfügbar. Die ausführlichen methodischen Hinweise bleiben gesammelt und eingeklappt in „Quellen & Hinweise“. Die vier Top-Builds, KTS100-Zusatzoption und Quellenprüfungslogik bleiben unverändert.
