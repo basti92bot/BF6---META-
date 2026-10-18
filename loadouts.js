@@ -67,6 +67,7 @@
   }
   function card(build,index) {
     const cat=classByWeapon(build.weapon);
+    const isSignature=state.role!=="all" && catOf(build)===roles[state.role].signature;
     const entries=Object.entries(build.attachments);
     const preferred=["Mündung","Lauf","Magazin"];
     const highlights=preferred.map(slot=>entries.find(([s])=>s===slot)).filter(Boolean);
@@ -80,6 +81,8 @@
       : "";
     return '<article class="loadout-card" id="'+safe(build.id)+'">'+
       '<div class="card-heading"><div class="card-overline"><span class="num">'+String(index+1).padStart(2,"0")+'</span><span>'+safe(cat?.label||"WAFFE")+'</span><span class="build-type">'+safe(build.title)+'</span></div>'+
+      (isSignature?'<div class="signature-hint">★ SIGNATURWAFFE DIESER KLASSE</div>':'')+
+      (index===0?'<div class="recommend-hint">STARTEMPFEHLUNG</div>':'')+
       '<h3>'+safe(build.weapon)+'</h3><p>'+safe(build.subtitle)+'</p></div>'+
       '<div class="card-body"><div class="hint"><span class="hint-icon">↗</span><span>'+safe(build.why)+'</span></div>'+
       metrics(build)+
@@ -128,6 +131,9 @@
   function sourceSection(){
     $("source-content").innerHTML='<p>Wir unterscheiden <strong>Community-Loadouts</strong> von <strong>Waffen-Messwerten</strong>. TTK bedeutet Zeit bis zum Kill bei den jeweiligen Testannahmen. Weniger Millisekunden sind schneller, aber Trefferquote, Rückstoß, Schussentfernung und Panzerung zählen ebenfalls.</p>'+
       '<div class="sources-grid">'+state.loadouts.sources.map(s=>'<a href="'+safe(s.url)+'" target="_blank" rel="noopener noreferrer">'+safe(s.name)+' <span>↗</span></a>').join("")+'</div>'+
+      '<p><strong>Klassenauswahl nach EA:</strong> Sturm = AR, Pionier = SMG, Versorgung = LMG, Aufklärung = Sniper. '+ 
+      '<a href="https://www.ea.com/games/battlefield/battlefield-6/news/loadout-creation-and-weapon-classes" target="_blank" rel="noopener noreferrer">Offizieller EA-Guide ↗</a>. '+
+      'In offenen Waffenregeln sind weitere Typen verwendbar. Die angezeigte Reihenfolge ist unsere redaktionelle Einstiegsempfehlung nach Spielstil und Quellendeckung, keine mathematisch belegte globale Topliste.</p>'+
       '<p><strong>Wichtig:</strong> Kein aktuell gespeicherter Aufsatz-Build ist unabhängig mit Patch 2.1.1.0 vermessen und bestätigt. Community-Quellen können sich widersprechen. Wo Daten fehlen, erfinden wir keinen Score. Tägliche Quellenprüfung ≠ automatische Aktualisierung der Builds.</p>';
   }
   function status(){
