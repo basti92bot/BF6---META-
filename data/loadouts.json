@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "buildsetVersion": "0.8.0",
+  "buildsetVersion": "0.8.1",
   "createdOn": "2026-10-18",
   "patchAtCompilation": "2.1.1.0",
   "disclaimer": "Die Top-4-Reihenfolge verwendet die Klassenpassung, Quellen-Tier-Einstufungen und eine redaktionelle Auswahl; kein statistisch errechnetes globales Ranking. TTK-Werte beziehen sich auf Grundwaffen/Quellenmodelle, nicht auf die Aufsatz-Konfiguration.",
@@ -744,7 +744,9 @@
       "metric": null,
       "kind": "community",
       "guideTier": "S",
-      "verifiedForCurrentPatch": false
+      "verifiedForCurrentPatch": false,
+      "recommendationStatus": "not_recommended",
+      "reason": "September S-Tier steht im Widerspruch zu Season-5-Matchdaten (Meta Score 26) und Season-5-Guide (D Tier)."
     },
     {
       "id": "mp-sgx",
@@ -2140,6 +2142,41 @@
       "kind": "community",
       "guideTier": "C",
       "verifiedForCurrentPatch": false
+    },
+    {
+      "id": "mp-pw7a2",
+      "weapon": "PW7A2",
+      "title": "Schnelle MP",
+      "subtitle": "Hohe Feuerrate für aggressive Nah- bis Mitteldistanz-Gefechte.",
+      "why": "Alternativ-Build mit hoher Kadenz. Kein garantierter Vorteil gegenüber RSPR oder SCW-10.",
+      "modes": [
+        "mp",
+        "rapid"
+      ],
+      "styles": [
+        "aggressive",
+        "allround"
+      ],
+      "kind": "community",
+      "guideTier": "A",
+      "verifiedForCurrentPatch": false,
+      "metric": null,
+      "attachments": {
+        "Mündung": "LIGHTENED SUPPRESSOR",
+        "Lauf": "HEAVY 180MM",
+        "Unterlauf": "SLIM ANGLED",
+        "Magazin": "30 FAST",
+        "Munition": "STANDARD",
+        "Ergonomie": "MAG CATCH",
+        "Visier": "1.25x",
+        "Oberes Zubehör": "5MW RED LASER"
+      },
+      "source": {
+        "name": "BF Tactics Gunsmith",
+        "url": "https://www.bftactics.com/weapons-database",
+        "reviewedDate": "2026-09-21",
+        "mode": "MP-Guide; Rapid nicht separat getestet"
+      }
     }
   ]
 }
