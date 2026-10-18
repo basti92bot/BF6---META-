@@ -332,5 +332,23 @@
       "name": "Weapon Analyzer documentation",
       "url": "https://github.com/raymdl/BF6-Weapon-Analyzer/blob/main/docs/ATTACHMENT_MODEL.md"
     }
-  ]
+  ],
+  "baseMagazine": {
+    "KTS100 MK8": {
+      "rounds": 60,
+      "source": "https://www.bf6loadouts.com/weapons/kts100-mk8"
+    },
+    "DRS-IAR": {
+      "rounds": 30,
+      "source": "https://bf6loadouts.com/weapons/drs-iar"
+    },
+    "M4A1": {
+      "rounds": 30,
+      "source": "https://www.bf6loadouts.com/weapons/m4a1"
+    },
+    "PSR": {
+      "rounds": 10,
+      "source": "https://www.bf6loadouts.com/weapons/psr"
+    }
+  }
 }
