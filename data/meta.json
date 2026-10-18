@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "0.2.0",
+  "version": "0.5.2",
   "patch": "2.1.1.0",
   "rankingDate": "2026-10-13",
   "buildsDate": "2026-10-15",
@@ -232,6 +232,37 @@
         "Munition": "STANDARD",
         "Visier": "frei wählbar",
         "Oberes Zubehör": "50MW VIOLET LASER"
+      }
+    },
+    {
+      "id": "interdictor",
+      "name": "INTERDICTOR",
+      "category": "Scharfschütze",
+      "tier": null,
+      "tags": [
+        "Distanz",
+        "Scharfschütze"
+      ],
+      "styles": [
+        "range",
+        "sniper"
+      ],
+      "pitch": "Großkalibriges Präzisionsgewehr für sehr weite Distanzen. Von INT.GG in den Matchdaten als HTI bezeichnet.",
+      "unlock": "Season-4-Freischaltung über Event bzw. Aufhol-Herausforderung; im Spiel prüfen",
+      "sourceBuild": "https://battlefinity.gg/profile/Roguey",
+      "sourceDate": "2026-10-14",
+      "buildLabel": "Interdictor · Long Range Sniper, Community-Build von Rogue (14.10.2026)",
+      "buildCaveat": "Community-Loadout vom 14.10.2026; nicht unabhängig für aktuelle REDSEC-Waffenbalance bestätigt.",
+      "attachments": {
+        "Mündung": "MULTI-PORT BRAKE",
+        "Lauf": "32\" CUSTOM",
+        "Unterlauf": "SLIM ANGLED",
+        "Magazin": "5RND FAST MAG",
+        "Munition": "TUNGSTEN CORE",
+        "Optik-Zubehör": "ANTI-GLARE COATING",
+        "Visier": "LERT 8.00X",
+        "Ergonomie": "IMPROVED MAG MATCH",
+        "Oberes Zubehör": "50 MW BLUE"
       }
     }
   ],
