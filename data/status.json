@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": null,
+  "lastSuccessAt": null,
+  "weaponDataChangedAt": "2026-10-18",
+  "weaponDataSource": "https://github.com/bdeland/bf6_guns/blob/main/data.csv",
+  "latestPatch": {
+    "version": "2.1.1.0",
+    "announcedAt": "2026-10-12",
+    "url": "https://www.ea.com/games/battlefield/battlefield-6/news/battlefield-6-game-update-2-1-1-0"
+  },
+  "reviewNeeded": true,
+  "reviewReason": "Community-Messwerte sind nicht gegen Update 2.1.1.0 validiert.",
+  "sources": [
+    {
+      "name": "EA Patchnotes",
+      "url": "https://www.ea.com/games/battlefield/battlefield-6/news?type=game-updates",
+      "ok": null
+    },
+    {
+      "name": "BF6 Community Waffenwerte",
+      "url": "https://github.com/bdeland/bf6_guns",
+      "ok": null
+    }
+  ],
+  "changes": [],
+  "errors": []
+}
