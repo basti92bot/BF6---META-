@@ -33,9 +33,11 @@ function renderRankings() {
   $("result-count").textContent = shown.length + " von " + state.weapons.length + " Waffen";
   $("weapons").innerHTML = shown.length ? shown.map((w) => {
     const level = levels.get(w.id), t = level.tier.toLowerCase();
+    const art = window.BF6_ART?.exact?.[w.name] || window.BF6_ART?.categories?.[w.category] || "";
     return '<article class="weapon" aria-label="' + html(w.name) + ', Tier ' + level.tier + '">' +
       '<span class="rank">#' + level.rank + '</span>' +
       '<span class="tier ' + t + '">' + level.tier + '</span>' +
+      '<span class="weapon-list-art">' + (art ? '<img loading="lazy" alt="Klassenmotiv" src="' + html(art) + '">' : '') + '</span>' +
       '<div><div class="weapon-name">' + html(w.name) + '</div><div class="weapon-class">' + html(classes[w.category] || w.category) + '</div></div>' +
       '<div class="weapon-metric"><small>TTK · ' + meters[state.distance] + ' M</small><b>' + num(w.ttk[state.distance]) + ' ms</b></div>' +
       '<div class="weapon-metric"><small>FEUERRATE</small><b>' + num(w.rpm) + ' RPM</b></div>' +
