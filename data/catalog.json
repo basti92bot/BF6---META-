@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-10-18",
+  "version": "0.3",
+  "officialGuide": "https://www.ea.com/games/battlefield/battlefield-6/news/loadout-creation-and-weapon-classes",
+  "imagePolicy": "Nichtkommerzielles Fanprojekt. EA-Bilder aus offizieller BF6-Übersicht; sonst nur Klassenmotiv. Kein direkter Zugriff auf andere Meta-App-Assets.",
+  "classes": [
+    {
+      "id": "ar",
+      "label": "Sturmgewehre",
+      "subtitle": "Assault Rifles",
+      "code": "AR",
+      "icon": "◈",
+      "image": "https://drop-assets.ea.com/images/3S2dyZXmTVkb42jFNjs7j6/92d4cda4a6cdd9b8d6c4b1c922a3b146/BF6-Signature-Weapon-Assault-Rifle.jpg",
+      "description": "Flexible Gewehre für Nahkampf bis mittlere Distanz.",
+      "weapons": [
+        "M433",
+        "B36A4",
+        "SOR-556 MK2",
+        "AK4D",
+        "TR-7",
+        "KORD 6P67",
+        "NVO-228E",
+        "L85A3",
+        "VCR-2",
+        "M16A4",
+        "EF88",
+        "Mk 24"
+      ]
+    },
+    {
+      "id": "crb",
+      "label": "Karabiner",
+      "subtitle": "Carbines",
+      "code": "CRB",
+      "icon": "⌁",
+      "image": "https://drop-assets.ea.com/images/2ones18uzDixy6cmaLaT7C/26a97adcc9da61bdae77cfd8176c686c/GLA_REV_Screenshot_12_M4A1_1920x1080_NoLogo.png",
+      "description": "Kompakte Allrounder für schnelle Positionswechsel.",
+      "weapons": [
+        "M4A1",
+        "M277",
+        "AK-205",
+        "M417 A2",
+        "GRT-BC",
+        "QBZ-192",
+        "SG 553R",
+        "SOR-300SC",
+        "BROD 3"
+      ]
+    },
+    {
+      "id": "smg",
+      "label": "Maschinenpistolen",
+      "subtitle": "SMGs",
+      "code": "SMG",
+      "icon": "≋",
+      "image": "https://drop-assets.ea.com/images/1aqcmIFl9Kp3dzAaWJbRBS/1fbb0aaaf9169fbcc5801afc013a85d2/BF6_weapon_SMG_SWC10.jpg",
+      "description": "Schnelle Waffen für Räume und kurze Distanzen.",
+      "weapons": [
+        "SGX",
+        "PW5A3",
+        "PW7A2",
+        "UMG-40",
+        "USG-90",
+        "KV9",
+        "SCW-10",
+        "SL9",
+        "CZ3A1",
+        "PP-19",
+        "RSPR"
+      ]
+    },
+    {
+      "id": "lmg",
+      "label": "Leichte MGs",
+      "subtitle": "LMGs",
+      "code": "LMG",
+      "icon": "▤",
+      "image": "https://drop-assets.ea.com/images/3AoCiTvIgOPk32STGMGmWs/bb49c803daf5d4a8d7c5d9a8110a5254/BF6_LAU_M240L_LMG.jpg",
+      "description": "Unterstützungswaffen mit hoher Feuerkraft.",
+      "weapons": [
+        "L110",
+        "DRS-IAR",
+        "M/60",
+        "M123K",
+        "M250",
+        "KTS100 MK8",
+        "M240L",
+        "M121 A2",
+        "RPK-74M"
+      ]
+    },
+    {
+      "id": "dmr",
+      "label": "DMRs",
+      "subtitle": "Marksman Rifles",
+      "code": "DMR",
+      "icon": "⌖",
+      "image": "https://drop-assets.ea.com/images/4HTltD7q8fOcs2g6bXxqLR/022781839aa9347b5f1aaeff20a7aa65/BF6_weapon_LMR27_BG_16x9.jpg",
+      "description": "Präzision und zuverlässige Folgeschüsse.",
+      "weapons": [
+        "M39 EMR",
+        "LMR27",
+        "SVK-8.6",
+        "SVDM",
+        "GRT-CPS",
+        "VSSM"
+      ]
+    },
+    {
+      "id": "sniper",
+      "label": "Scharfschützen",
+      "subtitle": "Sniper Rifles",
+      "code": "SNIPER",
+      "icon": "⊕",
+      "image": "https://drop-assets.ea.com/images/u7VFhGvuF2by87mhyW07I/1163689859c231f5157451d957bb5a6c/BF6-Signature-Weapon-Sniper-Rifle.jpg",
+      "description": "Hohe Reichweite und präzise Einzelziele.",
+      "weapons": [
+        "M2010 ESR",
+        "SV-98",
+        "PSR",
+        "MINI SCOUT",
+        "L115",
+        "INTERDICTOR"
+      ]
+    },
+    {
+      "id": "shotgun",
+      "label": "Schrotflinten",
+      "subtitle": "Shotguns",
+      "code": "SHOTGUN",
+      "icon": "◆",
+      "image": "https://drop-assets.ea.com/images/1jxH4vfgpY10eckFsCngoq/1529c287cabb656d756b291cf6125ef5/GLA_REV_Screenshot_15_M87A1_1920x1080_NoLogo.png",
+      "description": "Maximale Wirkung auf kürzeste Distanz.",
+      "weapons": [
+        "M87A1",
+        "M1014",
+        "18.5KS-K",
+        "DB-12"
+      ]
+    },
+    {
+      "id": "secondary",
+      "label": "Sekundärwaffen",
+      "subtitle": "Sidearms",
+      "code": "SECONDARY",
+      "icon": "▰",
+      "image": "https://drop-assets.ea.com/images/6WvG1iaaEiAUws8uyOAIFj/2a10ed908c12be720358dc95bd49080d/P18_V003_0001__1__1.jpg",
+      "description": "Pistolen und Maschinenpistolen als Backup.",
+      "weapons": [
+        "P18",
+        "ES 5.7",
+        "M45A1",
+        "M44",
+        "GGH-22",
+        "M357 TRAIT",
+        "vz. 61"
+      ]
+    }
+  ],
+  "exactImages": {
+    "SCW-10": "https://drop-assets.ea.com/images/1aqcmIFl9Kp3dzAaWJbRBS/1fbb0aaaf9169fbcc5801afc013a85d2/BF6_weapon_SMG_SWC10.jpg",
+    "M240L": "https://drop-assets.ea.com/images/3AoCiTvIgOPk32STGMGmWs/bb49c803daf5d4a8d7c5d9a8110a5254/BF6_LAU_M240L_LMG.jpg",
+    "LMR27": "https://drop-assets.ea.com/images/4HTltD7q8fOcs2g6bXxqLR/022781839aa9347b5f1aaeff20a7aa65/BF6_weapon_LMR27_BG_16x9.jpg",
+    "P18": "https://drop-assets.ea.com/images/6WvG1iaaEiAUws8uyOAIFj/2a10ed908c12be720358dc95bd49080d/P18_V003_0001__1__1.jpg",
+    "M87A1": "https://drop-assets.ea.com/images/1jxH4vfgpY10eckFsCngoq/1529c287cabb656d756b291cf6125ef5/GLA_REV_Screenshot_15_M87A1_1920x1080_NoLogo.png"
+  }
+}
