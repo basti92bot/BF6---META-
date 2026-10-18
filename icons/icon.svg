@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="BF6 Meta">
+  <rect width="512" height="512" rx="96" fill="#101317"/>
+  <path d="M79 85H433V427H79Z" fill="none" stroke="#eeff75" stroke-width="15"/>
+  <path d="M112 380H400" stroke="#eeff75" stroke-width="8"/>
+  <text x="256" y="312" font-family="Arial Black,Arial,sans-serif" font-size="182" font-weight="900" letter-spacing="-15" text-anchor="middle" fill="#eeff75">B6</text>
+  <path d="M116 113H397" stroke="#eeff75" stroke-width="5"/>
+</svg>
