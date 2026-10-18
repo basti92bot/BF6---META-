@@ -1,0 +1,336 @@
+{
+  "schemaVersion": 1,
+  "snapshot": "2026-10-18",
+  "about": "Each record is a human-entered exact attachment list from a public creator build page. Votes represent site votes where visible; they do NOT measure how many players use the build. For MP variants reused as Rapid candidates, no rapid match evidence is implied.",
+  "analyzer": "https://raymdl.github.io/BF6-Weapon-Analyzer/",
+  "weapons": {
+    "KTS100 MK8": [
+      {
+        "id": "kts-king",
+        "label": "Suppression King",
+        "creator": "BF6L",
+        "url": "https://www.bf6loadouts.com/weapons/builds/bf6l-kts100-mk8-kts100-mk8-suppression-king",
+        "modes": [
+          "mp",
+          "rapid"
+        ],
+        "points": 95,
+        "votes": 10,
+        "attachments": {
+          "Visier": "Baker 3.00x",
+          "Mündung": "Lightened Suppressor",
+          "Lauf": "508mm MK8",
+          "Unterlauf": "Classic Vertical",
+          "Magazin": "50RND Magazine",
+          "Munition": "FMJ"
+        }
+      },
+      {
+        "id": "kts-meta",
+        "label": "Meta KTS100",
+        "creator": "kaijono030",
+        "url": "https://bf6loadouts.com/weapons/builds/kaijono030-kts100-mk8-meta-kts100",
+        "modes": [
+          "mp",
+          "rapid"
+        ],
+        "points": 100,
+        "votes": 0,
+        "attachments": {
+          "Visier": "Grim 1.50x",
+          "Lauf": "508mm MK8",
+          "Unterlauf": "6H64 Vertical",
+          "Mündung": "Standard Suppressor",
+          "Munition": "Hollow Point"
+        }
+      },
+      {
+        "id": "kts-toxic",
+        "label": "Toxic",
+        "creator": "getbetteraimplease",
+        "url": "https://www.bf6loadouts.com/weapons/builds/cor0025-kts100-mk8-the-toxic-go-bye-bye",
+        "modes": [
+          "mp",
+          "rapid"
+        ],
+        "points": 100,
+        "votes": 0,
+        "attachments": {
+          "Visier": "Baker 3.00x",
+          "Mündung": "Standard Suppressor",
+          "Munition": "FMJ",
+          "Unterlauf": "Ribbed Stubby",
+          "Rechtes Zubehör": "50 MW Blue",
+          "Magazin": "50RND Magazine",
+          "Lauf": "457mm MK9"
+        }
+      },
+      {
+        "id": "kts-default",
+        "label": "Default",
+        "creator": "im_jek",
+        "url": "https://www.bf6loadouts.com/weapons/builds/imjek-kts100-mk8-kts100-mk8-default",
+        "modes": [
+          "mp",
+          "rapid"
+        ],
+        "points": 100,
+        "votes": 0,
+        "attachments": {
+          "Visier": "Grim 1.50x",
+          "Munition": "FMJ",
+          "Magazin": "60RND Drum Mag",
+          "Lauf": "508mm MK8",
+          "Mündung": "Long Suppressor",
+          "Unterlauf": "Canted Stubby"
+        }
+      }
+    ],
+    "DRS-IAR": [
+      {
+        "id": "drs-assault",
+        "label": "Assault LMG",
+        "creator": "BF6L",
+        "url": "https://bf6loadouts.com/weapons/builds/bf6l-drs-iar-drs-iar-assault-lmg",
+        "modes": [
+          "mp",
+          "rapid"
+        ],
+        "points": 80,
+        "votes": 6,
+        "attachments": {
+          "Visier": "Baker 3.00x",
+          "Mündung": "Compensated Brake",
+          "Lauf": "16.5\" Fluted",
+          "Unterlauf": "Ribbed Vertical",
+          "Magazin": "50RND Magazine",
+          "Munition": "FMJ"
+        }
+      },
+      {
+        "id": "drs-ttk",
+        "label": "30 TTK Suppressor",
+        "creator": "destevez",
+        "url": "https://bf6loadouts.com/weapons/builds/destevez-drs-iar-30-ttk-suppressor",
+        "modes": [
+          "mp",
+          "rapid"
+        ],
+        "points": 100,
+        "votes": 0,
+        "attachments": {
+          "Visier": "Baker 3.00x",
+          "Munition": "Polymer Case",
+          "Magazin": "36RND Magazine",
+          "Unterlauf": "6H64 Vertical",
+          "Lauf": "20\" SDM-R",
+          "Mündung": "Standard Suppressor",
+          "Ergonomie": "Magwell Flare"
+        }
+      },
+      {
+        "id": "drs-meta",
+        "label": "Meta DRS",
+        "creator": "kaijono030",
+        "url": "https://bf6loadouts.com/weapons/builds/kaijono030-drs-iar-meta-drs-iar",
+        "modes": [
+          "mp",
+          "rapid"
+        ],
+        "points": 100,
+        "votes": 0,
+        "attachments": {
+          "Lauf": "20\" SDM-R",
+          "Unterlauf": "6H64 Vertical",
+          "Visier": "Grim 1.50x",
+          "Mündung": "Standard Suppressor",
+          "Munition": "FMJ",
+          "Magazin": "36RND Magazine"
+        }
+      },
+      {
+        "id": "drs-hip",
+        "label": "Hipfire DRS",
+        "creator": "crazyglue",
+        "url": "https://bf6loadouts.com/weapons/builds/crazyglue-drs-iar-hipfire-drs",
+        "modes": [
+          "mp",
+          "rapid"
+        ],
+        "points": 95,
+        "votes": 0,
+        "attachments": {
+          "Unterlauf": "Folding Stubby",
+          "Lauf": "20\" LE",
+          "Rechtes Zubehör": "Flashlight",
+          "Oberes Zubehör": "50 MW Green",
+          "Visier": "CCO 2.00x",
+          "Mündung": "Double-Port Brake",
+          "Magazin": "30RND Fast Mag"
+        }
+      }
+    ],
+    "M4A1": [
+      {
+        "id": "m4-tactic",
+        "label": "Taktisch 3x",
+        "creator": "ssbro",
+        "url": "https://www.bf6loadouts.com/weapons/builds/ssbro-m4a1-tactic-m4a1-build",
+        "modes": [
+          "mp",
+          "rapid"
+        ],
+        "points": 100,
+        "votes": 0,
+        "attachments": {
+          "Visier": "Baker 3.00x",
+          "Unterlauf": "6H64 Vertical",
+          "Magazin": "20RND Fast Mag",
+          "Lauf": "12.5\" Mid",
+          "Mündung": "Standard Suppressor",
+          "Oberes Zubehör": "5 MW Green",
+          "Optik-Zubehör": "Canted Reflex",
+          "Munition": "Tungsten Core",
+          "Ergonomie": "Improved Mag Catch"
+        }
+      },
+      {
+        "id": "m4-tactical",
+        "label": "Tactical M4A1",
+        "creator": "ssbro",
+        "url": "https://www.bf6loadouts.com/weapons/builds/ssbro-m4a1-tactical-m4a1",
+        "modes": [
+          "mp",
+          "rapid"
+        ],
+        "points": 90,
+        "votes": 0,
+        "attachments": {
+          "Visier": "CCO 2.00x",
+          "Magazin": "20RND Fast Mag",
+          "Oberes Zubehör": "5 MW Green",
+          "Lauf": "12.5\" Mid",
+          "Mündung": "Long Suppressor",
+          "Unterlauf": "Full Angled",
+          "Munition": "Tungsten Core"
+        }
+      },
+      {
+        "id": "m4-meta",
+        "label": "Meta S-Tier",
+        "creator": "ashgaming",
+        "url": "https://www.bf6loadouts.com/weapons/builds/ashgaming-m4a1-meta-s-tier",
+        "modes": [
+          "mp",
+          "rapid"
+        ],
+        "points": 100,
+        "votes": 0,
+        "attachments": {
+          "Visier": "Mini Flex 1.00x",
+          "Munition": "Polymer Case",
+          "Magazin": "30RND Fast Mag",
+          "Unterlauf": "Low-Profile Stubby",
+          "Lauf": "12.5\" Fluted",
+          "Mündung": "Single-Port Brake"
+        }
+      },
+      {
+        "id": "m4-balance",
+        "label": "50/50",
+        "creator": "faraney",
+        "url": "https://bf6loadouts.com/weapons/builds/faraney-m4a1-5050",
+        "modes": [
+          "mp",
+          "rapid"
+        ],
+        "points": 100,
+        "votes": 0,
+        "attachments": {
+          "Visier": "Iron Sights",
+          "Oberes Zubehör": "5 MW Green",
+          "Munition": "FMJ",
+          "Magazin": "36RND Magazine",
+          "Unterlauf": "6H64 Vertical",
+          "Lauf": "14.5\" Carbine",
+          "Mündung": "Long Suppressor"
+        }
+      }
+    ],
+    "PSR": [
+      {
+        "id": "psr-overwatch",
+        "label": "One-Shot Overwatch",
+        "creator": "BF6L",
+        "url": "https://www.bf6loadouts.com/weapons/builds/bf6l-psr-psr-one-shot-overwatch",
+        "modes": [
+          "mp",
+          "rapid"
+        ],
+        "points": 95,
+        "votes": 57,
+        "attachments": {
+          "Visier": "NFX 8.00x",
+          "Optik-Zubehör": "Anti-Glare Coating",
+          "Mündung": "Standard Suppressor",
+          "Lauf": "27\" MK22",
+          "Unterlauf": "Slim Angled",
+          "Magazin": "7RND Magazine",
+          "Munition": "Match Grade"
+        }
+      },
+      {
+        "id": "psr-mob",
+        "label": "MOB's Sniper",
+        "creator": "mob_j_sacks",
+        "url": "https://www.bf6loadouts.com/weapons/builds/mobjsacks-psr-mobs-sniper",
+        "modes": [
+          "mp",
+          "rapid"
+        ],
+        "points": 100,
+        "votes": 0,
+        "attachments": {
+          "Visier": "R-VPS 10.00x",
+          "Mündung": "CQB Suppressor",
+          "Munition": "Match Grade",
+          "Magazin": "7RND Magazine",
+          "Lauf": "27\" MK22",
+          "Unterlauf": "QD Grip Pod"
+        }
+      },
+      {
+        "id": "psr-easy",
+        "label": "Easy Headshot",
+        "creator": "slavsquat",
+        "url": "https://www.bf6loadouts.com/weapons/builds/slavsquat-psr-easy-heahshot",
+        "modes": [
+          "mp",
+          "rapid"
+        ],
+        "points": 100,
+        "votes": 0,
+        "attachments": {
+          "Visier": "R-VPS 10.00x",
+          "Magazin": "10RND Magazine",
+          "Rechtes Zubehör": "Range Finder",
+          "Optik-Zubehör": "Anti-Glare Coating",
+          "Ergonomie": "DLC Bolt",
+          "Munition": "FMJ",
+          "Lauf": "27\" MK22",
+          "Mündung": "Double-Port Brake"
+        }
+      }
+    ]
+  },
+  "sources": [
+    {
+      "name": "BF6 Loadouts community",
+      "url": "https://www.bf6loadouts.com/weapons/builds"
+    },
+    {
+      "name": "Weapon Analyzer documentation",
+      "url": "https://github.com/raymdl/BF6-Weapon-Analyzer/blob/main/docs/ATTACHMENT_MODEL.md"
+    }
+  ]
+}
