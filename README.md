@@ -4,12 +4,11 @@ Unabhängige, mobile Battlefield-6-Fan-App.
 
 ## Version 0.4: einfacher statt überladen
 
-Die Hauptansicht ist komplett neu aufgebaut. Nur vier Reiter:
+Die Hauptansicht ist komplett neu aufgebaut. Nur drei Reiter:
 
 - **Beliebt**: fünf echte Pick-Rates aus einer aktuellen INT.GG-Momentaufnahme, keine Seitenaufrufe
 - **Waffenklassen**: acht Kategorien mit Suchfunktion und 66 gelisteten Waffen
 - **Beste Waffen**: fünf Waffen nach dokumentiertem INT.GG Meta-Score
-- **Updates**: Patch-Version, Status des täglichen Quellenchecks und Original-Quellen
 
 Bei der Waffe öffnen sich vorhandene Builds und eine übersichtliche Detailansicht. Nicht geprüfte Waffenwerte und fehlende Builds werden ausdrücklich als fehlend gekennzeichnet. Eindeutig identifizierbare Bilder erscheinen als Waffenmotive, sonst offizielle EA-Klassenmotive mit einer deutlichen Beschriftung.
 
