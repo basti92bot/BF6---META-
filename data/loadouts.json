@@ -61,7 +61,14 @@
         "reviewedDate": null,
         "mode": "Allgemeiner Build"
       },
-      "metric": null,
+      "metric": {
+        "mode": "mp",
+        "source": "https://battlefinity.gg/battlefield",
+        "sourceDate": "2026-10-16",
+        "ttkClose": 217,
+        "ttkMid": 289,
+        "description": "Mittlere TTK nach Distanz laut Battlefinity, kein Aufsatz-spezifischer Nachweis"
+      },
       "kind": "community",
       "verifiedForCurrentPatch": false
     },
@@ -159,7 +166,14 @@
         "reviewedDate": null,
         "mode": "Allgemeiner Build"
       },
-      "metric": null,
+      "metric": {
+        "mode": "mp",
+        "source": "https://battlefinity.gg/battlefield",
+        "sourceDate": "2026-10-16",
+        "ttkClose": 233,
+        "ttkMid": 306,
+        "description": "Mittlere TTK nach Distanz laut Battlefinity, kein Aufsatz-spezifischer Nachweis"
+      },
       "kind": "community",
       "verifiedForCurrentPatch": false
     },
@@ -224,7 +238,14 @@
         "reviewedDate": null,
         "mode": "Allgemeiner Build"
       },
-      "metric": null,
+      "metric": {
+        "mode": "mp",
+        "source": "https://battlefinity.gg/battlefield",
+        "sourceDate": "2026-10-16",
+        "ttkClose": 284,
+        "ttkMid": 376,
+        "description": "Mittlere TTK nach Distanz laut Battlefinity, kein Aufsatz-spezifischer Nachweis"
+      },
       "kind": "community",
       "verifiedForCurrentPatch": false
     },
