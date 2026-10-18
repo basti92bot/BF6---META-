@@ -1,12 +1,15 @@
 # BF6 META – Loadout Lab
 
-Aktuelle App-Version **0.6.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **0.7.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
 
 ## Die App: Loadouts zuerst
 
 Statt Pick-Rates und Meta-Score als Startseite gibt es ausschließlich konkrete Waffen-Builds mit:
+- **drei Ebenen**: zuerst Spielmodus, dann Soldatenklasse (Alle/Sturm/Pionier/Versorgung/Aufklärung), dann passende Waffenklasse; vorhandene Builds werden direkt darunter angezeigt.
+- **offiziellen Signaturwaffen**: Sturm = AR, Pionier = SMG, Versorgung = LMG, Aufklärung = Sniper. Verwendet mit EA-Klassenaffinität und Alternativen (Karabiner, DMR, Schrotflinten). Waffenwahl hängt von offenen/geschlossenen Regeln und REDSEC-Mechaniken ab. Quelle: https://www.ea.com/games/battlefield/battlefield-6/news/loadout-creation-and-weapon-classes
+- **dynamischer Waffenklassenauswahl**: nur Kategorien, für die bereits ein dokumentierter Build vorliegt. Auswahl und Sortierung dienen als redaktionelle Empfehlung, nicht als wissenschaftliche oder offizielle TTK-Gesamtrangliste.
 - **drei Modus-Reitern**: Mehrspieler, Rapid Royale und REDSEC Battle Royale.
-- **Spielstil-Filtern**: Alle, aggressiv, Allround, wenig Rückstoß, Distanz und Sniper.
+- **optional einblendbaren Spielstil-Filtern**: Alle, aggressiv, Allround, wenig Rückstoß, Distanz und Sniper.
 - **14 dokumentierten Aufsatzkonfigurationen**: 9 für MP, 8 auf Rapid Royale übertragene Empfehlungen, 5 BR-spezifische (die angezeigten Konfigurationen überschneiden sich).
 - kompletten Gunsmith-Aufsatztabellen, direktem Quellenlink und einem **„Loadout kopieren“**-Button.
 - Messwerten wie TTK in Millisekunden, soweit die Quelle sie für den Spielmodus liefert.
@@ -46,6 +49,6 @@ Neue Balance-Patches können TTK-Daten oder Build-Empfehlungen ungültig machen.
 
 GitHub Pages: Settings > Pages > Deploy from branch `main`, Ordner `/(root)`.
 
-Service-Worker-Cache-Version: `bf6meta-v10`; statische App-Dateien werden bevorzugt aus dem Netzwerk geladen, um Versionskonflikte zu vermeiden.
+Service-Worker-Cache-Version: `bf6meta-v11`; statische App-Dateien werden bevorzugt aus dem Netzwerk geladen, um Versionskonflikte zu vermeiden.
 
 Kein Nutzerkonto und keine eigenen gespeicherten Loadouts.
