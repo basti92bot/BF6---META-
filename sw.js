@@ -1,5 +1,5 @@
-const CACHE = "bf6meta-v6";
-const APP_FILES = ["./", "./index.html", "./simple.css", "./simple.js", "./data/popularity.json", "./data/meta.json", "./data/catalog.json", "./data/status.json", "./manifest.webmanifest", "./icons/icon.svg", "./icons/icon-192.png", "./icons/icon-512.png"];
+const CACHE = "bf6meta-v7";
+const APP_FILES = ["./", "./index.html", "./simple.css", "./simple.js", "./data/popularity.json", "./data/modes.json", "./data/meta.json", "./data/catalog.json", "./data/status.json", "./manifest.webmanifest", "./icons/icon.svg", "./icons/icon-192.png", "./icons/icon-512.png"];
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(APP_FILES)).then(() => self.skipWaiting()));
 });
