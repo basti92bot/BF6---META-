@@ -2,8 +2,9 @@
 
 Mobile-first Battlefield 6 Waffenanalyse als installierbare Progressive Web App (PWA).
 
-## Version 0.3
+## Version 0.3.1
 
+- Vier Schnellzugriffe auf Sturmsoldat, Pionier, Versorgung und Aufklärung
 - Neue visuelle Übersicht mit acht Waffenklassen und 64 Waffen aus dem offiziellen EA-Waffenguide (ergänzt um zwei Season-5-Waffen)
 - Klassenbilder aus EA-Bildmaterial, fünf eindeutig zuordenbare Waffenmotive
 - Einzelansicht pro Waffe mit Build, Freischaltung (soweit bekannt) und Messwerten
