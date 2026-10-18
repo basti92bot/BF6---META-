@@ -35,3 +35,10 @@
 .signature-hint,.recommend-hint{display:inline-flex;border-radius:3px;font-weight:950;font-size:9px;letter-spacing:.6px;padding:4px 7px;margin:10px 6px 0 0}
 .signature-hint{color:#e9ffb9;background:#465b35;border:1px solid #97b773}
 .recommend-hint{color:#c4d7e0;background:#273a41;border:1px solid #536b72}
+
+/* v0.8.2: optional additional sourced builds, with Top 4 still concise */
+.extra-builds{margin:16px 0 0}
+.more-builds-toggle{width:100%;background:#222e2a;border:1px solid #758f64;color:#e0f6bd;border-radius:8px;font-size:12px;font-weight:900;letter-spacing:.4px;cursor:pointer;padding:16px 14px;text-align:center}
+.more-builds-toggle:hover,.more-builds-toggle:focus-visible{background:#2f4034}
+.more-caption{font-size:11px;color:#9daea7;margin:11px 0 0;text-align:center}
+.more-build-list{margin:15px 0 0}
