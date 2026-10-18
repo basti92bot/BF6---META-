@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-18",
+  "dataRefresh": "manual_snapshot",
+  "policy": "Mode-specific values never shared across modes; no Rapid Royale weapon pickrate until confirmed.",
+  "modes": {
+    "mp": {
+      "title": "Mehrspieler",
+      "type": "tracked",
+      "source": "https://int.gg/bf6/weapons",
+      "note": "Matchdaten-Stichprobe von INT.GG, Season 5. Nicht alle Battlefield-Spieler.",
+      "label": "Pick-Rate",
+      "bestLabel": "Meta-Score",
+      "bestExplanation": "INT.GG kombiniert Nutzung und Leistungswerte; kein offizieller EA-Score."
+    },
+    "rapid": {
+      "title": "Rapid Royale",
+      "type": "editorial",
+      "source": "https://www.ea.com/de/games/battlefield/redsec/news/battlefield-rapid-royale-mode-guide",
+      "note": "Für Rapid Royale gibt es bislang keine verifizierte öffentliche Waffen-Pick-Rate. Empfehlungen sind eine Einschätzung aus offiziellen Modusregeln und REDSEC-Elite-Werten, keine eigenen Rapid-Messwerte.",
+      "label": "Keine Pick-Rates",
+      "bestLabel": "Einschätzung",
+      "bestExplanation": "Redaktionelle Auswahl: bevorzugt kurze bis mittlere Distanzen und bewegliches Spiel. Aus anderen Modi abgeleitete Hinweise, keine Rapid-Royale-Tierlist.",
+      "recommendations": [
+        {
+          "name": "SCW-10",
+          "category": "smg",
+          "reason": "Starke Nahkampfoption; in der getrennten REDSEC-Elite-Stichprobe häufig genutzt.",
+          "confidence": "abgeleitet"
+        },
+        {
+          "name": "M4A1",
+          "category": "crb",
+          "reason": "Vielseitiger Karabiner für frühe und mittlere Gefechte.",
+          "confidence": "abgeleitet"
+        },
+        {
+          "name": "RSPR",
+          "category": "smg",
+          "reason": "Season-5-MP mit hoher Durchschlagskraft; laut EA aber anspruchsvoll beim Rückstoß.",
+          "confidence": "abgeleitet"
+        },
+        {
+          "name": "CZ3A1",
+          "category": "smg",
+          "reason": "SMG für schnelles Vorrücken, in REDSEC Elite mit gutem Kills-pro-Minute-Wert.",
+          "confidence": "abgeleitet"
+        },
+        {
+          "name": "Mk 24",
+          "category": "ar",
+          "reason": "Schaden und Präzision für längere Sichtlinien; begrenzte Magazingröße.",
+          "confidence": "abgeleitet"
+        }
+      ]
+    },
+    "br": {
+      "title": "REDSEC Battle Royale",
+      "type": "tracked_elite",
+      "source": "https://int.gg/bf6/redsec/weapons",
+      "note": "REDSEC-Elite-Werte von INT.GG (Ranked/Elite-Stichprobe). Nicht mit normalen BR- oder Rapid-Royale-Pick-Rates gleichzusetzen.",
+      "label": "Pick-Rate Elite",
+      "bestLabel": "Kills/Min. Elite",
+      "bestExplanation": "Leistung innerhalb der gelisteten REDSEC-Elite-Waffen nach Kills/Minute. Stichproben können durch Spielerrolle und Auswahl verzerrt sein.",
+      "weapons": [
+        {
+          "name": "HTI",
+          "category": "sniper",
+          "pickRate": 24.19,
+          "winRate": 55.3,
+          "kpm": 0.56
+        },
+        {
+          "name": "M357 TRAIT",
+          "category": "secondary",
+          "pickRate": 9.7,
+          "winRate": 43.9,
+          "kpm": 0.28
+        },
+        {
+          "name": "SCW-10",
+          "category": "smg",
+          "pickRate": 7.15,
+          "winRate": 54.3,
+          "kpm": 1.67
+        },
+        {
+          "name": "CZ3A1",
+          "category": "smg",
+          "pickRate": 5.19,
+          "winRate": 51.3,
+          "kpm": 1.66
+        },
+        {
+          "name": "RSPR",
+          "category": "smg",
+          "pickRate": 3.41,
+          "winRate": 49.9,
+          "kpm": 1.36
+        },
+        {
+          "name": "M4A1",
+          "category": "crb",
+          "pickRate": 3.33,
+          "winRate": 49.7,
+          "kpm": 1.61
+        },
+        {
+          "name": "SG 553R",
+          "category": "crb",
+          "pickRate": 3.04,
+          "winRate": 47.5,
+          "kpm": 1.34
+        },
+        {
+          "name": "EF88",
+          "category": "ar",
+          "pickRate": 2.81,
+          "winRate": 38.8,
+          "kpm": 0.88
+        },
+        {
+          "name": "NVO-228E",
+          "category": "ar",
+          "pickRate": 2.74,
+          "winRate": 53.9,
+          "kpm": 1.3
+        },
+        {
+          "name": "PP19",
+          "category": "smg",
+          "pickRate": 2.46,
+          "winRate": 43.5,
+          "kpm": 0.85
+        },
+        {
+          "name": "KTS100 MK8",
+          "category": "lmg",
+          "pickRate": 2.18,
+          "winRate": 44.7,
+          "kpm": 0.8
+        },
+        {
+          "name": "Mk 24",
+          "category": "ar",
+          "pickRate": 1.91,
+          "winRate": 41,
+          "kpm": 0.97
+        },
+        {
+          "name": "KV9",
+          "category": "smg",
+          "pickRate": 1.7,
+          "winRate": 51.2,
+          "kpm": 1.45
+        },
+        {
+          "name": "SVDM",
+          "category": "dmr",
+          "pickRate": 1.66,
+          "winRate": 54,
+          "kpm": 1
+        },
+        {
+          "name": "B36A4",
+          "category": "ar",
+          "pickRate": 1.44,
+          "winRate": 44.9,
+          "kpm": 0.96
+        },
+        {
+          "name": "SGX",
+          "category": "smg",
+          "pickRate": 1.4,
+          "winRate": 40.4,
+          "kpm": 1.47
+        }
+      ]
+    }
+  },
+  "sources": [
+    {
+      "name": "EA Rapid Royale",
+      "url": "https://www.ea.com/de/games/battlefield/redsec/news/battlefield-rapid-royale-mode-guide",
+      "usage": "Offizielle Modusmechaniken und Regeln",
+      "level": "official"
+    },
+    {
+      "name": "EA Patchnotes",
+      "url": "https://www.ea.com/de/games/battlefield/redsec/news/battlefield-6-game-update-2-1-1-0",
+      "usage": "Offizielle Balanceänderungen",
+      "level": "official"
+    },
+    {
+      "name": "INT.GG Multiplayer",
+      "url": "https://int.gg/bf6/weapons",
+      "usage": "MP: Pick-Rate und Meta-Score",
+      "level": "observational"
+    },
+    {
+      "name": "INT.GG REDSEC Elite",
+      "url": "https://int.gg/bf6/redsec/weapons",
+      "usage": "Ranked/Elite BR: Pick-Rate, Winrate, Kills/Min.",
+      "level": "observational"
+    },
+    {
+      "name": "Tracker.gg",
+      "url": "https://tracker.gg/bf6",
+      "usage": "Profile, Waffen-, Karten- und Spielmodusstatistiken; keine öffentliche Rapid-Waffen-Pick-Rate bestätigt",
+      "level": "supplementary"
+    },
+    {
+      "name": "Riketta/BF6-Weapon-Stats",
+      "url": "https://github.com/Riketta/BF6-Weapon-Stats",
+      "usage": "Mechanik, theoretische TTK in MP und BR; Messannahmen offen",
+      "level": "mechanics"
+    },
+    {
+      "name": "BF Tactics",
+      "url": "https://www.bftactics.com/weapons-database",
+      "usage": "Community-Aufsatzkonfigurationen; nicht modus-/patchübergreifend verifiziert",
+      "level": "guides"
+    },
+    {
+      "name": "WZStats",
+      "url": "https://wzstats.gg/battlefield-6/loadouts",
+      "usage": "REDSEC-Loadout-Referenz; sichtbare Season-Angabe prüfen, nicht als aktuelle Pick-Rate werten",
+      "level": "guides"
+    }
+  ]
+}
