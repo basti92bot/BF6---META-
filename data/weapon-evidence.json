@@ -1,0 +1,31 @@
+{
+  "version": "2026-10-18-smg-s5",
+  "observedAt": "2026-10-18",
+  "source": "https://int.gg/bf6/weapons",
+  "sourceKind": "observed sample, some environments may be mixed",
+  "details": "INT.GG Meta Score includes observed player performance and popularity, not a controlled build-level damage/recoil measurement. Scores can change and are only used to flag outdated community tiers, not shown as a guaranteed DPS rank.",
+  "season5SMSGScore": {
+    "RSPR": 98,
+    "SCW-10": 71,
+    "CZ3A1": 62,
+    "PW7A2": 53,
+    "USG-90": 40,
+    "KV9": 38,
+    "UMG-40": 37,
+    "PW5A3": 33,
+    "SGX": 32,
+    "SL9": 26,
+    "PP19": 24
+  },
+  "minScoreToRecommend": 45,
+  "sourceCrosscheck": "https://worstguidesever.com/battlefield-6-siege-of-vegas-tier-list/",
+  "knownConflict": {
+    "weapon": "SL9",
+    "oldTier": "S",
+    "oldTierSource": "https://www.bftactics.com/weapon-tier-list",
+    "oldTierAsOf": "2026-09-21",
+    "newScore": 26,
+    "season5GuideTier": "D"
+  },
+  "policy": "For MP and Rapid only: If Season-5 SMG Meta Score is known and under 45, do not recommend it. REDSEC should use separate data. Score is a reliability gate, not a claim that the associated loadout performs at this score."
+}
