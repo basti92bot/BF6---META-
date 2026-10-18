@@ -59,14 +59,6 @@ function card(title,contents,url,linkText){
   return '<article class="info-card"><h3>'+safe(title)+'</h3><p>'+safe(contents)+'</p>'+
   (url?'<p><a target="_blank" rel="noopener noreferrer" href="'+attr(url)+'">'+safe(linkText||"Quelle öffnen")+' ↗</a></p>':'')+'</article>';
 }
-function showUpdates(){
-  const st=state.status||{}, p=st.latestPatch||{};
-  $("update-list").innerHTML =
-  card("Offizieller EA-Patch: "+(p.version||"unbekannt"),"Erkannter Spielstand: "+(p.announcedAt||"Datum unbestätigt")+". Die Auswertung darf erst nach Prüfung als aktuell gelten.",p.url||"https://www.ea.com/games/battlefield/battlefield-6/news","EA-Patchnotes")+
-  card("Waffennutzung · Stand "+state.trend.observedAt,"Pick-Rates sind ein geprüfter Snapshot von INT.GG. Noch keine automatische Übernahme der täglichen Nutzungsdaten. Ein täglicher Quellencheck allein aktualisiert diese Werte nicht.",state.trend.detailSource,"Aktuelle Pick-Rates direkt prüfen")+
-  card("Tägliche Quellenprüfung", "Letzter erfolgreicher Lauf: "+timeString(st.lastSuccessAt)+". "+(st.reviewNeeded?"Eine Prüfung der Meta-Daten ist weiterhin erforderlich.":"Kein zusätzlicher Prüfhinweis im Status."),"https://github.com/basti92bot/BF6---META-/actions","GitHub Actions öffnen")+
-  card("Build-Daten", "Aufsätze stammen aus einem Community-Guide. Neue Updates können sie ungültig machen. Fehlende Aufsätze werden nicht geschätzt.",state.builds?.sourceBuilds,"Build-Quelle ansehen");
-}
 function details(name){
   const c=findCat(name), w=findBuild(name), st=findTracked(name), pic=picture(name,c),patch=state.status?.latestPatch?.version;
   const entries=w?Object.entries(w.attachments).map(([type,val])=>'<div class="attachment"><span>'+safe(type)+'</span><strong>'+safe(val)+'</strong></div>').join(""):"";
@@ -109,7 +101,7 @@ async function init(){
     [state.trend,state.catalog,state.builds,state.status]=await Promise.all(responses.map((r,i)=>r.ok?r.json():null));
     if(!Array.isArray(state.trend.popular)||!Array.isArray(state.catalog.classes))throw new Error("Datenformat unvollständig");
     $("data-note").textContent="Pick-Rates: "+state.trend.observedAt+" · Quelle INT.GG · Tägliche Quellenprüfung separat";
-    showPopular();showBest();showClasses();showUpdates();
+    showPopular();showBest();showClasses();
   }catch(e){$("data-note").textContent="Datenfehler: "+e.message;for(const id of ["popular-list","class-list","best-list"])$(id).innerHTML='<div class="empty">Daten derzeit nicht verfügbar.</div>';}
 }
 if("serviceWorker" in navigator && location.protocol!=="file:")window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
