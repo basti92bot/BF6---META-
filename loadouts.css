@@ -122,3 +122,53 @@ footer{margin-top:15px;padding:16px 0 24px;font-size:9px}
   .mode-tabs button{font-size:9px}
   .hero h1{font-size:22px}
 }
+
+/* v1.0.0: verifiable multi-build comparison */
+.compare-open{display:block;width:100%;border:1px solid #b2da80;background:#34482d;color:#e4ffbf;border-radius:5px;min-height:40px;padding:9px 12px;margin:11px 0 3px;cursor:pointer;font-size:11px;font-weight:900;letter-spacing:.3px;text-align:center}
+.compare-open:focus-visible{outline:2px solid #efffc9;outline-offset:2px}
+.compare-backdrop{position:fixed;inset:0;z-index:60;background:rgba(2,8,9,.83);backdrop-filter:blur(2px)}
+.compare-modal{position:fixed;inset:4vh max(12px,calc((100vw - 780px)/2)) 4vh;z-index:61;border:1px solid #6f856e;border-radius:11px;background:#182127;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 100px #0008}
+.compare-modal[hidden],.compare-backdrop[hidden]{display:none!important}
+.compare-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 19px;background:#24332d;border-bottom:1px solid #536857}
+.compare-top small{display:block;color:var(--lime);font-size:10px;letter-spacing:1.3px;font-weight:800}
+.compare-top h2{font-size:23px;margin:2px 0 0;line-height:1.1;letter-spacing:-.5px}
+.compare-close{background:#19221e;border:1px solid #728271;border-radius:6px;color:white;width:40px;height:40px;font-size:28px;line-height:1;flex:0 0 40px;cursor:pointer}
+.compare-body{overflow-y:auto;overscroll-behavior:contain;padding:15px 19px 32px}
+.compare-note{color:#d1dfd2;font-size:12px;margin:0 0 10px}
+.compare-options{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 15px}
+.compare-choice{font-size:10px;padding:5px 7px;border:1px solid #4c6257;border-radius:4px;color:#bbcdc3}
+.compare-selects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0 0 15px}
+.compare-selects label{display:grid;gap:6px;color:var(--lime);font-weight:800;letter-spacing:.7px;font-size:10px}
+.compare-selects select{max-width:100%;min-width:0;appearance:auto;background:#2b3939;color:white;border:1px solid #647c66;border-radius:5px;padding:10px 7px;font-size:12px;min-height:43px}
+.compare-selects select:disabled{color:#859991;opacity:.6}
+.compare-stats{padding:7px 10px;background:#1d292b;border:1px solid #40564f;border-radius:7px;margin:0 0 13px}
+.compare-stat-head,.compare-metric{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:7px;align-items:center}
+.compare-stat-head{font-size:10px;color:#a2b3ac;font-weight:800;padding:5px 0 7px}
+.compare-stat-head b{text-align:center;color:var(--lime)}
+.compare-metric{padding:8px 0;border-top:1px solid #3e514a;font-size:12px}
+.compare-metric span{text-align:center;font-weight:800}
+.compare-metric small{color:#b0c0b8;font-size:11px}
+.compare-delta{color:var(--lime);font-size:11px;font-weight:800;margin:9px 0 4px}
+.compare-table{border:1px solid #40554b;border-radius:7px;overflow:hidden}
+.compare-row{display:grid;grid-template-columns:1fr 1.2fr 1.2fr;gap:8px;align-items:center;border-top:1px solid #36443d;padding:9px 10px;background:#1b2728}
+.compare-row.changed{background:#273527}
+.compare-row:first-child{border-top:0}
+.compare-row span{font-size:11px;overflow-wrap:anywhere;line-height:1.35}
+.compare-row span:first-child{color:#aabdb2}
+.compare-row span:not(:first-child){color:#f3f5ee;font-weight:750}
+.compare-table-head{background:#344337}
+.compare-table-head strong{font-size:10px;color:var(--lime);letter-spacing:.4px}
+.compare-source{display:flex;flex-wrap:wrap;gap:10px;margin:15px 0}
+.compare-source a{color:var(--lime);font-size:11px;font-weight:850;text-decoration:none}
+.compare-analyzer{display:block;width:100%;background:#defc9c;color:#18221b;text-decoration:none;text-align:center;border-radius:5px;padding:13px 10px;font-size:11px;letter-spacing:.4px;font-weight:950}
+.compare-caveat{font-size:10px;line-height:1.6;color:#97a99d;margin:10px 0}
+body.compare-active{overflow:hidden}
+@media(max-width:600px){
+  .compare-modal{inset:0 0 0;border:0;border-radius:0;height:100dvh}
+  .compare-top{padding:12px 13px}
+  .compare-top h2{font-size:20px}
+  .compare-body{padding:11px 12px calc(28px + env(safe-area-inset-bottom))}
+  .compare-row{gap:6px;padding:8px 7px}
+  .compare-row span{font-size:10px}
+  .compare-opts{font-size:9px}
+}
