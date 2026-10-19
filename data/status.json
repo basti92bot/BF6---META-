@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "checkedAt": null,
-  "lastSuccessAt": null,
+  "checkedAt": "2026-10-19T14:44:40.070Z",
+  "lastSuccessAt": "2026-10-19T14:44:40.070Z",
   "weaponDataChangedAt": "2026-10-18",
   "weaponDataSource": "https://github.com/bdeland/bf6_guns/blob/main/data.csv",
   "latestPatch": {
@@ -15,14 +15,40 @@
     {
       "name": "EA Patchnotes",
       "url": "https://www.ea.com/games/battlefield/battlefield-6/news?type=game-updates",
-      "ok": null
+      "ok": true
     },
     {
       "name": "BF6 Community Waffenwerte",
       "url": "https://github.com/bdeland/bf6_guns",
-      "ok": null
+      "ok": true
+    },
+    {
+      "name": "Meta-Guide Season 5",
+      "url": "https://worstguidesever.com/battlefield-6-siege-of-vegas-tier-list/",
+      "ok": true
+    },
+    {
+      "name": "Build-Guide BF Tactics",
+      "url": "https://www.bftactics.com/weapons-database",
+      "ok": true
+    },
+    {
+      "name": "INT.GG Multiplayer Waffen",
+      "url": "https://int.gg/bf6/weapons",
+      "ok": true
+    },
+    {
+      "name": "INT.GG REDSEC Elite Waffen",
+      "url": "https://int.gg/bf6/redsec/weapons",
+      "ok": true
+    },
+    {
+      "name": "EA Rapid Royale Guide",
+      "url": "https://www.ea.com/de/games/battlefield/redsec/news/battlefield-rapid-royale-mode-guide",
+      "ok": true
     }
   ],
   "changes": [],
-  "errors": []
+  "errors": [],
+  "modeSourceCheckOnly": "INT.GG Verfügbarkeit täglich geprüft. Pick-Rates bleiben manuell übernommene Momentaufnahmen; keine automatische Zahlensynchronisierung."
 }
