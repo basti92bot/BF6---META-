@@ -3,8 +3,8 @@
   const $ = id => document.getElementById(id);
   const KEY = "bf6-winlost-v1";
   const PLATFORMS = {ea:"EA / PC",xbox:"XBOX",psn:"PLAYSTATION",steam:"STEAM"};
-  // Only the old shipped default roster is retired. New user-added players are not affected.
-  const RETIRED_DEFAULT_NAMES = new Set(["rockmasterr","rockbotmasterr","strausbot","botuturn"]);
+  // Remove only the obsolete BOT defaults. RockmasterR is deliberately retained.
+  const RETIRED_DEFAULT_NAMES = new Set(["rockbotmasterr","strausbot","botuturn"]);
   const safe = value => String(value ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const num = value => {
     if(value===null||value===undefined||String(value).trim()==="")return null;
