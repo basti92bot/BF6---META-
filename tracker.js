@@ -2,104 +2,53 @@
 (() => {
   const $ = id => document.getElementById(id);
   const KEY = "bf6-winlost-v1";
-  const MODES = {mp:"MEHRSPIELER",rapid:"RAPID ROYALE",br:"BATTLE ROYALE"};
   const PLATFORMS = {ea:"EA / PC",xbox:"XBOX",psn:"PLAYSTATION",steam:"STEAM"};
-  const TEAMMATES = ["rockbotmasterR","strausbot","botuturn"];
-  const cleanTeammates = values => Array.isArray(values) ? TEAMMATES.filter(name => values.includes(name)) : [];
-  const safe = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const seed = {matches:[],players:[],mode:"mp",selectedTeammates:[],trackedPlayer:""};
-  const state = (() => {try {const data = JSON.parse(localStorage.getItem(KEY));return {matches:Array.isArray(data?.matches)?data.matches.filter(m=>["win","loss"].includes(m.result)&&MODES[m.mode]).slice(0,5000):[],players:Array.isArray(data?.players)?data.players.filter(p=>typeof p.name==="string"&&p.name&&PLATFORMS[p.platform]).slice(0,16).map(p=>({name:p.name,platform:p.platform})):[],mode:MODES[data?.mode]?data.mode:"mp",selectedTeammates:cleanTeammates(data?.selectedTeammates),trackedPlayer:typeof data?.trackedPlayer==="string"?data.trackedPlayer:""};}catch{return {...seed};}})();
-  let filter = "all";
-  let editingMatchId = null;
-  let pending = new Set();
-  let initialAutoSync = false;
-  const save = () => {try{localStorage.setItem(KEY, JSON.stringify(state));return true;}catch{return false;}};
-  const int = value => {const n=Number(String(value ?? "").replace(/,/g,""));return Number.isFinite(n)?Math.round(n).toLocaleString("de-DE"):null;};
-  const number = value => {if(value===null||value===undefined||String(value).trim()==="")return null;const n=Number(String(value).replace("%","").replace(",", "."));return Number.isFinite(n)?n:null;};
-  const metric = (obj,keys) => {for(const key of keys){if(obj?.[key]!==undefined && obj[key]!==null){const v=number(obj[key]);if(v!==null)return v;}}return null;};
-  const escCsv = value => '"'+String(value).replace(/"/g,'""')+'"';
-  const all = () => state.matches.slice().sort((a,b)=>b.ts-a.ts);
-  const modeMatches = () => filter==="all"?all():all().filter(m=>m.mode===filter);
-  function renderMatch(m){
-    const isWin=m.result==="win";
-    const selected=cleanTeammates(m.participants);
-    const names=isWin?'<small class="contributors">'+(selected.length?'MITGEWONNEN: '+safe(selected.join(", ")):'MITGEWONNEN: nicht erfasst')+'</small>':"";
-    const edit=isWin?'<button type="button" class="edit-match" data-edit-match="'+safe(m.id)+'" aria-label="Mitspieler dieses Siegs bearbeiten">✎</button>':"";
-    const editor=editingMatchId===m.id&&isWin?
-      '<div class="history-editor"><span>MITGEWINNER BEARBEITEN</span><div class="history-editor-options">'+
-      TEAMMATES.map(name=>'<button type="button" data-edit-teammate="'+safe(name)+'" data-for-match="'+safe(m.id)+'" class="'+(selected.includes(name)?"active":"")+'" aria-pressed="'+String(selected.includes(name))+'">'+safe(name)+'</button>').join("")+
-      '</div><button type="button" class="edit-done" data-close-edit>FERTIG ✓</button></div>':"";
-    return '<div class="history-entry"><div class="match-row"><span class="match-result '+(isWin?"win":"loss")+'">'+(isWin?"WIN":"LOST")+'</span><span class="match-main">'+safe(MODES[m.mode])+'<small>'+safe(new Date(m.ts).toLocaleString("de-DE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}))+'</small>'+names+'</span><div class="match-actions">'+edit+'<button type="button" class="match-remove" data-remove-match="'+safe(m.id)+'" aria-label="Match löschen">×</button></div></div>'+editor+'</div>';
-  }
-  function render(){
-    const data=modeMatches(),wins=data.filter(m=>m.result==="win").length,losses=data.length-wins;
-    $("wins").textContent=wins;$("losses").textContent=losses;
-    $("winrate").textContent=data.length?Math.round(wins/data.length*100)+"%":"0%";
-    let streak=0;if(data.length){const result=data[0].result;for(const m of data){if(m.result!==result)break;streak++;}$("streak").textContent=(result==="win"?"W":"L")+streak;}else $("streak").textContent="–";
-    $("undo").disabled=!state.matches.length;
-    $("export").disabled=!state.matches.length;
-    $("history-count").textContent=data.length+" Matches"+(filter==="all"?"":" im Filter");
-    $("history-list").innerHTML=data.length?data.slice(0,60).map(renderMatch).join(""):'<p class="empty">Noch keine Matches erfasst.</p>';
-    document.querySelectorAll("[data-filter]").forEach(b=>{const active=b.dataset.filter===filter;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));});
-    $("match-mode").value=state.mode;
-    document.querySelectorAll("[data-teammate]").forEach(button=>{
-      const active=state.selectedTeammates.includes(button.dataset.teammate);
-      button.classList.toggle("active",active);
-      button.setAttribute("aria-pressed",String(active));
-    });
-    $("refresh-all").disabled=!state.players.length;
-    renderPlayers();
-    renderAuto();
-  }
-  function addMatch(result){
-    const m={id:String(Date.now())+"-"+Math.random().toString(36).slice(2,8),mode:state.mode,result,ts:Date.now(),participants:result==="win"?cleanTeammates(state.selectedTeammates):[]};
-    state.matches.push(m);filter="all";if(state.matches.length>5000)state.matches.shift();
-    const stored=save();
-    $("record-feedback").textContent=(result==="win"?"WIN":"LOST")+" gespeichert · "+MODES[state.mode]+(result==="win"&&m.participants.length?" · mit "+m.participants.join(", "):"")+(stored?"":" · Speicherung auf diesem Gerät nicht möglich");
-    render();
-  }
-  function removeMatch(id){state.matches=state.matches.filter(m=>m.id!==id);if(editingMatchId===id)editingMatchId=null;save();render();}
-  const fmt = v => v===null?"–":Number(v).toLocaleString("de-DE",{maximumFractionDigits:2});
-  function playerKey(p){return p.platform+":"+p.name.toLowerCase();}
-  const playerData = new Map();
-  function activePlayer(){
-    const selected=state.players.find(p=>playerKey(p)===state.trackedPlayer);
-    return selected||state.players[0]||null;
-  }
-  function renderAuto(){
-    const current=activePlayer();
-    const desired=current?playerKey(current):"";
-    if(state.trackedPlayer!==desired){state.trackedPlayer=desired;save();}
-    const select=$("tracked-player");
-    select.innerHTML=current?state.players.map(p=>'<option value="'+safe(playerKey(p))+'">'+safe(p.name)+' · '+safe(PLATFORMS[p.platform])+'</option>').join(""):'<option value="">EA-ID hinzufügen</option>';
-    select.value=desired;select.disabled=!current;
-    $("refresh-tracked").disabled=!current||pending.has(desired);
-    const data=current?playerData.get(desired):null;
-    const stats=data?.stats||{};
-    const counter=v=>{
-      if(v===null||v===undefined)return null;
-      const text=String(v).trim();
-      if(!/^\d{1,3}(?:\.\d{3})*$|^\d+$/.test(text))return null;
-      const n=Number(text.replace(/\./g,""));
-      return Number.isSafeInteger(n)?n:null;
-    };
-    const wins=counter(stats.wins),losses=counter(stats.losses);
-    $("auto-wins").textContent=wins===null?"–":wins.toLocaleString("de-DE");
-    $("auto-losses").textContent=losses===null?"–":losses.toLocaleString("de-DE");
-    $("auto-winrate").textContent=stats.winrate??(wins!==null&&losses!==null&&wins+losses>0?(100*wins/(wins+losses)).toLocaleString("de-DE",{maximumFractionDigits:1})+"%":"–");
-    $("auto-matches").textContent=wins!==null&&losses!==null?(wins+losses).toLocaleString("de-DE"):"–";
-    $("auto-status").textContent=!current?"Noch kein Spieler hinterlegt. Unten unter EA-IDs hinzufügen."
-      :pending.has(desired)?"Lade Rapid-Royale-Daten für "+current.name+"…"
-      :data?.message||"Rapid-Royale-Daten noch nicht geladen.";
-  }
-  function renderPlayers(){
-    $("player-list").innerHTML=state.players.map(p=>{
-      const key=playerKey(p),d=playerData.get(key),loading=pending.has(key);
-      const stats=d?.stats||{};
-      const vals=[["K/D",stats.kd],["KILLS",stats.kills],["DEATHS",stats.deaths],["WINS",stats.wins],["LOSSES",stats.losses],["WINRATE",stats.winrate],["ACCURACY",stats.accuracy],["REVIVES",stats.revives],["ASSISTS",stats.assists]];
-      return '<article class="player-card"><div class="player-title"><div><strong>'+safe(p.name)+'</strong><small>'+safe(PLATFORMS[p.platform])+'</small></div><div class="player-actions"><button type="button" data-refresh-player="'+safe(key)+'" '+(loading?'disabled':'')+'>'+(loading?'LÄDT…':'↻ LADEN')+'</button><button type="button" class="remove-player" data-remove-player="'+safe(key)+'" aria-label="Spieler entfernen">×</button></div></div><div class="player-metrics">'+vals.map(([label,value])=>'<div class="player-metric"><small>'+label+'</small><b>'+safe(value===null||value===undefined?"–":value)+'</b></div>').join("")+'</div><p class="player-status">'+safe(loading?'API wird abgefragt…':d?.message||"Noch nicht abgerufen")+'</p></article>';
-    }).join("");
-  }
+  const safe = value => String(value ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const num = value => {
+    if(value===null||value===undefined||String(value).trim()==="")return null;
+    const n=Number(String(value).replace("%","").replace(",","."));
+    return Number.isFinite(n)?n:null;
+  };
+  const number = num;
+  const int = value => {
+    const n=num(value);
+    return n===null?null:Math.round(n).toLocaleString("de-DE");
+  };
+  const metric = (obj,keys) => {
+    for(const k of keys){const n=num(obj?.[k]);if(n!==null)return n;}
+    return null;
+  };
+  const fmt = n => n===null?"–":Number(n).toLocaleString("de-DE",{maximumFractionDigits:2});
+  const dateTime = t => new Date(t).toLocaleString("de-DE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+  const countFrom = value => {
+    if(value===null||value===undefined)return null;
+    const s=String(value).trim();
+    if(!/^(?:\d+|\d{1,3}(?:\.\d{3})+)$/.test(s))return null;
+    const n=Number(s.replace(/\./g,""));
+    return Number.isSafeInteger(n)&&n>=0?n:null;
+  };
+  const playerKey = p => p.platform+":"+p.name.toLowerCase();
+  const loadState = () => {
+    let data={};
+    try{data=JSON.parse(localStorage.getItem(KEY))||{}}catch{}
+    const players=Array.isArray(data.players)?data.players.filter(p=>typeof p?.name==="string"&&p.name.trim()&&PLATFORMS[p.platform]).slice(0,16).map(p=>({name:p.name,platform:p.platform})):[];
+    const snapshots={};
+    if(data.snapshots&&typeof data.snapshots==="object"&&!Array.isArray(data.snapshots)){
+      for(const p of players){
+        const key=playerKey(p);
+        const list=data.snapshots[key];
+        if(!Array.isArray(list))continue;
+        snapshots[key]=list.filter(x=>Number.isFinite(x?.ts)&&x.ts>0&&x.ts<=Date.now()+3600000&&x.values&&typeof x.values==="object"&&["wins","losses","kills","deaths"].some(k=>Number.isSafeInteger(x.values[k])&&x.values[k]>=0)).slice(-2500).sort((a,b)=>a.ts-b.ts);
+      }
+    }
+    // Keep the existing manual records as-is. The manual UI is retired, not deleted.
+    return {...data,players,trackedPlayer:typeof data.trackedPlayer==="string"?data.trackedPlayer:"",snapshots};
+  };
+  const state=loadState();
+  const playerData=new Map();
+  const pending=new Set();
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));return true}catch{return false}};
+  const activePlayer=()=>state.players.find(p=>playerKey(p)===state.trackedPlayer)||state.players[0]||null;
   function unpack(data){
     if(!data||typeof data!=="object")return {};
     const candidates=[data,data.stats,data.overview,data.data,data.data?.stats,data.data?.overview,data.data?.playerStats,data.playerStats,data.data?.global,data.global];
@@ -161,6 +110,92 @@
     options.sort((a,b)=>Number(a.seasonal)-Number(b.seasonal)||Number(b.combined)-Number(a.combined)||Number(b.trios)-Number(a.trios)||b.count-a.count||a.path.length-b.path.length);
     return options[0] || null;
   }
+
+  function parseSnapshot(stats){
+    const values={};
+    for(const key of ["wins","losses","kills","deaths","assists","revives"])values[key]=countFrom(stats?.[key]);
+    if(Object.values(values).every(v=>v===null))return null;
+    return {ts:Date.now(),values};
+  }
+  function recordSnapshot(player,stats){
+    const point=parseSnapshot(stats);
+    if(!point)return;
+    const key=playerKey(player),list=state.snapshots[key]||[];
+    const last=list[list.length-1];
+    // Limit stored points: at least every 15 minutes or when the counters change.
+    const changed=!last||Object.keys(point.values).some(k=>point.values[k]!==last.values[k]);
+    if(changed||point.ts-(last?.ts||0)>=15*60*1000)list.push(point);
+    const minTime=Date.now()-45*86400000;
+    state.snapshots[key]=list.filter(x=>x.ts>=minTime).slice(-2500);
+    save();
+  }
+  function diffCounts(now,then,key){
+    const current=now?.values[key],before=then?.values[key];
+    if(!Number.isSafeInteger(current)||!Number.isSafeInteger(before)||current<before)return null;
+    return current-before;
+  }
+  function periodStats(key,days,maxGap){
+    const points=state.snapshots[key]||[];
+    const last=points[points.length-1];
+    if(!last)return null;
+    const target=last.ts-days*86400000;
+    const earlier=points.filter(p=>p.ts<=target&&target-p.ts<=maxGap).at(-1);
+    if(!earlier)return null;
+    const wins=diffCounts(last,earlier,"wins"),losses=diffCounts(last,earlier,"losses");
+    const kills=diffCounts(last,earlier,"kills"),deaths=diffCounts(last,earlier,"deaths");
+    const matches=wins!==null&&losses!==null?wins+losses:null;
+    const winrate=matches&&matches>0?100*wins/matches:null;
+    const kd=kills!==null&&deaths!==null?(deaths===0?(kills===0?null:kills):kills/deaths):null;
+    return {wins,losses,kills,deaths,winrate,kd,from:earlier.ts,to:last.ts};
+  }
+  function drawPeriod(prefix,data){
+    for(const key of ["wins","losses","kills","deaths"]){
+      $(prefix+"-"+key).textContent=data?.[key]===null||data?.[key]===undefined?"–":data[key].toLocaleString("de-DE");
+    }
+    $(prefix+"-winrate").textContent=data?.winrate===null||data?.winrate===undefined?"–":fmt(data.winrate)+"%";
+    $(prefix+"-kd").textContent=data?.kd===null||data?.kd===undefined?"–":fmt(data.kd);
+    $(prefix+"-window").textContent=data?"Vergleich ab "+dateTime(data.from):"Noch keine passenden Vergleichsdaten";
+  }
+  function renderPeriods(){
+    const current=activePlayer();
+    const key=current?playerKey(current):"";
+    const day=key?periodStats(key,1,3*3600000):null;
+    const week=key?periodStats(key,7,18*3600000):null;
+    drawPeriod("day",day);drawPeriod("week",week);
+    const points=state.snapshots[key]||[];
+    $("period-note").textContent=!current?"Zuerst unter EA-IDs einen Spieler hinzufügen."
+      :!points.length?"Die Aufzeichnung beginnt beim ersten erfolgreichen Rapid-Royale-Abruf."
+      :"Aufzeichnung seit "+dateTime(points[0].ts)+". Für den Vergleich benötigen wir einen Messstand vor 24 Stunden beziehungsweise vor 7 Tagen. Fehlt dieser, bleiben die Felder leer. Die Zeiten sind Näherungswerte, keine aus der API gelieferten Tagesberichte.";
+  }
+  function renderAuto(){
+    const current=activePlayer(),key=current?playerKey(current):"";
+    if(state.trackedPlayer!==key){state.trackedPlayer=key;save();}
+    const select=$("tracked-player");
+    select.innerHTML=current?state.players.map(p=>'<option value="'+safe(playerKey(p))+'">'+safe(p.name)+' · '+safe(PLATFORMS[p.platform])+'</option>').join(""):'<option value="">EA-ID hinzufügen</option>';
+    select.value=key;
+    select.disabled=!current;
+    $("refresh-tracked").disabled=!current||pending.has(key);
+    const d=current?playerData.get(key):null;
+    const stats=d?.stats||{};
+    const wins=countFrom(stats.wins),losses=countFrom(stats.losses);
+    $("auto-wins").textContent=wins===null?"–":wins.toLocaleString("de-DE");
+    $("auto-losses").textContent=losses===null?"–":losses.toLocaleString("de-DE");
+    $("auto-winrate").textContent=stats.winrate??(wins!==null&&losses!==null&&wins+losses>0?fmt(100*wins/(wins+losses))+"%":"–");
+    $("auto-matches").textContent=wins!==null&&losses!==null?(wins+losses).toLocaleString("de-DE"):"–";
+    $("auto-status").textContent=!current?"Noch kein Spieler hinterlegt. Unten EA-ID hinzufügen."
+      :pending.has(key)?"Lade Rapid-Royale-Daten für "+current.name+"…"
+      :d?.message||"Rapid-Royale-Daten noch nicht geladen.";
+    renderPeriods();
+  }
+  function renderPlayers(){
+    $("player-list").innerHTML=state.players.map(p=>{
+      const key=playerKey(p),d=playerData.get(key),loading=pending.has(key);
+      const stats=d?.stats||{};
+      const vals=[["K/D",stats.kd],["KILLS",stats.kills],["DEATHS",stats.deaths],["WINS",stats.wins],["LOSSES",stats.losses],["WINRATE",stats.winrate],["ACCURACY",stats.accuracy],["REVIVES",stats.revives],["ASSISTS",stats.assists]];
+      return '<article class="player-card"><div class="player-title"><div><strong>'+safe(p.name)+'</strong><small>'+safe(PLATFORMS[p.platform])+'</small></div><div class="player-actions"><button type="button" data-refresh-player="'+safe(key)+'" '+(loading?'disabled':'')+'>'+(loading?'LÄDT…':'↻ LADEN')+'</button><button type="button" class="remove-player" data-remove-player="'+safe(key)+'" aria-label="Spieler entfernen">×</button></div></div><div class="player-metrics">'+vals.map(([label,value])=>'<div class="player-metric"><small>'+label+'</small><b>'+safe(value===null||value===undefined?"–":value)+'</b></div>').join("")+'</div><p class="player-status">'+safe(loading?'API wird abgefragt…':d?.message||"Noch nicht abgerufen")+'</p></article>';
+    }).join("");
+    $("refresh-all").disabled=!state.players.length;
+  }
   async function fetchPlayer(p){
     const key=playerKey(p);if(pending.has(key))return;
     pending.add(key);renderPlayers();renderAuto();
@@ -168,113 +203,79 @@
       const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
       const request=platform=>{
         const query=new URLSearchParams({name:p.name,platform,format_values:"false",seperation:"true"});
-        return fetch("https://api.gametools.network/bf6/stats/?"+query.toString(),{
-          signal:controller.signal,headers:{"Accept":"application/json"}
-        });
+        return fetch("https://api.gametools.network/bf6/stats/?"+query.toString(),{signal:controller.signal,headers:{"Accept":"application/json"}});
       };
       let response,usedFallback=false;
       try{
         response=await request(p.platform);
-        // BF6 uses a shared EA identity namespace. Retry a failed Xbox lookup as EA.
         if(response.status===404&&p.platform==="xbox"){
           response=await request("ea");
           usedFallback=response.ok;
         }
       }finally{clearTimeout(timer);}
-      if(response.status===404)throw Object.assign(new Error("Spieler nicht gefunden (HTTP 404). Prüfe die exakte EA-ID. Im Zweifel ist der Xbox-Gamertag anders."),{status:404});
+      if(response.status===404)throw Object.assign(new Error("Spieler nicht gefunden (HTTP 404). Prüfe die exakte EA-ID."),{status:404});
       if(!response.ok)throw Object.assign(new Error("GameTools antwortet mit HTTP "+response.status),{status:response.status});
       const json=await response.json();
       const rapid=findRapidMode(json);
-      if(!rapid) {
-        playerData.set(key,{stats:{},message:"Spieler gefunden, aber keine eindeutig getrennten Rapid-Royale-Werte verfügbar. Keine Gesamtstatistiken angezeigt."});
+      if(!rapid){
+        playerData.set(key,{stats:{},message:"Spieler gefunden, keine getrennten Rapid-Royale-Daten verfügbar. Keine Gesamtstatistiken angezeigt."});
         $("api-feedback").textContent="Profil gefunden. Rapid-Royale-Daten fehlen in der API-Antwort.";
         return;
       }
+      recordSnapshot(p,rapid.parsed.stats);
       const suffix=rapid.seasonal?" · nur Saisonwerte":"";
-      const source=usedFallback?" · Suche erfolgreich über EA/PC":"";
-      playerData.set(key,{stats:rapid.parsed.stats,message:rapid.modeTitle+suffix+source+" · GameTools.Network · "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})});
-      $("api-feedback").textContent="Rapid-Royale-Statistiken geladen. Keine Gesamtwerte.";
+      const fallback=usedFallback?" · über EA/PC gefunden":"";
+      playerData.set(key,{stats:rapid.parsed.stats,message:rapid.modeTitle+suffix+fallback+" · GameTools.Network · "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})});
+      $("api-feedback").textContent="Rapid-Royale-Statistiken geladen. Verlauf lokal gespeichert.";
     }catch(err){
       const message=err.status===404?err.message
-        :err.name==="AbortError"?"Zeitüberschreitung bei GameTools. Erneut laden."
-        :err instanceof TypeError?"Verbindung zur API fehlgeschlagen. Netzwerk oder Browser-CORS prüfen."
+        :err.name==="AbortError"?"Zeitüberschreitung. Erneut laden."
+        :err instanceof TypeError?"API-Verbindung fehlgeschlagen. Netzwerk oder Browser-CORS prüfen."
         :err.message||"Unbekannter API-Fehler.";
       playerData.set(key,{stats:{},message});
       $("api-feedback").textContent="Rapid-Royale-Statistiken für "+p.name+" konnten nicht geladen werden.";
     }finally{pending.delete(key);if(state.players.some(x=>playerKey(x)===key)){renderPlayers();renderAuto();}}
   }
   async function refreshAll(){
-    for(const player of state.players){await fetchPlayer(player);}
+    for(const p of state.players){await fetchPlayer(p);}
   }
-  function exportCsv(){
-    if(!state.matches.length)return;
-    const rows=[["Datum","Ergebnis","Modus","Mitgewonnen"],...all().map(m=>[new Date(m.ts).toISOString(),m.result==="win"?"WIN":"LOST",MODES[m.mode],m.result==="win"?cleanTeammates(m.participants).join(", "):""])];
-    const blob=new Blob(["\ufeff"+rows.map(r=>r.map(escCsv).join(";")).join("\r\n")],{type:"text/csv;charset=utf-8"});
-    const link=document.createElement("a"),url=URL.createObjectURL(blob);
-    link.href=url;link.download="bf6-winlost-"+new Date().toISOString().slice(0,10)+".csv";link.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
-  }
-  $("teammate-picks").addEventListener("click",e=>{
-    const button=e.target.closest("[data-teammate]");
-    if(!button||!TEAMMATES.includes(button.dataset.teammate))return;
-    const name=button.dataset.teammate;
-    state.selectedTeammates=TEAMMATES.filter(n=>n===name?!state.selectedTeammates.includes(n):state.selectedTeammates.includes(n));
-    save();render();
+  $("tracked-player").addEventListener("change",e=>{
+    const p=state.players.find(x=>playerKey(x)===e.target.value);
+    if(!p)return;state.trackedPlayer=playerKey(p);save();renderAuto();
+    if(!playerData.has(playerKey(p)))fetchPlayer(p);
   });
-  $("record-win").addEventListener("click",()=>addMatch("win"));
-  $("record-loss").addEventListener("click",()=>addMatch("loss"));
-  $("match-mode").addEventListener("change",e=>{state.mode=e.target.value;save();});
-  document.querySelector(".filter-tabs").addEventListener("click",e=>{const button=e.target.closest("[data-filter]");if(!button)return;filter=button.dataset.filter;render();});
-  $("history-list").addEventListener("click",e=>{
-    const remove=e.target.closest("[data-remove-match]");
-    if(remove){removeMatch(remove.dataset.removeMatch);return;}
-    const edit=e.target.closest("[data-edit-match]");
-    if(edit){editingMatchId=editingMatchId===edit.dataset.editMatch?null:edit.dataset.editMatch;render();return;}
-    const toggle=e.target.closest("[data-edit-teammate]");
-    if(toggle&&TEAMMATES.includes(toggle.dataset.editTeammate)){
-      const match=state.matches.find(m=>m.id===toggle.dataset.forMatch&&m.result==="win");
-      if(!match)return;
-      const old=cleanTeammates(match.participants),name=toggle.dataset.editTeammate;
-      match.participants=TEAMMATES.filter(n=>n===name?!old.includes(n):old.includes(n));
-      save();render();return;
-    }
-    if(e.target.closest("[data-close-edit]")){editingMatchId=null;render();}
-  });
-  $("undo").addEventListener("click",()=>{if(!state.matches.length)return;state.matches.pop();save();render();$("record-feedback").textContent="Letzter Eintrag rückgängig gemacht.";});
-  $("export").addEventListener("click",exportCsv);
-  $("clear-matches").addEventListener("click",()=>{if(!state.matches.length||!confirm("Wirklich alle erfassten Matches auf diesem Gerät löschen?"))return;state.matches=[];save();render();$("record-feedback").textContent="Match-Historie gelöscht.";});
-  $("player-form").addEventListener("submit",e=>{e.preventDefault();const name=$("player-name").value.trim(),platform=$("player-platform").value;if(!name||!PLATFORMS[platform])return;
-    if(state.players.some(p=>playerKey(p)===playerKey({name,platform}))){$("api-feedback").textContent="Spieler bereits gespeichert.";return;}
+  $("refresh-tracked").addEventListener("click",()=>{const p=activePlayer();if(p)fetchPlayer(p);});
+  $("player-form").addEventListener("submit",e=>{
+    e.preventDefault();
+    const name=$("player-name").value.trim(),platform=$("player-platform").value;
+    if(!name||!PLATFORMS[platform])return;
+    const p={name,platform},key=playerKey(p);
+    if(state.players.some(x=>playerKey(x)===key)){$("api-feedback").textContent="Spieler bereits gespeichert.";return;}
     if(state.players.length>=16){$("api-feedback").textContent="Maximal 16 Spieler möglich.";return;}
-    const p={name,platform};state.players.push(p);if(!state.trackedPlayer)state.trackedPlayer=playerKey(p);save();$("player-name").value="";$("api-feedback").textContent=name+" hinzugefügt. Werte werden geladen.";render();fetchPlayer(p);
+    state.players.push(p);
+    if(!state.trackedPlayer)state.trackedPlayer=key;
+    save();
+    $("player-name").value="";
+    $("api-feedback").textContent=name+" hinzugefügt. Werte werden geladen.";
+    renderPlayers();renderAuto();fetchPlayer(p);
   });
-  $("player-list").addEventListener("click",e=>{const refresh=e.target.closest("[data-refresh-player]"),remove=e.target.closest("[data-remove-player]");
+  $("player-list").addEventListener("click",e=>{
+    const refresh=e.target.closest("[data-refresh-player]"),remove=e.target.closest("[data-remove-player]");
     if(refresh){const p=state.players.find(x=>playerKey(x)===refresh.dataset.refreshPlayer);if(p)fetchPlayer(p);}
-    if(remove){const key=remove.dataset.removePlayer;state.players=state.players.filter(p=>playerKey(p)!==key);playerData.delete(key);save();render();}
+    if(remove){
+      const key=remove.dataset.removePlayer;
+      state.players=state.players.filter(p=>playerKey(p)!==key);
+      playerData.delete(key);
+      // Keep the earlier snapshots, so removing and re-adding a player does not discard history.
+      if(state.trackedPlayer===key)state.trackedPlayer="";
+      save();renderPlayers();renderAuto();
+    }
   });
   $("refresh-all").addEventListener("click",refreshAll);
-  $("tracked-player").addEventListener("change",e=>{
-    const key=e.target.value;
-    if(!state.players.some(p=>playerKey(p)===key))return;
-    state.trackedPlayer=key;save();renderAuto();
-    const p=activePlayer();if(p&&!playerData.has(key))fetchPlayer(p);
-  });
-  $("refresh-tracked").addEventListener("click",()=>{
-    const p=activePlayer();if(p)fetchPlayer(p);
-  });
-  // Refresh only while the page is actually open and visible. This is not
-  // a background service: the API does not expose verified match history.
-  document.addEventListener("visibilitychange",()=>{
-    if(!document.hidden && state.players.length)refreshAll();
-  });
-  setInterval(()=>{
-    if(!document.hidden && state.players.length)refreshAll();
-  },120000);
-  if("serviceWorker" in navigator && location.protocol!=="file:") {
-    window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
-  }
-  render();
-  if(state.players.length){
-    initialAutoSync=true;
-    refreshAll();
-  }
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden&&state.players.length)refreshAll();});
+  setInterval(()=>{if(!document.hidden&&state.players.length)refreshAll();},120000);
+  if("serviceWorker" in navigator && location.protocol!=="file:")window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+  if(!state.players.length)$("api-panel").open=true;
+  renderPlayers();renderAuto();
+  if(state.players.length)refreshAll();
 })();
