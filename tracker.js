@@ -133,24 +133,42 @@
     const key=playerKey(p);if(pending.has(key))return;
     pending.add(key);renderPlayers();
     try{
-      const query=new URLSearchParams({name:p.name,platform:p.platform,format_values:"false",seperation:"true"});
-      const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
-      let response;
-      try{response=await fetch("https://api.gametools.network/bf6/stats/?"+query.toString(),{signal:controller.signal,headers:{"Accept":"application/json"}});}finally{clearTimeout(timer);}
-      if(!response.ok)throw new Error("API HTTP "+response.status);
+      const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
+      const request=platform=>{
+        const query=new URLSearchParams({name:p.name,platform,format_values:"false",seperation:"true"});
+        return fetch("https://api.gametools.network/bf6/stats/?"+query.toString(),{
+          signal:controller.signal,headers:{"Accept":"application/json"}
+        });
+      };
+      let response,usedFallback=false;
+      try{
+        response=await request(p.platform);
+        // BF6 uses a shared EA identity namespace. Retry a failed Xbox lookup as EA.
+        if(response.status===404&&p.platform==="xbox"){
+          response=await request("ea");
+          usedFallback=response.ok;
+        }
+      }finally{clearTimeout(timer);}
+      if(response.status===404)throw Object.assign(new Error("Spieler nicht gefunden (HTTP 404). Prüfe die exakte EA-ID. Im Zweifel ist der Xbox-Gamertag anders."),{status:404});
+      if(!response.ok)throw Object.assign(new Error("GameTools antwortet mit HTTP "+response.status),{status:response.status});
       const json=await response.json();
       const rapid=findRapidMode(json);
       if(!rapid) {
-        playerData.set(key,{stats:{},message:"Keine separat ausgewiesenen Rapid-Royale-Daten gefunden. Gesamtwerte werden nicht angezeigt."});
-        $("api-feedback").textContent="Die API liefert für diesen Spieler keine eindeutig zuordenbaren Rapid-Royale-Werte.";
+        playerData.set(key,{stats:{},message:"Spieler gefunden, aber keine eindeutig getrennten Rapid-Royale-Werte verfügbar. Keine Gesamtstatistiken angezeigt."});
+        $("api-feedback").textContent="Profil gefunden. Rapid-Royale-Daten fehlen in der API-Antwort.";
         return;
       }
       const suffix=rapid.seasonal?" · nur Saisonwerte":"";
-      playerData.set(key,{stats:rapid.parsed.stats,message:rapid.modeTitle+suffix+" · GameTools.Network · "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})});
+      const source=usedFallback?" · Suche erfolgreich über EA/PC":"";
+      playerData.set(key,{stats:rapid.parsed.stats,message:rapid.modeTitle+suffix+source+" · GameTools.Network · "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})});
       $("api-feedback").textContent="Rapid-Royale-Statistiken geladen. Keine Gesamtwerte.";
     }catch(err){
-      playerData.set(key,{stats:{},message:"Rapid-Royale-Abruf fehlgeschlagen: "+(err.name==="AbortError"?"Zeitüberschreitung":err.message)+". Eventuell verhindert CORS den Browser-Zugriff."});
-      $("api-feedback").textContent="Mindestens ein API-Abruf war nicht erfolgreich.";
+      const message=err.status===404?err.message
+        :err.name==="AbortError"?"Zeitüberschreitung bei GameTools. Erneut laden."
+        :err instanceof TypeError?"Verbindung zur API fehlgeschlagen. Netzwerk oder Browser-CORS prüfen."
+        :err.message||"Unbekannter API-Fehler.";
+      playerData.set(key,{stats:{},message});
+      $("api-feedback").textContent="Rapid-Royale-Statistiken für "+p.name+" konnten nicht geladen werden.";
     }finally{pending.delete(key);if(state.players.some(x=>playerKey(x)===key))renderPlayers();}
   }
   async function refreshAll(){
