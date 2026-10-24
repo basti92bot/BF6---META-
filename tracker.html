@@ -9,7 +9,7 @@
 <title>BF6 | WIN / LOST</title>
 <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
 <link rel="stylesheet" href="./tracker.css?v=1.7.0">
-<script src="./tracker.js?v=1.7.0" defer></script>
+<script src="./tracker.js?v=1.8.0" defer></script>
 </head>
 <body>
 <div class="tracker-shell">
@@ -66,7 +66,7 @@
   <details class="panel api-panel" id="api-panel">
     <summary><span><small>02 / LIVE DATEN</small><strong>EA-IDS & DETAILSTATISTIKEN</strong><em>Spieler hinzufügen oder entfernen</em></span><span class="chevron">⌄</span></summary>
     <div class="api-body">
-      <p class="api-explainer">Die Spieler aus der zentralen Sammelliste werden beim Öffnen automatisch hinzugefügt. Weitere Spieler werden in der App zunächst lokal abgefragt. Für eine dauerhafte stündliche Erfassung müssen sie in data/rapid-players.json registriert werden.</p>
+      <p class="api-explainer">Die Spieler aus der zentralen Sammelliste werden beim Öffnen automatisch hinzugefügt. Weitere Spieler werden in der App zunächst lokal abgefragt. Bei PlayStation versucht die App bei 404 zusätzlich EA/PC, PS5 und PS4. Der PSN-Online-Name kann von der EA-ID abweichen. Für eine stündliche Erfassung müssen neue Spieler in data/rapid-players.json registriert werden.</p>
       <form id="player-form" class="player-form">
         <label>SPIELERNAME / EA-ID<input id="player-name" autocomplete="off" maxlength="60" placeholder="EA-ID eingeben" required></label>
         <label>PLATTFORM<select id="player-platform"><option value="ea">EA / PC</option><option value="xbox">XBOX</option><option value="psn">PLAYSTATION</option><option value="steam">STEAM</option></select></label>
@@ -80,7 +80,7 @@
   </details>
   <details class="settings"><summary>DATEN & VERWALTUNG <span>⌄</span></summary><div class="settings-body"><p>Die stündliche gemeinsame Historie steht als JSON im öffentlichen GitHub-Repository. Bisherige lokale Daten bleiben erhalten. Die API liefert keine rückwirkenden täglichen persönlichen Statistiken.</p></div></details>
 </main>
-<footer>BF6 TRACKER · V1.7.0 · UNABHÄNGIGES FANPROJEKT</footer>
+<footer>BF6 TRACKER · V1.8.0 · UNABHÄNGIGES FANPROJEKT</footer>
 </div>
 </body>
 </html>
