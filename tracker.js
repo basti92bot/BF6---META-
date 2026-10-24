@@ -7,11 +7,12 @@
   const TEAMMATES = ["rockbotmasterR","strausbot","botuturn"];
   const cleanTeammates = values => Array.isArray(values) ? TEAMMATES.filter(name => values.includes(name)) : [];
   const safe = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const seed = {matches:[],players:[],mode:"mp",selectedTeammates:[]};
-  const state = (() => {try {const data = JSON.parse(localStorage.getItem(KEY));return {matches:Array.isArray(data?.matches)?data.matches.filter(m=>["win","loss"].includes(m.result)&&MODES[m.mode]).slice(0,5000):[],players:Array.isArray(data?.players)?data.players.filter(p=>typeof p.name==="string"&&p.name&&PLATFORMS[p.platform]).slice(0,16).map(p=>({name:p.name,platform:p.platform})):[],mode:MODES[data?.mode]?data.mode:"mp",selectedTeammates:cleanTeammates(data?.selectedTeammates)};}catch{return {...seed};}})();
+  const seed = {matches:[],players:[],mode:"mp",selectedTeammates:[],trackedPlayer:""};
+  const state = (() => {try {const data = JSON.parse(localStorage.getItem(KEY));return {matches:Array.isArray(data?.matches)?data.matches.filter(m=>["win","loss"].includes(m.result)&&MODES[m.mode]).slice(0,5000):[],players:Array.isArray(data?.players)?data.players.filter(p=>typeof p.name==="string"&&p.name&&PLATFORMS[p.platform]).slice(0,16).map(p=>({name:p.name,platform:p.platform})):[],mode:MODES[data?.mode]?data.mode:"mp",selectedTeammates:cleanTeammates(data?.selectedTeammates),trackedPlayer:typeof data?.trackedPlayer==="string"?data.trackedPlayer:""};}catch{return {...seed};}})();
   let filter = "all";
   let editingMatchId = null;
   let pending = new Set();
+  let initialAutoSync = false;
   const save = () => {try{localStorage.setItem(KEY, JSON.stringify(state));return true;}catch{return false;}};
   const int = value => {const n=Number(String(value ?? "").replace(/,/g,""));return Number.isFinite(n)?Math.round(n).toLocaleString("de-DE"):null;};
   const number = value => {if(value===null||value===undefined||String(value).trim()==="")return null;const n=Number(String(value).replace("%","").replace(",", "."));return Number.isFinite(n)?n:null;};
@@ -48,6 +49,7 @@
     });
     $("refresh-all").disabled=!state.players.length;
     renderPlayers();
+    renderAuto();
   }
   function addMatch(result){
     const m={id:String(Date.now())+"-"+Math.random().toString(36).slice(2,8),mode:state.mode,result,ts:Date.now(),participants:result==="win"?cleanTeammates(state.selectedTeammates):[]};
@@ -60,6 +62,36 @@
   const fmt = v => v===null?"–":Number(v).toLocaleString("de-DE",{maximumFractionDigits:2});
   function playerKey(p){return p.platform+":"+p.name.toLowerCase();}
   const playerData = new Map();
+  function activePlayer(){
+    const selected=state.players.find(p=>playerKey(p)===state.trackedPlayer);
+    return selected||state.players[0]||null;
+  }
+  function renderAuto(){
+    const current=activePlayer();
+    const desired=current?playerKey(current):"";
+    if(state.trackedPlayer!==desired){state.trackedPlayer=desired;save();}
+    const select=$("tracked-player");
+    select.innerHTML=current?state.players.map(p=>'<option value="'+safe(playerKey(p))+'">'+safe(p.name)+' · '+safe(PLATFORMS[p.platform])+'</option>').join(""):'<option value="">EA-ID hinzufügen</option>';
+    select.value=desired;select.disabled=!current;
+    $("refresh-tracked").disabled=!current||pending.has(desired);
+    const data=current?playerData.get(desired):null;
+    const stats=data?.stats||{};
+    const counter=v=>{
+      if(v===null||v===undefined)return null;
+      const text=String(v).trim();
+      if(!/^\d{1,3}(?:\.\d{3})*$|^\d+$/.test(text))return null;
+      const n=Number(text.replace(/\./g,""));
+      return Number.isSafeInteger(n)?n:null;
+    };
+    const wins=counter(stats.wins),losses=counter(stats.losses);
+    $("auto-wins").textContent=wins===null?"–":wins.toLocaleString("de-DE");
+    $("auto-losses").textContent=losses===null?"–":losses.toLocaleString("de-DE");
+    $("auto-winrate").textContent=stats.winrate??(wins!==null&&losses!==null&&wins+losses>0?(100*wins/(wins+losses)).toLocaleString("de-DE",{maximumFractionDigits:1})+"%":"–");
+    $("auto-matches").textContent=wins!==null&&losses!==null?(wins+losses).toLocaleString("de-DE"):"–";
+    $("auto-status").textContent=!current?"Noch kein Spieler hinterlegt. Unten unter EA-IDs hinzufügen."
+      :pending.has(desired)?"Lade Rapid-Royale-Daten für "+current.name+"…"
+      :data?.message||"Rapid-Royale-Daten noch nicht geladen.";
+  }
   function renderPlayers(){
     $("player-list").innerHTML=state.players.map(p=>{
       const key=playerKey(p),d=playerData.get(key),loading=pending.has(key);
@@ -131,7 +163,7 @@
   }
   async function fetchPlayer(p){
     const key=playerKey(p);if(pending.has(key))return;
-    pending.add(key);renderPlayers();
+    pending.add(key);renderPlayers();renderAuto();
     try{
       const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
       const request=platform=>{
@@ -169,7 +201,7 @@
         :err.message||"Unbekannter API-Fehler.";
       playerData.set(key,{stats:{},message});
       $("api-feedback").textContent="Rapid-Royale-Statistiken für "+p.name+" konnten nicht geladen werden.";
-    }finally{pending.delete(key);if(state.players.some(x=>playerKey(x)===key))renderPlayers();}
+    }finally{pending.delete(key);if(state.players.some(x=>playerKey(x)===key)){renderPlayers();renderAuto();}}
   }
   async function refreshAll(){
     for(const player of state.players){await fetchPlayer(player);}
@@ -213,15 +245,36 @@
   $("player-form").addEventListener("submit",e=>{e.preventDefault();const name=$("player-name").value.trim(),platform=$("player-platform").value;if(!name||!PLATFORMS[platform])return;
     if(state.players.some(p=>playerKey(p)===playerKey({name,platform}))){$("api-feedback").textContent="Spieler bereits gespeichert.";return;}
     if(state.players.length>=16){$("api-feedback").textContent="Maximal 16 Spieler möglich.";return;}
-    const p={name,platform};state.players.push(p);save();$("player-name").value="";$("api-feedback").textContent=name+" hinzugefügt. Werte werden geladen.";render();fetchPlayer(p);
+    const p={name,platform};state.players.push(p);if(!state.trackedPlayer)state.trackedPlayer=playerKey(p);save();$("player-name").value="";$("api-feedback").textContent=name+" hinzugefügt. Werte werden geladen.";render();fetchPlayer(p);
   });
   $("player-list").addEventListener("click",e=>{const refresh=e.target.closest("[data-refresh-player]"),remove=e.target.closest("[data-remove-player]");
     if(refresh){const p=state.players.find(x=>playerKey(x)===refresh.dataset.refreshPlayer);if(p)fetchPlayer(p);}
     if(remove){const key=remove.dataset.removePlayer;state.players=state.players.filter(p=>playerKey(p)!==key);playerData.delete(key);save();render();}
   });
   $("refresh-all").addEventListener("click",refreshAll);
+  $("tracked-player").addEventListener("change",e=>{
+    const key=e.target.value;
+    if(!state.players.some(p=>playerKey(p)===key))return;
+    state.trackedPlayer=key;save();renderAuto();
+    const p=activePlayer();if(p&&!playerData.has(key))fetchPlayer(p);
+  });
+  $("refresh-tracked").addEventListener("click",()=>{
+    const p=activePlayer();if(p)fetchPlayer(p);
+  });
+  // Refresh only while the page is actually open and visible. This is not
+  // a background service: the API does not expose verified match history.
+  document.addEventListener("visibilitychange",()=>{
+    if(!document.hidden && state.players.length)refreshAll();
+  });
+  setInterval(()=>{
+    if(!document.hidden && state.players.length)refreshAll();
+  },120000);
   if("serviceWorker" in navigator && location.protocol!=="file:") {
     window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
   }
   render();
+  if(state.players.length){
+    initialAutoSync=true;
+    refreshAll();
+  }
 })();
