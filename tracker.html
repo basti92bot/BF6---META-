@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101614">
+<meta name="description" content="Battlefield 6: WIN/LOST-Sessiontracker und echte Spielerstatistiken.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>BF6 | WIN / LOST</title>
+<link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
+<link rel="stylesheet" href="./tracker.css?v=1.1.0">
+<script src="./tracker.js?v=1.1.0" defer></script>
+</head>
+<body>
+<div class="tracker-shell">
+<header class="tracker-top">
+  <a class="tracker-brand" href="./index.html"><span class="brand-mark">B6</span><span>BF6 <strong>TRACKER</strong><small>SESSION CONTROL</small></span></a>
+  <a class="nav-back" href="./index.html">LOADOUTS ↗</a>
+</header>
+<main>
+  <div class="intro"><div><span class="eyebrow">EURE SPIELE. EURE BILANZ.</span><h1>WIN <span>/</span> LOST</h1></div><span class="live-label"><i></i> MANUELLER TRACKER</span></div>
+  <section class="panel capture" aria-labelledby="capture-heading">
+    <div class="section-line"><h2 id="capture-heading">MATCH EINTRAGEN</h2><span>01 / SESSION</span></div>
+    <div class="select-row"><label for="match-mode">SPIELMODUS</label><select id="match-mode"><option value="mp">MEHRSPIELER</option><option value="rapid">RAPID ROYALE</option><option value="br">BATTLE ROYALE</option></select></div>
+    <div class="action-grid"><button type="button" id="record-win" class="record win"><span class="action-symbol">↗</span><span>WIN</span><small>SPIEL GEWONNEN</small></button><button type="button" id="record-loss" class="record loss"><span class="action-symbol">↘</span><span>LOST</span><small>SPIEL VERLOREN</small></button></div>
+    <p class="feedback" id="record-feedback" role="status" aria-live="polite">Nach jedem Match einfach WIN oder LOST antippen.</p>
+  </section>
+  <section class="numbers" aria-label="Sessionstatistiken">
+    <div class="number"><span>WINS</span><strong id="wins">0</strong></div>
+    <div class="number"><span>LOSSES</span><strong id="losses">0</strong></div>
+    <div class="number featured"><span>WINRATE</span><strong id="winrate">0%</strong></div>
+    <div class="number"><span>SERIE</span><strong id="streak">–</strong></div>
+  </section>
+  <section class="panel history" aria-labelledby="history-heading">
+    <div class="section-line"><h2 id="history-heading">LETZTE MATCHES</h2><button type="button" class="text-button" id="undo" disabled>LETZTES RÜCKGÄNGIG ↶</button></div>
+    <div class="filter-tabs" role="group" aria-label="Historie filtern">
+      <button type="button" data-filter="all" class="active" aria-pressed="true">ALLE</button>
+      <button type="button" data-filter="mp" aria-pressed="false">MEHRSPIELER</button>
+      <button type="button" data-filter="rapid" aria-pressed="false">RAPID</button>
+      <button type="button" data-filter="br" aria-pressed="false">BATTLE ROYALE</button>
+    </div>
+    <div class="history-list" id="history-list" aria-live="polite"><p class="empty">Noch keine Matches erfasst.</p></div>
+    <div class="history-foot"><span id="history-count">0 Matches</span><button type="button" class="text-button" id="export" disabled>CSV EXPORTIEREN ↓</button></div>
+  </section>
+  <details class="panel api-panel" id="api-panel">
+    <summary><span><small>02 / LIVE DATEN</small><strong>SPIELER-STATISTIKEN</strong><em>BF6-Werte über GameTools.Network</em></span><span class="chevron">⌄</span></summary>
+    <div class="api-body">
+      <p class="api-explainer">Hier könnt ihr eure EA-IDs hinterlegen und verfügbare Spielerwerte abrufen. Diese Account-Gesamtwerte sind getrennt von eurer manuell erfassten Session.</p>
+      <form id="player-form" class="player-form">
+        <label>SPIELERNAME / EA-ID<input id="player-name" autocomplete="off" maxlength="60" placeholder="EA-ID eingeben" required></label>
+        <label>PLATTFORM<select id="player-platform"><option value="ea">EA / PC</option><option value="xbox">XBOX</option><option value="psn">PLAYSTATION</option><option value="steam">STEAM</option></select></label>
+        <button type="submit">+ SPIELER HINZUFÜGEN</button>
+      </form>
+      <div id="api-feedback" role="status" aria-live="polite" class="api-feedback">Noch keine Spieler hinterlegt.</div>
+      <div id="player-list" class="player-list"></div>
+      <div class="api-bottom"><button type="button" class="refresh-button" id="refresh-all" disabled>↻ ALLE STATISTIKEN LADEN</button><a href="https://api.gametools.network/docs" target="_blank" rel="noopener noreferrer">API-DOKUMENTATION ↗</a></div>
+      <p class="api-disclaimer">Community-API, nicht offiziell von EA. Der Abruf kann durch Verfügbarkeit oder Browser-CORS blockiert werden. Es werden ausschließlich tatsächlich gelieferte Werte angezeigt.</p>
+    </div>
+  </details>
+  <details class="settings"><summary>DATEN & VERWALTUNG <span>⌄</span></summary><div class="settings-body"><p>Die WIN/LOST-Historie und eure Spielerliste werden nur auf diesem Gerät im Browser gespeichert. Andere Geräte sehen diese Einträge nicht automatisch.</p><button type="button" id="clear-matches" class="danger">MATCH-HISTORIE LÖSCHEN</button></div></details>
+</main>
+<footer>BF6 TRACKER · V1.1.0 · UNABHÄNGIGES FANPROJEKT</footer>
+</div>
+</body>
+</html>
