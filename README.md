@@ -1,6 +1,12 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **1.7.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **1.8.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## PlayStation-Spielerauflösung (V1.8.0)
+
+GameTools unterstützt Battlefield-6-Plattformcodes `psn`, `ps5`, `ps4` und `ea`. Die Browserabfrage und der stündliche Datensammler versuchen beim HTTP-404-Fehler für PlayStation in dieser Reihenfolge: `psn`, `ea`, `ps5`, `ps4`. Bei einem erfolgreichen ersten Abruf werden keine unnötigen Folgeanfragen gestellt. Bei HTTP-404 in allen Varianten gibt es eine konkrete Fehlermeldung, denn eine PSN-Online-ID kann von der EA-ID abweichen. Andere HTTP-Fehler lösen keine Plattform-Fallback-Kette aus.
+
+Nur eindeutig der Rapid-Royale-Statistik zugeordnete Zähler werden angezeigt. Diese Änderung garantiert nicht, dass ein abweichender oder unbekannter PSN-Name ohne die korrekte EA-ID gefunden werden kann. Die API-Antwort eines echten PlayStation-Kontos war zum Zeitpunkt der Codeänderung nicht verifiziert.
 
 ## Serverbasierte stündliche Rapid-Royale-Historie (V1.7.0)
 
