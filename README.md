@@ -1,6 +1,10 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **1.3.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **1.4.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Spielerauflösung und klare HTTP-404-Fehler (V1.4.0)
+
+HTTP 404 bedeutet beim Abruf: Der Spieler konnte mit diesem Namen und der Plattform nicht aufgelöst werden. Das ist kein CORS-Fehler. Für Xbox-Namen erfolgt bei HTTP 404 automatisch ein zweiter Abruf mit Plattform `ea`, weil die BF6-API EA- und Xbox-Spieler derselben Statistikplattform zuordnet. Ein erfolgreicher Fallback wird neben den Daten gekennzeichnet. Der Spielername selbst wird nicht geändert. Bei 404 weist die UI auf die exakte EA-ID statt Gamertag hin. Auch ein gefundener Spieler ohne Rapid-Royale-Modusstatistiken führt niemals zu angezeigten Gesamtwerten.
 
 ## Rapid Royale separat (V1.3.0)
 
