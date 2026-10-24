@@ -8,8 +8,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>BF6 | WIN / LOST</title>
 <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
-<link rel="stylesheet" href="./tracker.css?v=1.7.0">
-<script src="./tracker.js?v=1.8.0" defer></script>
+<link rel="stylesheet" href="./tracker.css?v=1.9.0">
+<script src="./tracker.js?v=1.9.0" defer></script>
 </head>
 <body>
 <div class="tracker-shell">
@@ -64,23 +64,29 @@
     <p class="period-note" id="period-note">Der gemeinsame Verlauf beginnt ab dem ersten erfolgreichen stündlichen API-Abruf. Ältere Spieltage lassen sich nicht rückwirkend auslesen.</p>
   </section>
   <details class="panel api-panel" id="api-panel">
-    <summary><span><small>02 / LIVE DATEN</small><strong>EA-IDS & DETAILSTATISTIKEN</strong><em>Spieler hinzufügen oder entfernen</em></span><span class="chevron">⌄</span></summary>
+    <summary><span><small>02 / LIVE DATEN</small><strong>SPIELER & DETAILSTATISTIKEN</strong><em>Erfasste Spieler anzeigen oder entfernen</em></span><span class="chevron">⌄</span></summary>
     <div class="api-body">
-      <p class="api-explainer">Die Spieler aus der zentralen Sammelliste werden beim Öffnen automatisch hinzugefügt. Weitere Spieler werden in der App zunächst lokal abgefragt. Bei PlayStation versucht die App bei 404 zusätzlich EA/PC, PS5 und PS4. Der PSN-Online-Name kann von der EA-ID abweichen. Für eine stündliche Erfassung müssen neue Spieler in data/rapid-players.json registriert werden.</p>
-      <form id="player-form" class="player-form">
-        <label>SPIELERNAME / EA-ID<input id="player-name" autocomplete="off" maxlength="60" placeholder="EA-ID eingeben" required></label>
-        <label>PLATTFORM<select id="player-platform"><option value="ea">EA / PC</option><option value="xbox">XBOX</option><option value="psn">PLAYSTATION</option><option value="steam">STEAM</option></select></label>
-        <button type="submit">+ SPIELER HINZUFÜGEN</button>
-      </form>
-      <div id="api-feedback" role="status" aria-live="polite" class="api-feedback">Noch keine Spieler hinterlegt.</div>
+      <p class="api-explainer">Hier siehst du die gespeicherten Spieler und ihre Rapid-Royale-Statistiken. Weitere Spieler kannst du ganz unten auf der Seite hinzufügen.</p>
+
+
       <div id="player-list" class="player-list"></div>
       <div class="api-bottom"><button type="button" class="refresh-button" id="refresh-all" disabled>↻ ALLE STATISTIKEN LADEN</button><a href="https://api.gametools.network/docs" target="_blank" rel="noopener noreferrer">API-DOKUMENTATION ↗</a></div>
       <p class="api-disclaimer">GameTools ist eine inoffizielle Community-API. Der Abruf nutzt die Aufschlüsselung nach Spielmodus. Nur eindeutig als Rapid Royale gekennzeichnete Werte werden übernommen, keine Multiplayer- oder REDSEC-Gesamtstatistiken. API-Ausfälle und Browser-CORS können den Abruf verhindern.</p>
     </div>
   </details>
   <details class="settings"><summary>DATEN & VERWALTUNG <span>⌄</span></summary><div class="settings-body"><p>Die stündliche gemeinsame Historie steht als JSON im öffentlichen GitHub-Repository. Bisherige lokale Daten bleiben erhalten. Die API liefert keine rückwirkenden täglichen persönlichen Statistiken.</p></div></details>
+  <section class="panel add-player-panel" aria-labelledby="add-player-heading">
+    <div class="section-line"><h2 id="add-player-heading">SPIELER HINZUFÜGEN</h2><span>EA-ID / PLATTFORM</span></div>
+    <p class="add-player-explainer">Neue Spieler werden hier auf diesem Gerät gespeichert und sofort abgefragt. Für den stündlichen Serververlauf muss die EA-ID zusätzlich in der GitHub-Spielerliste hinterlegt werden. Bei PlayStation versucht die App auch alternative Plattformkennungen.</p>
+      <form id="player-form" class="player-form">
+        <label>SPIELERNAME / EA-ID<input id="player-name" autocomplete="off" maxlength="60" placeholder="EA-ID eingeben" required></label>
+        <label>PLATTFORM<select id="player-platform"><option value="ea">EA / PC</option><option value="xbox">XBOX</option><option value="psn">PLAYSTATION</option><option value="steam">STEAM</option></select></label>
+        <button type="submit">+ SPIELER HINZUFÜGEN</button>
+      </form>
+      <div id="api-feedback" role="status" aria-live="polite" class="api-feedback">Noch keine Spieler hinterlegt.</div>
+  </section>
 </main>
-<footer>BF6 TRACKER · V1.8.0 · UNABHÄNGIGES FANPROJEKT</footer>
+<footer>BF6 TRACKER · V1.9.0 · UNABHÄNGIGES FANPROJEKT</footer>
 </div>
 </body>
 </html>
