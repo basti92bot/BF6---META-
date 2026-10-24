@@ -104,8 +104,14 @@ export async function requestRapid(player,transport=fetch){
     return transport(url,{headers:{Accept:"application/json"},signal:AbortSignal.timeout(25000)});
   };
   let reply=await tryPlatform(player.platform);
-  if(reply.status===404&&player.platform==="xbox")reply=await tryPlatform("ea");
-  if(!reply.ok)throw new Error("HTTP "+reply.status);
+  const fallbacks=player.platform==="xbox"?["ea"]:
+    player.platform==="psn"?["ea","ps5","ps4"]:[];
+  for(const platform of fallbacks){
+    if(reply.status!==404)break;
+    reply=await tryPlatform(platform);
+  }
+  if(!reply.ok)throw new Error("HTTP "+reply.status+
+    (player.platform==="psn"?" (PlayStation/EA-Namen prüfen)":""));
   const json=await reply.json();
   const rapid=findRapidStats(json);
   if(!rapid)throw new Error("Keine eindeutig getrennten Rapid-Royale-Zähler");
