@@ -60,6 +60,8 @@
     return {...data,players,trackedPlayer,snapshots,defaultBotsClearedV19:true};
   };
   const state=loadState();
+  if(!state.roundTests||typeof state.roundTests!=="object"||Array.isArray(state.roundTests))
+    state.roundTests={};
   const playerData=new Map();
   const pending=new Set();
   let serverHistory={schemaVersion:1,players:{}};
@@ -231,6 +233,76 @@
         ". Zuletzt erfasst: "+dateTime(points.at(-1).ts)+
         ". Die Auswertung vergleicht näherungsweise 24 Stunden bzw. 7 Tage. Fehlt ein Vergleichswert, bleibt das Feld leer.";
   }
+
+  function testDiff(start,end){
+    if(!start||!end||start.mode!==end.mode||start.seasonal!==end.seasonal)return null;
+    const values={};
+    for(const field of ["wins","losses","kills","deaths"]){
+      const a=start.values?.[field],b=end.values?.[field];
+      values[field]=Number.isSafeInteger(a)&&Number.isSafeInteger(b)&&b>=a?b-a:null;
+    }
+    const matches=values.wins!==null&&values.losses!==null?values.wins+values.losses:null;
+    values.winrate=matches===null||matches===0?null:100*values.wins/matches;
+    values.kd=values.kills===null||values.deaths===null?null:
+      values.deaths===0?(values.kills===0?null:values.kills):values.kills/values.deaths;
+    return {values,matches};
+  }
+  function renderRoundTest(){
+    const p=activePlayer(),key=p?playerKey(p):"";
+    const test=state.roundTests[key];
+    const waiting=!!p&&pending.has(key);
+    $("round-test-start").disabled=!p||waiting;
+    $("round-test-start").textContent=test?"↻ NEUEN STARTWERT LADEN":"1 · STARTWERT LADEN";
+    $("round-test-check").disabled=!p||!test||waiting;
+    const comparison=test?.end?testDiff(test.start,test.end):null;
+    for(const field of ["wins","losses","kills","deaths"])
+      $("test-"+field).textContent=comparison?.values[field]===null||
+        comparison?.values[field]===undefined?"–":
+        comparison.values[field].toLocaleString("de-DE");
+    $("test-winrate").textContent=comparison?.values.winrate==null?"–":fmt(comparison.values.winrate)+"%";
+    $("test-kd").textContent=comparison?.values.kd==null?"–":fmt(comparison.values.kd);
+    if(!p){$("round-test-status").textContent="Zuerst einen Spieler auswählen.";return;}
+    if(waiting){$("round-test-status").textContent="API-Abruf läuft für "+p.name+"…";return;}
+    if(!test){$("round-test-status").textContent="Jetzt STARTWERT LADEN antippen, anschließend zwei Rapid-Royale-Runden spielen.";return;}
+    if(test.note){$("round-test-status").textContent=test.note;return;}
+    if(!test.end){$("round-test-status").textContent="Start gespeichert: "+dateTime(test.start.ts)+
+      " · "+p.name+". Nach zwei Runden auf PRÜFEN tippen.";return;}
+    if(!comparison||comparison.matches===null){
+      $("round-test-status").textContent="API-Werte oder Saison sind nicht vergleichbar. Bitte Test neu starten.";
+      return;
+    }
+    const n=comparison.matches,summary=n===2?"2 Matches erkannt ✓":n===0?
+      "Noch kein neues Match in der API":n===1?
+      "Bisher erst 1 Match in der API":n+" Matches seit Testbeginn in der API";
+    $("round-test-status").textContent=summary+" · "+dateTime(test.start.ts)+" – "+
+      dateTime(test.end.ts)+".";
+  }
+  async function performRoundTest(action){
+    const player=activePlayer();if(!player)return;
+    const key=playerKey(player);
+    if(pending.has(key)){$("round-test-status").textContent="API-Abruf läuft bereits. Danach erneut antippen.";return;}
+    $("round-test-status").textContent="Lade echte Rapid-Royale-Zähler für "+player.name+"…";
+    const received=await fetchPlayer(player);
+    if(!received){$("round-test-status").textContent="API-Abruf fehlgeschlagen. Siehe Spieler-Details. Der bisherige Test bleibt erhalten.";return;}
+    const point=parseSnapshot(received.stats);
+    if(!point||!Number.isSafeInteger(point.values.wins)||!Number.isSafeInteger(point.values.losses)){
+      $("round-test-status").textContent="Für den Test fehlen auswertbare Rapid-Royale-Wins/Losses.";
+      return;
+    }
+    const current={...point,mode:received.mode,seasonal:received.seasonal};
+    if(action==="start"){
+      state.roundTests[key]={start:current};
+    }else{
+      const previous=state.roundTests[key];
+      if(!previous?.start){$("round-test-status").textContent="Zuerst Startwert laden.";return;}
+      if(previous.start.mode!==current.mode||previous.start.seasonal!==current.seasonal){
+        $("round-test-status").textContent="Anderer Modus oder Saison – bitte einen neuen Startwert laden.";
+        return;
+      }
+      state.roundTests[key]={...previous,end:current};
+    }
+    save();renderRoundTest();
+  }
   function renderAuto(){
     const current=activePlayer(),key=current?playerKey(current):"";
     if(state.trackedPlayer!==key){state.trackedPlayer=key;save();}
@@ -257,6 +329,7 @@
       :pending.has(key)?"Lade Rapid-Royale-Daten für "+current.name+"…"
       :d?.message||(last?"Stündlicher Serverstand vom "+dateTime(last.ts):"Rapid-Royale-Daten noch nicht geladen.");
     renderPeriods();
+    renderRoundTest();
   }
   function renderPlayers(){
     $("player-list").innerHTML=state.players.map(p=>{
@@ -304,13 +377,14 @@
       if(!rapid){
         playerData.set(key,{stats:{},message:"Spieler gefunden, keine getrennten Rapid-Royale-Daten verfügbar. Keine Gesamtstatistiken angezeigt."});
         $("api-feedback").textContent="Profil gefunden. Rapid-Royale-Daten fehlen in der API-Antwort.";
-        return;
+        return null;
       }
       recordSnapshot(p,rapid.parsed.stats);
       const suffix=rapid.seasonal?" · nur Saisonwerte":"";
       const fallback=usedPlatform!==p.platform?" · über "+(usedPlatform==="ea"?"EA/PC":usedPlatform.toUpperCase())+" gefunden":"";
       playerData.set(key,{stats:rapid.parsed.stats,message:rapid.modeTitle+suffix+fallback+" · GameTools.Network · "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})});
       $("api-feedback").textContent="Rapid-Royale-Statistiken geladen. Verlauf lokal gespeichert.";
+      return {stats:rapid.parsed.stats,mode:rapid.modeTitle,seasonal:rapid.seasonal};
     }catch(err){
       const message=err.status===404?err.message
         :err.name==="AbortError"?"Zeitüberschreitung. Erneut laden."
@@ -318,6 +392,7 @@
         :err.message||"Unbekannter API-Fehler.";
       playerData.set(key,{stats:{},message});
       $("api-feedback").textContent="Rapid-Royale-Statistiken für "+p.name+" konnten nicht geladen werden.";
+      return null;
     }finally{pending.delete(key);if(state.players.some(x=>playerKey(x)===key)){renderPlayers();renderAuto();}}
   }
   async function refreshAll(){
@@ -356,6 +431,8 @@
     }
   });
   $("refresh-all").addEventListener("click",refreshAll);
+  $("round-test-start").addEventListener("click",()=>performRoundTest("start"));
+  $("round-test-check").addEventListener("click",()=>performRoundTest("check"));
   document.addEventListener("visibilitychange",()=>{if(!document.hidden&&state.players.length){loadServerHistory();refreshAll();}});
   setInterval(()=>{if(!document.hidden&&state.players.length)refreshAll();},120000);
   if("serviceWorker" in navigator && location.protocol!=="file:")window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
