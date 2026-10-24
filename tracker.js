@@ -47,6 +47,47 @@
   const state=loadState();
   const playerData=new Map();
   const pending=new Set();
+  let serverHistory={schemaVersion:1,players:{}};
+  function getPoints(key) {
+    const remote=serverHistory.players?.[key]?.points;
+    if(Array.isArray(remote)&&remote.length){
+      return remote.filter(p=>Number.isFinite(p?.ts)&&p?.values&&
+        Number.isSafeInteger(p.values.wins)&&Number.isSafeInteger(p.values.losses)).sort((a,b)=>a.ts-b.ts);
+    }
+    return state.snapshots[key]||[];
+  }
+  async function loadServerHistory(){
+    try {
+      const [playersResponse,historyResponse]=await Promise.all([
+        fetch("./data/rapid-players.json",{cache:"no-store"}),
+        fetch("./data/rapid-history.json",{cache:"no-store"})
+      ]);
+      if(playersResponse.ok){
+        const config=await playersResponse.json();
+        if(Array.isArray(config.players)){
+          let modified=false;
+          for(const p of config.players){
+            if(!p||p.enabled===false||!PLATFORMS[p.platform]||
+              typeof p.name!=="string"||!p.name.trim())continue;
+            if(!state.players.some(existing=>playerKey(existing)===playerKey(p))){
+              if(state.players.length>=16)break;
+              state.players.push({name:p.name,platform:p.platform});
+              modified=true;
+            }
+          }
+          if(modified)save();
+        }
+      }
+      if(historyResponse.ok){
+        const data=await historyResponse.json();
+        if(data?.schemaVersion===1&&data.players&&typeof data.players==="object")
+          serverHistory=data;
+      }
+    }catch(error){
+      console.warn("Stündliche BF6-Historie konnte nicht geladen werden",error);
+    }
+    renderPlayers();renderAuto();
+  }
   const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));return true}catch{return false}};
   const activePlayer=()=>state.players.find(p=>playerKey(p)===state.trackedPlayer)||state.players[0]||null;
   function unpack(data){
@@ -135,11 +176,12 @@
     return current-before;
   }
   function periodStats(key,days,maxGap){
-    const points=state.snapshots[key]||[];
+    const points=getPoints(key);
     const last=points[points.length-1];
-    if(!last)return null;
-    const target=last.ts-days*86400000;
-    const earlier=points.filter(p=>p.ts<=target&&target-p.ts<=maxGap).at(-1);
+    if(!last||Date.now()-last.ts>4*3600000)return null;
+    const target=Date.now()-days*86400000;
+    const earlier=points.filter(p=>p.ts<=target&&target-p.ts<=maxGap&&
+      (p.series??"local")===(last.series??"local")).at(-1);
     if(!earlier)return null;
     const wins=diffCounts(last,earlier,"wins"),losses=diffCounts(last,earlier,"losses");
     const kills=diffCounts(last,earlier,"kills"),deaths=diffCounts(last,earlier,"deaths");
@@ -162,10 +204,13 @@
     const day=key?periodStats(key,1,3*3600000):null;
     const week=key?periodStats(key,7,18*3600000):null;
     drawPeriod("day",day);drawPeriod("week",week);
-    const points=state.snapshots[key]||[];
+    const points=getPoints(key);
+    const remote=!!serverHistory.players?.[key]?.points?.length;
     $("period-note").textContent=!current?"Zuerst unter EA-IDs einen Spieler hinzufügen."
-      :!points.length?"Die Aufzeichnung beginnt beim ersten erfolgreichen Rapid-Royale-Abruf."
-      :"Aufzeichnung seit "+dateTime(points[0].ts)+". Für den Vergleich benötigen wir einen Messstand vor 24 Stunden beziehungsweise vor 7 Tagen. Fehlt dieser, bleiben die Felder leer. Die Zeiten sind Näherungswerte, keine aus der API gelieferten Tagesberichte.";
+      :!points.length?"Noch kein erfolgreicher API-Messstand. Der stündliche Serverabruf ist vorbereitet."
+      :(remote?"Gemeinsamer stündlicher Verlauf":"Lokaler Verlauf")+" seit "+dateTime(points[0].ts)+
+        ". Zuletzt erfasst: "+dateTime(points.at(-1).ts)+
+        ". Die Auswertung vergleicht näherungsweise 24 Stunden bzw. 7 Tage. Fehlt ein Vergleichswert, bleibt das Feld leer.";
   }
   function renderAuto(){
     const current=activePlayer(),key=current?playerKey(current):"";
@@ -176,7 +221,14 @@
     select.disabled=!current;
     $("refresh-tracked").disabled=!current||pending.has(key);
     const d=current?playerData.get(key):null;
-    const stats=d?.stats||{};
+    const last=serverHistory.players?.[key]?.points?.at(-1);
+    const saved=last?.values||{};
+    const stats=d?.stats&&Object.keys(d.stats).length?d.stats:{
+      wins:saved.wins,losses:saved.losses,kills:saved.kills,deaths:saved.deaths,
+      assists:saved.assists,revives:saved.revives,
+      winrate:saved.wins!=null&&saved.losses!=null&&saved.wins+saved.losses>0
+        ?fmt(100*saved.wins/(saved.wins+saved.losses))+"%":null
+    };
     const wins=countFrom(stats.wins),losses=countFrom(stats.losses);
     $("auto-wins").textContent=wins===null?"–":wins.toLocaleString("de-DE");
     $("auto-losses").textContent=losses===null?"–":losses.toLocaleString("de-DE");
@@ -184,13 +236,20 @@
     $("auto-matches").textContent=wins!==null&&losses!==null?(wins+losses).toLocaleString("de-DE"):"–";
     $("auto-status").textContent=!current?"Noch kein Spieler hinterlegt. Unten EA-ID hinzufügen."
       :pending.has(key)?"Lade Rapid-Royale-Daten für "+current.name+"…"
-      :d?.message||"Rapid-Royale-Daten noch nicht geladen.";
+      :d?.message||(last?"Stündlicher Serverstand vom "+dateTime(last.ts):"Rapid-Royale-Daten noch nicht geladen.");
     renderPeriods();
   }
   function renderPlayers(){
     $("player-list").innerHTML=state.players.map(p=>{
       const key=playerKey(p),d=playerData.get(key),loading=pending.has(key);
-      const stats=d?.stats||{};
+      const saved=serverHistory.players?.[key]?.points?.at(-1)?.values||{};
+      const stats=d?.stats&&Object.keys(d.stats).length?d.stats:{
+        wins:saved.wins,losses:saved.losses,kills:saved.kills,deaths:saved.deaths,
+        assists:saved.assists,revives:saved.revives,
+        kd:saved.kills!=null&&saved.deaths>0?fmt(saved.kills/saved.deaths):null,
+        winrate:saved.wins!=null&&saved.losses!=null&&saved.wins+saved.losses>0
+          ?fmt(100*saved.wins/(saved.wins+saved.losses))+"%":null
+      };
       const vals=[["K/D",stats.kd],["KILLS",stats.kills],["DEATHS",stats.deaths],["WINS",stats.wins],["LOSSES",stats.losses],["WINRATE",stats.winrate],["ACCURACY",stats.accuracy],["REVIVES",stats.revives],["ASSISTS",stats.assists]];
       return '<article class="player-card"><div class="player-title"><div><strong>'+safe(p.name)+'</strong><small>'+safe(PLATFORMS[p.platform])+'</small></div><div class="player-actions"><button type="button" data-refresh-player="'+safe(key)+'" '+(loading?'disabled':'')+'>'+(loading?'LÄDT…':'↻ LADEN')+'</button><button type="button" class="remove-player" data-remove-player="'+safe(key)+'" aria-label="Spieler entfernen">×</button></div></div><div class="player-metrics">'+vals.map(([label,value])=>'<div class="player-metric"><small>'+label+'</small><b>'+safe(value===null||value===undefined?"–":value)+'</b></div>').join("")+'</div><p class="player-status">'+safe(loading?'API wird abgefragt…':d?.message||"Noch nicht abgerufen")+'</p></article>';
     }).join("");
@@ -272,10 +331,9 @@
     }
   });
   $("refresh-all").addEventListener("click",refreshAll);
-  document.addEventListener("visibilitychange",()=>{if(!document.hidden&&state.players.length)refreshAll();});
+  document.addEventListener("visibilitychange",()=>{if(!document.hidden&&state.players.length){loadServerHistory();refreshAll();}});
   setInterval(()=>{if(!document.hidden&&state.players.length)refreshAll();},120000);
   if("serviceWorker" in navigator && location.protocol!=="file:")window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
-  if(!state.players.length)$("api-panel").open=true;
   renderPlayers();renderAuto();
-  if(state.players.length)refreshAll();
+  loadServerHistory().then(()=>{if(state.players.length)refreshAll();});
 })();
