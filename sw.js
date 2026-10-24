@@ -23,7 +23,7 @@ self.addEventListener("fetch", event => {
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
   const isCurrentAppShell = event.request.mode === "navigate" ||
-    /\/(?:index\.html|loadouts\.js|loadouts\.css)$/.test(url.pathname);
+    /\/(?:index\.html|tracker\.html|tracker\.js|tracker\.css|loadouts\.js|loadouts\.css)$/.test(url.pathname);
   const isData = url.pathname.includes("/data/");
   const networkFirst = isCurrentAppShell || isData;
   if (networkFirst) {
