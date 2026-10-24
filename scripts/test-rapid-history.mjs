@@ -23,4 +23,23 @@ const transport=async url=>{
 const fallback=await requestRapid({name:"demo",platform:"xbox"},transport);
 assert.equal(fallback.values.wins,3);assert.equal(calls.length,2);
 assert.ok(calls[1].includes("platform=ea"));
+const psCalls=[];
+const psTransport=async url=>{
+  psCalls.push(url);
+  return {
+    status:psCalls.length<3?404:200,
+    ok:psCalls.length===3,
+    json:async()=>({modes:{"Rapid Royale":{wins:8,losses:5,kills:120,deaths:44}}})
+  };
+};
+const playstation=await requestRapid({name:"playstationDemo",platform:"psn"},psTransport);
+assert.equal(playstation.values.wins,8);
+assert.deepEqual(psCalls.map(url=>new URL(url).searchParams.get("platform")),["psn","ea","ps5"]);
+const noFallbackCalls=[];
+const directSuccess=async url=>{
+  noFallbackCalls.push(url);
+  return {ok:true,status:200,json:async()=>({modes:{"Rapid Royale":{wins:1,losses:2}}})};
+};
+await requestRapid({name:"directPSN",platform:"psn"},directSuccess);
+assert.equal(noFallbackCalls.length,1);
 console.log("Collector tests passed.");
