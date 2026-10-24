@@ -1,12 +1,16 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **1.9.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **1.9.1**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Korrektur Spielerbestand (V1.9.1)
+
+RockmasterR bleibt auf Wunsch des Nutzers als EA/PC-Spieler in der zentralen Liste und wird weiterhin durch den stündlichen Workflow abgefragt. Nur die alten BOT-Namen strausbot und botuturn sowie die alte Schreibweise rockbotmasterR werden aus der Vorbelegung entfernt. Bereits erfasste lokale RockmasterR-Spielerdaten bleiben erhalten. Falls Version 1.9.0 RockmasterR zwischenzeitlich aus der lokalen Spielerauswahl entfernt hat, fügt der nächste Abruf der zentralen Liste RockmasterR wieder hinzu.
 
 ## Spieler-Formular unten und Standard-BOT-Namen entfernt (V1.9.0)
 
-Das Formular „Spieler hinzufügen“ befindet sich nun als eigenständiger Abschnitt ganz unten vor dem Footer. Die vorhandene ausklappbare Statistikliste zeigt weiterhin eingetragene Profile und lässt sie entfernen. Die zunächst fest voreingetragenen Namen RockmasterR, strausbot und botuturn wurden aus `data/rapid-players.json` entfernt. Eine einmalige Browser-Migration blendet auch zuvor automatisch gespeicherte Standardnamen aus (zusätzlich die alte Schreibweise rockbotmasterR). Frühere manuelle Matches und bereits gespeicherte Statistikmessungen werden archiviert und nicht gelöscht. Danach selbst hinzugefügte Spieler bleiben bestehen.
+Das Formular „Spieler hinzufügen“ befindet sich nun als eigenständiger Abschnitt ganz unten vor dem Footer. Die vorhandene ausklappbare Statistikliste zeigt weiterhin eingetragene Profile und lässt sie entfernen. Die zunächst fest voreingetragenen BOT-Namen strausbot und botuturn wurden aus `data/rapid-players.json` entfernt. RockmasterR bleibt als verifizierter EA-Spieler zentral hinterlegt. Eine einmalige Browser-Migration blendet die BOT-Namen aus (auch die alte Schreibweise rockbotmasterR), aber nicht RockmasterR. Frühere manuelle Matches und bereits gespeicherte Statistikmessungen werden archiviert und nicht gelöscht. Danach selbst hinzugefügte Spieler bleiben bestehen.
 
-Der stündliche GitHub-Workflow läuft mit leerer zentraler Spielerliste erfolgreich als No-op durch, ohne die historische JSON zu verändern. Neue Spieler im Webformular werden zunächst nur lokal gespeichert und über die API live abgefragt. Damit ein Spieler stündlich im Hintergrund erfasst wird, muss sein Name und die richtige Plattform in der zentralen Konfiguration `data/rapid-players.json` eingetragen werden. Die statische GitHub-Pages-App kann nicht anonym das zentrale GitHub-Repository verändern.
+Der stündliche GitHub-Workflow erfasst weiterhin RockmasterR. Bei einer leeren zentralen Spielerliste würde er erfolgreich ohne Änderungen an der historischen JSON durchlaufen. Neue Spieler im Webformular werden zunächst nur lokal gespeichert und über die API live abgefragt. Damit ein Spieler stündlich im Hintergrund erfasst wird, muss sein Name und die richtige Plattform in der zentralen Konfiguration `data/rapid-players.json` eingetragen werden. Die statische GitHub-Pages-App kann nicht anonym das zentrale GitHub-Repository verändern.
 
 ## PlayStation-Spielerauflösung (V1.8.0)
 
