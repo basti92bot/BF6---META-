@@ -1,6 +1,12 @@
-# BF6 META – Loadout Lab
+# BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **0.8.2**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **1.1.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## NEU: WIN/LOST Tracker (V1.1.0)
+
+Die Startseite verlinkt auf `tracker.html`. Dort können Battlefield-6-Runden mit genau zwei großen Buttons als WIN oder LOST erfasst werden. Die Historie zeigt Siegquote, Siege, Niederlagen und aktuelle Serie. Filter nach Multiplayer, Rapid Royale und Battle Royale, Undo und CSV-Export sind enthalten. Die Historie wird ausschließlich im Browser auf dem jeweiligen Gerät gespeichert. Es gibt noch keine Synchronisierung zwischen Geräten.
+
+Ein eigener aufklappbarer Bereich ruft pro EA-ID und Plattform Spielerstatistiken über die Community-API https://api.gametools.network/bf6/stats/ ab. Felder ohne Antwort werden als Strich angezeigt. Browser-CORS oder API-Ausfälle können den Abruf verhindern. Die Account-Statistiken sind keine automatisch erfassten Einzelmatch-Resultate. Der API-Liveabruf wurde bei diesem Release nicht end-to-end verifiziert.
 
 ## Die App: Loadouts zuerst
 
