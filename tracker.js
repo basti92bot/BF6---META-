@@ -4,10 +4,13 @@
   const KEY = "bf6-winlost-v1";
   const MODES = {mp:"MEHRSPIELER",rapid:"RAPID ROYALE",br:"BATTLE ROYALE"};
   const PLATFORMS = {ea:"EA / PC",xbox:"XBOX",psn:"PLAYSTATION",steam:"STEAM"};
+  const TEAMMATES = ["rockbotmasterR","strausbot","botuturn"];
+  const cleanTeammates = values => Array.isArray(values) ? TEAMMATES.filter(name => values.includes(name)) : [];
   const safe = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const seed = {matches:[],players:[],mode:"mp"};
-  const state = (() => {try {const data = JSON.parse(localStorage.getItem(KEY));return {matches:Array.isArray(data?.matches)?data.matches.filter(m=>["win","loss"].includes(m.result)&&MODES[m.mode]).slice(0,5000):[],players:Array.isArray(data?.players)?data.players.filter(p=>typeof p.name==="string"&&p.name&&PLATFORMS[p.platform]).slice(0,16).map(p=>({name:p.name,platform:p.platform})):[],mode:MODES[data?.mode]?data.mode:"mp"};}catch{return {...seed};}})();
+  const seed = {matches:[],players:[],mode:"mp",selectedTeammates:[]};
+  const state = (() => {try {const data = JSON.parse(localStorage.getItem(KEY));return {matches:Array.isArray(data?.matches)?data.matches.filter(m=>["win","loss"].includes(m.result)&&MODES[m.mode]).slice(0,5000):[],players:Array.isArray(data?.players)?data.players.filter(p=>typeof p.name==="string"&&p.name&&PLATFORMS[p.platform]).slice(0,16).map(p=>({name:p.name,platform:p.platform})):[],mode:MODES[data?.mode]?data.mode:"mp",selectedTeammates:cleanTeammates(data?.selectedTeammates)};}catch{return {...seed};}})();
   let filter = "all";
+  let editingMatchId = null;
   let pending = new Set();
   const save = () => {try{localStorage.setItem(KEY, JSON.stringify(state));return true;}catch{return false;}};
   const int = value => {const n=Number(String(value ?? "").replace(/,/g,""));return Number.isFinite(n)?Math.round(n).toLocaleString("de-DE"):null;};
@@ -16,6 +19,17 @@
   const escCsv = value => '"'+String(value).replace(/"/g,'""')+'"';
   const all = () => state.matches.slice().sort((a,b)=>b.ts-a.ts);
   const modeMatches = () => filter==="all"?all():all().filter(m=>m.mode===filter);
+  function renderMatch(m){
+    const isWin=m.result==="win";
+    const selected=cleanTeammates(m.participants);
+    const names=isWin?'<small class="contributors">'+(selected.length?'MITGEWONNEN: '+safe(selected.join(", ")):'MITGEWONNEN: nicht erfasst')+'</small>':"";
+    const edit=isWin?'<button type="button" class="edit-match" data-edit-match="'+safe(m.id)+'" aria-label="Mitspieler dieses Siegs bearbeiten">✎</button>':"";
+    const editor=editingMatchId===m.id&&isWin?
+      '<div class="history-editor"><span>MITGEWINNER BEARBEITEN</span><div class="history-editor-options">'+
+      TEAMMATES.map(name=>'<button type="button" data-edit-teammate="'+safe(name)+'" data-for-match="'+safe(m.id)+'" class="'+(selected.includes(name)?"active":"")+'" aria-pressed="'+String(selected.includes(name))+'">'+safe(name)+'</button>').join("")+
+      '</div><button type="button" class="edit-done" data-close-edit>FERTIG ✓</button></div>':"";
+    return '<div class="history-entry"><div class="match-row"><span class="match-result '+(isWin?"win":"loss")+'">'+(isWin?"WIN":"LOST")+'</span><span class="match-main">'+safe(MODES[m.mode])+'<small>'+safe(new Date(m.ts).toLocaleString("de-DE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}))+'</small>'+names+'</span><div class="match-actions">'+edit+'<button type="button" class="match-remove" data-remove-match="'+safe(m.id)+'" aria-label="Match löschen">×</button></div></div>'+editor+'</div>';
+  }
   function render(){
     const data=modeMatches(),wins=data.filter(m=>m.result==="win").length,losses=data.length-wins;
     $("wins").textContent=wins;$("losses").textContent=losses;
@@ -24,20 +38,25 @@
     $("undo").disabled=!state.matches.length;
     $("export").disabled=!state.matches.length;
     $("history-count").textContent=data.length+" Matches"+(filter==="all"?"":" im Filter");
-    $("history-list").innerHTML=data.length?data.slice(0,60).map(m=>'<div class="match-row"><span class="match-result '+(m.result==="win"?"win":"loss")+'">'+(m.result==="win"?"WIN":"LOST")+'</span><span class="match-main">'+safe(MODES[m.mode])+'<small>'+safe(new Date(m.ts).toLocaleString("de-DE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}))+'</small></span><button type="button" class="match-remove" data-remove-match="'+safe(m.id)+'" aria-label="Match löschen">×</button></div>').join(""):'<p class="empty">Noch keine Matches erfasst.</p>';
+    $("history-list").innerHTML=data.length?data.slice(0,60).map(renderMatch).join(""):'<p class="empty">Noch keine Matches erfasst.</p>';
     document.querySelectorAll("[data-filter]").forEach(b=>{const active=b.dataset.filter===filter;b.classList.toggle("active",active);b.setAttribute("aria-pressed",String(active));});
     $("match-mode").value=state.mode;
+    document.querySelectorAll("[data-teammate]").forEach(button=>{
+      const active=state.selectedTeammates.includes(button.dataset.teammate);
+      button.classList.toggle("active",active);
+      button.setAttribute("aria-pressed",String(active));
+    });
     $("refresh-all").disabled=!state.players.length;
     renderPlayers();
   }
   function addMatch(result){
-    const m={id:String(Date.now())+"-"+Math.random().toString(36).slice(2,8),mode:state.mode,result,ts:Date.now()};
+    const m={id:String(Date.now())+"-"+Math.random().toString(36).slice(2,8),mode:state.mode,result,ts:Date.now(),participants:result==="win"?cleanTeammates(state.selectedTeammates):[]};
     state.matches.push(m);filter="all";if(state.matches.length>5000)state.matches.shift();
     const stored=save();
-    $("record-feedback").textContent=(result==="win"?"WIN":"LOST")+" gespeichert · "+MODES[state.mode]+(stored?"":" · Speicherung auf diesem Gerät nicht möglich");
+    $("record-feedback").textContent=(result==="win"?"WIN":"LOST")+" gespeichert · "+MODES[state.mode]+(result==="win"&&m.participants.length?" · mit "+m.participants.join(", "):"")+(stored?"":" · Speicherung auf diesem Gerät nicht möglich");
     render();
   }
-  function removeMatch(id){state.matches=state.matches.filter(m=>m.id!==id);save();render();}
+  function removeMatch(id){state.matches=state.matches.filter(m=>m.id!==id);if(editingMatchId===id)editingMatchId=null;save();render();}
   const fmt = v => v===null?"–":Number(v).toLocaleString("de-DE",{maximumFractionDigits:2});
   function playerKey(p){return p.platform+":"+p.name.toLowerCase();}
   const playerData = new Map();
@@ -95,16 +114,37 @@
   }
   function exportCsv(){
     if(!state.matches.length)return;
-    const rows=[["Datum","Ergebnis","Modus"],...all().map(m=>[new Date(m.ts).toISOString(),m.result==="win"?"WIN":"LOST",MODES[m.mode]])];
+    const rows=[["Datum","Ergebnis","Modus","Mitgewonnen"],...all().map(m=>[new Date(m.ts).toISOString(),m.result==="win"?"WIN":"LOST",MODES[m.mode],m.result==="win"?cleanTeammates(m.participants).join(", "):""])];
     const blob=new Blob(["\ufeff"+rows.map(r=>r.map(escCsv).join(";")).join("\r\n")],{type:"text/csv;charset=utf-8"});
     const link=document.createElement("a"),url=URL.createObjectURL(blob);
     link.href=url;link.download="bf6-winlost-"+new Date().toISOString().slice(0,10)+".csv";link.click();setTimeout(()=>URL.revokeObjectURL(url),2000);
   }
+  $("teammate-picks").addEventListener("click",e=>{
+    const button=e.target.closest("[data-teammate]");
+    if(!button||!TEAMMATES.includes(button.dataset.teammate))return;
+    const name=button.dataset.teammate;
+    state.selectedTeammates=TEAMMATES.filter(n=>n===name?!state.selectedTeammates.includes(n):state.selectedTeammates.includes(n));
+    save();render();
+  });
   $("record-win").addEventListener("click",()=>addMatch("win"));
   $("record-loss").addEventListener("click",()=>addMatch("loss"));
   $("match-mode").addEventListener("change",e=>{state.mode=e.target.value;save();});
   document.querySelector(".filter-tabs").addEventListener("click",e=>{const button=e.target.closest("[data-filter]");if(!button)return;filter=button.dataset.filter;render();});
-  $("history-list").addEventListener("click",e=>{const button=e.target.closest("[data-remove-match]");if(button)removeMatch(button.dataset.removeMatch);});
+  $("history-list").addEventListener("click",e=>{
+    const remove=e.target.closest("[data-remove-match]");
+    if(remove){removeMatch(remove.dataset.removeMatch);return;}
+    const edit=e.target.closest("[data-edit-match]");
+    if(edit){editingMatchId=editingMatchId===edit.dataset.editMatch?null:edit.dataset.editMatch;render();return;}
+    const toggle=e.target.closest("[data-edit-teammate]");
+    if(toggle&&TEAMMATES.includes(toggle.dataset.editTeammate)){
+      const match=state.matches.find(m=>m.id===toggle.dataset.forMatch&&m.result==="win");
+      if(!match)return;
+      const old=cleanTeammates(match.participants),name=toggle.dataset.editTeammate;
+      match.participants=TEAMMATES.filter(n=>n===name?!old.includes(n):old.includes(n));
+      save();render();return;
+    }
+    if(e.target.closest("[data-close-edit]")){editingMatchId=null;render();}
+  });
   $("undo").addEventListener("click",()=>{if(!state.matches.length)return;state.matches.pop();save();render();$("record-feedback").textContent="Letzter Eintrag rückgängig gemacht.";});
   $("export").addEventListener("click",exportCsv);
   $("clear-matches").addEventListener("click",()=>{if(!state.matches.length||!confirm("Wirklich alle erfassten Matches auf diesem Gerät löschen?"))return;state.matches=[];save();render();$("record-feedback").textContent="Match-Historie gelöscht.";});
