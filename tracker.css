@@ -44,3 +44,21 @@
 .manual-section .history{margin-bottom:0}
 .manual-numbers{margin:14px 0}
 @media(max-width:560px){.auto-panel{padding:14px 12px}.auto-select-row select{flex:1 1 170px}.auto-refresh{flex:0 0 auto}.auto-numbers .number{padding:12px 7px}.auto-numbers .number strong{font-size:clamp(18px,5vw,27px)}}
+
+
+/* 1.6.0: API-only dashboard with measured rolling windows */
+.period-overview{margin-top:19px}
+.period-header{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:0 2px 12px}
+.period-header h2{font-size:15px;letter-spacing:1px;margin:0;font-weight:950}
+.period-header small{font-size:9px;color:var(--muted);letter-spacing:.8px;font-weight:850}
+.period-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.period-card{min-width:0;background:#1a2520;border:1px solid #394e40;border-radius:9px;padding:14px}
+.period-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.period-heading strong{font-size:12px;letter-spacing:.6px;color:var(--lime)}
+.period-heading span{font-size:10px;color:#a4baac}
+.period-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.period-kpis>div{background:#111b16;border-radius:6px;min-width:0;padding:10px 8px}
+.period-kpis small{display:block;font-size:9px;color:#a6b7a9;letter-spacing:.4px}
+.period-kpis strong{display:block;font-size:20px;line-height:1.45;overflow-wrap:anywhere;font-weight:950}
+.period-note{font-size:11px;line-height:1.6;color:#9daf9d;margin:10px 2px 0}
+@media(max-width:690px){.period-grid{grid-template-columns:1fr}.period-kpis strong{font-size:21px}}
