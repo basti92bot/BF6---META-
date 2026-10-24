@@ -118,5 +118,8 @@
     if(remove){const key=remove.dataset.removePlayer;state.players=state.players.filter(p=>playerKey(p)!==key);playerData.delete(key);save();render();}
   });
   $("refresh-all").addEventListener("click",refreshAll);
+  if("serviceWorker" in navigator && location.protocol!=="file:") {
+    window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+  }
   render();
 })();
