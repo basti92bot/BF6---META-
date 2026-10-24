@@ -1,6 +1,12 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **1.2.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **1.3.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Rapid Royale separat (V1.3.0)
+
+Der API-Spielerbereich zeigt ausschließlich Spielmoduswerte von Rapid Royale an. Die GameTools-Anfrage nutzt jetzt `seperation=true` (Schreibweise der API), um die Modus-Trennung abzufragen. Werte werden nur aus explizit als Rapid Royale bezeichneten Datenobjekten gelesen. Kann die API den Modus nicht gesondert liefern, bleiben die Spielerfelder leer. Saisonwerte werden entsprechend gekennzeichnet. Die manuelle WIN/LOST-Historie bleibt unverändert und kann weiterhin alle Modi erfassen.
+
+Der Live-API-Abruf konnte beim Release nicht mit einem echten Rapid-Royale-Spielerprofil bestätigt werden. Gesamtwerte werden absichtlich nicht als Rapid-Daten ausgegeben.
 
 ## Mitgewinner je Sieg auswählen (V1.2.0)
 
