@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "players": [
+    {
+      "name": "RockmasterR",
+      "platform": "ea",
+      "enabled": true
+    },
+    {
+      "name": "strausbot",
+      "platform": "ea",
+      "enabled": true
+    },
+    {
+      "name": "botuturn",
+      "platform": "ea",
+      "enabled": true
+    }
+  ]
+}
