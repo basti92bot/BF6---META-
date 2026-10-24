@@ -122,8 +122,14 @@ async function main(){
   const file="data/rapid-history.json";
   let history={schemaVersion:1,lastSuccessAt:null,players:{}};
   try{history=JSON.parse(readFileSync(file,"utf8"));}catch{}
+  const enabledPlayers=(config.players||[]).filter(p=>p&&p.enabled!==false&&
+    p.name&&["ea","xbox","psn","steam","epic"].includes(p.platform));
+  if(!enabledPlayers.length){
+    console.log("Keine zentral hinterlegten Spieler. Stündlicher Sammler pausiert bis neue EA-IDs eingetragen sind.");
+    return;
+  }
   let succeeded=0;
-  for(const player of config.players||[]){
+  for(const player of enabledPlayers){
     if(player.enabled===false)continue;
     if(!player.name||!["ea","xbox","psn","steam","epic"].includes(player.platform))continue;
     try{
