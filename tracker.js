@@ -11,7 +11,7 @@
   let pending = new Set();
   const save = () => {try{localStorage.setItem(KEY, JSON.stringify(state));return true;}catch{return false;}};
   const int = value => {const n=Number(String(value ?? "").replace(/,/g,""));return Number.isFinite(n)?Math.round(n).toLocaleString("de-DE"):null;};
-  const number = value => {const n=Number(String(value ?? "").replace("%","").replace(",", "."));return Number.isFinite(n)?n:null;};
+  const number = value => {if(value===null||value===undefined||String(value).trim()==="")return null;const n=Number(String(value).replace("%","").replace(",", "."));return Number.isFinite(n)?n:null;};
   const metric = (obj,keys) => {for(const key of keys){if(obj?.[key]!==undefined && obj[key]!==null){const v=number(obj[key]);if(v!==null)return v;}}return null;};
   const escCsv = value => '"'+String(value).replace(/"/g,'""')+'"';
   const all = () => state.matches.slice().sort((a,b)=>b.ts-a.ts);
@@ -32,7 +32,7 @@
   }
   function addMatch(result){
     const m={id:String(Date.now())+"-"+Math.random().toString(36).slice(2,8),mode:state.mode,result,ts:Date.now()};
-    state.matches.push(m);if(state.matches.length>5000)state.matches.shift();
+    state.matches.push(m);filter="all";if(state.matches.length>5000)state.matches.shift();
     const stored=save();
     $("record-feedback").textContent=(result==="win"?"WIN":"LOST")+" gespeichert · "+MODES[state.mode]+(stored?"":" · Speicherung auf diesem Gerät nicht möglich");
     render();
