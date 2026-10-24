@@ -1,5 +1,27 @@
 {
   "schemaVersion": 1,
-  "lastSuccessAt": null,
-  "players": {}
+  "lastSuccessAt": "2026-10-24T22:35:37.810Z",
+  "players": {
+    "ea:rockmasterr": {
+      "name": "RockmasterR",
+      "platform": "ea",
+      "mode": "Rapid Royale",
+      "seasonal": false,
+      "points": [
+        {
+          "ts": 1792881337810,
+          "series": "rapid-royale|",
+          "values": {
+            "wins": 36,
+            "losses": 121,
+            "kills": 1328,
+            "deaths": 438,
+            "assists": 388,
+            "revives": 102
+          }
+        }
+      ],
+      "lastSuccessAt": "2026-10-24T22:35:37.810Z"
+    }
+  }
 }
