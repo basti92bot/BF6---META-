@@ -1,6 +1,12 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **1.8.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **1.9.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Spieler-Formular unten und Standard-BOT-Namen entfernt (V1.9.0)
+
+Das Formular „Spieler hinzufügen“ befindet sich nun als eigenständiger Abschnitt ganz unten vor dem Footer. Die vorhandene ausklappbare Statistikliste zeigt weiterhin eingetragene Profile und lässt sie entfernen. Die zunächst fest voreingetragenen Namen RockmasterR, strausbot und botuturn wurden aus `data/rapid-players.json` entfernt. Eine einmalige Browser-Migration blendet auch zuvor automatisch gespeicherte Standardnamen aus (zusätzlich die alte Schreibweise rockbotmasterR). Frühere manuelle Matches und bereits gespeicherte Statistikmessungen werden archiviert und nicht gelöscht. Danach selbst hinzugefügte Spieler bleiben bestehen.
+
+Der stündliche GitHub-Workflow läuft mit leerer zentraler Spielerliste erfolgreich als No-op durch, ohne die historische JSON zu verändern. Neue Spieler im Webformular werden zunächst nur lokal gespeichert und über die API live abgefragt. Damit ein Spieler stündlich im Hintergrund erfasst wird, muss sein Name und die richtige Plattform in der zentralen Konfiguration `data/rapid-players.json` eingetragen werden. Die statische GitHub-Pages-App kann nicht anonym das zentrale GitHub-Repository verändern.
 
 ## PlayStation-Spielerauflösung (V1.8.0)
 
