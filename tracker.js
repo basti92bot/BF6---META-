@@ -105,11 +105,11 @@
       if(!Array.isArray(value)){
         // Require an explicit game mode identity, not a parent containing generic stats.
         const label=Object.entries(value).find(([k,v])=>modeFields.has(k)&&typeof v==="string"&&rapidLabel(v));
-        if(label)candidates.push({item:value,path:path.concat(String(label[1]))});
+        if(label)candidates.push({item:value,path:path.concat(String(label[1])),modeLabel:String(label[1])});
       }
       for(const [key,child] of Object.entries(value)){
         if(!child || typeof child!=="object")continue;
-        if(rapidLabel(key))candidates.push({item:child,path:path.concat(key)});
+        if(rapidLabel(key))candidates.push({item:child,path:path.concat(key),modeLabel:key});
         inspect(child,path.concat(key),depth+1);
       }
     };
@@ -119,10 +119,14 @@
       const path=candidate.path.join(" ").toLowerCase();
       const seasonal=/season|saison/.test(path);
       const count=Object.values(parsed.stats).filter(v=>v!==null).length;
-      return {...candidate,parsed,seasonal,count};
+      const label=candidate.modeLabel;
+      const combined=/^rapid[\s_-]*royale$/i.test(label);
+      const trios=/trios?|squads?/i.test(label);
+      const modeTitle=combined?"Rapid Royale":trios?"Rapid Royale Trios":/solos?/i.test(label)?"Rapid Royale Solos":label.replace(/([a-z])([A-Z])/g,"$1 $2").replace(/[_-]/g," ");
+      return {...candidate,parsed,seasonal,count,combined,trios,modeTitle};
     }).filter(x=>x.parsed.any);
     // Prefer explicit all-time mode stats over season-specific summaries.
-    options.sort((a,b)=>Number(a.seasonal)-Number(b.seasonal)||b.count-a.count||a.path.length-b.path.length);
+    options.sort((a,b)=>Number(a.seasonal)-Number(b.seasonal)||Number(b.combined)-Number(a.combined)||Number(b.trios)-Number(a.trios)||b.count-a.count||a.path.length-b.path.length);
     return options[0] || null;
   }
   async function fetchPlayer(p){
@@ -142,7 +146,7 @@
         return;
       }
       const suffix=rapid.seasonal?" · nur Saisonwerte":"";
-      playerData.set(key,{stats:rapid.parsed.stats,message:"Rapid Royale"+suffix+" · GameTools.Network · "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})});
+      playerData.set(key,{stats:rapid.parsed.stats,message:rapid.modeTitle+suffix+" · GameTools.Network · "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})});
       $("api-feedback").textContent="Rapid-Royale-Statistiken geladen. Keine Gesamtwerte.";
     }catch(err){
       playerData.set(key,{stats:{},message:"Rapid-Royale-Abruf fehlgeschlagen: "+(err.name==="AbortError"?"Zeitüberschreitung":err.message)+". Eventuell verhindert CORS den Browser-Zugriff."});
