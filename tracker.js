@@ -91,21 +91,61 @@
     for(const key of ["revives","assists"])result[key]=result[key]===null?null:int(result[key]);
     return {stats:result,any:Object.values(result).some(v=>v!==null)};
   }
+
+  // The GameTools "seperation" response is not guaranteed to include every mode.
+  // Only accept explicit Rapid Royale labels, never BF6-wide or other REDSEC totals.
+  const rapidLabel = value => /^rapid[\s_-]*royale(?:[\s_-]*(?:solo|solos|trio|trios|duo|duos|squad|squads|[0-9]+))*$/i.test(String(value ?? "").trim());
+  const modeFields = new Set(["mode","gamemode","gameMode","game_mode","modeName","gamemodeName","gameModeName","playlist","playlistName","name","displayName","id"]);
+  function findRapidMode(source){
+    const candidates = [], seen = new WeakSet();
+    let walked = 0;
+    const inspect = (value, path, depth) => {
+      if(!value || typeof value!=="object" || depth>10 || seen.has(value) || ++walked>4500)return;
+      seen.add(value);
+      if(!Array.isArray(value)){
+        // Require an explicit game mode identity, not a parent containing generic stats.
+        const label=Object.entries(value).find(([k,v])=>modeFields.has(k)&&typeof v==="string"&&rapidLabel(v));
+        if(label)candidates.push({item:value,path:path.concat(String(label[1]))});
+      }
+      for(const [key,child] of Object.entries(value)){
+        if(!child || typeof child!=="object")continue;
+        if(rapidLabel(key))candidates.push({item:child,path:path.concat(key)});
+        inspect(child,path.concat(key),depth+1);
+      }
+    };
+    inspect(source,[],0);
+    const options=candidates.map(candidate=>{
+      const parsed=parseStats(candidate.item);
+      const path=candidate.path.join(" ").toLowerCase();
+      const seasonal=/season|saison/.test(path);
+      const count=Object.values(parsed.stats).filter(v=>v!==null).length;
+      return {...candidate,parsed,seasonal,count};
+    }).filter(x=>x.parsed.any);
+    // Prefer explicit all-time mode stats over season-specific summaries.
+    options.sort((a,b)=>Number(a.seasonal)-Number(b.seasonal)||b.count-a.count||a.path.length-b.path.length);
+    return options[0] || null;
+  }
   async function fetchPlayer(p){
     const key=playerKey(p);if(pending.has(key))return;
     pending.add(key);renderPlayers();
     try{
-      const query=new URLSearchParams({name:p.name,platform:p.platform,format_values:"false"});
+      const query=new URLSearchParams({name:p.name,platform:p.platform,format_values:"false",seperation:"true"});
       const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
       let response;
       try{response=await fetch("https://api.gametools.network/bf6/stats/?"+query.toString(),{signal:controller.signal,headers:{"Accept":"application/json"}});}finally{clearTimeout(timer);}
       if(!response.ok)throw new Error("API HTTP "+response.status);
-      const json=await response.json(),parsed=parseStats(json);
-      if(!parsed.any)throw new Error("Keine auswertbaren Spielerwerte geliefert");
-      playerData.set(key,{stats:parsed.stats,message:"Quelle: GameTools.Network · abgerufen "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})});
-      $("api-feedback").textContent="API-Daten erfolgreich geladen. Es werden nur verfügbare Felder angezeigt.";
+      const json=await response.json();
+      const rapid=findRapidMode(json);
+      if(!rapid) {
+        playerData.set(key,{stats:{},message:"Keine separat ausgewiesenen Rapid-Royale-Daten gefunden. Gesamtwerte werden nicht angezeigt."});
+        $("api-feedback").textContent="Die API liefert für diesen Spieler keine eindeutig zuordenbaren Rapid-Royale-Werte.";
+        return;
+      }
+      const suffix=rapid.seasonal?" · nur Saisonwerte":"";
+      playerData.set(key,{stats:rapid.parsed.stats,message:"Rapid Royale"+suffix+" · GameTools.Network · "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})});
+      $("api-feedback").textContent="Rapid-Royale-Statistiken geladen. Keine Gesamtwerte.";
     }catch(err){
-      playerData.set(key,{stats:{},message:"Abruf fehlgeschlagen: "+(err.name==="AbortError"?"Zeitüberschreitung":err.message)+". Eventuell verhindert CORS den Browser-Zugriff."});
+      playerData.set(key,{stats:{},message:"Rapid-Royale-Abruf fehlgeschlagen: "+(err.name==="AbortError"?"Zeitüberschreitung":err.message)+". Eventuell verhindert CORS den Browser-Zugriff."});
       $("api-feedback").textContent="Mindestens ein API-Abruf war nicht erfolgreich.";
     }finally{pending.delete(key);if(state.players.some(x=>playerKey(x)===key))renderPlayers();}
   }
