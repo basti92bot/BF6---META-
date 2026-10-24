@@ -3,6 +3,8 @@
   const $ = id => document.getElementById(id);
   const KEY = "bf6-winlost-v1";
   const PLATFORMS = {ea:"EA / PC",xbox:"XBOX",psn:"PLAYSTATION",steam:"STEAM"};
+  // Only the old shipped default roster is retired. New user-added players are not affected.
+  const RETIRED_DEFAULT_NAMES = new Set(["rockmasterr","rockbotmasterr","strausbot","botuturn"]);
   const safe = value => String(value ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const num = value => {
     if(value===null||value===undefined||String(value).trim()==="")return null;
@@ -31,7 +33,11 @@
   const loadState = () => {
     let data={};
     try{data=JSON.parse(localStorage.getItem(KEY))||{}}catch{}
-    const players=Array.isArray(data.players)?data.players.filter(p=>typeof p?.name==="string"&&p.name.trim()&&PLATFORMS[p.platform]).slice(0,16).map(p=>({name:p.name,platform:p.platform})):[];
+    const firstCleanup=data.defaultBotsClearedV19!==true;
+    const players=Array.isArray(data.players)?data.players
+      .filter(p=>typeof p?.name==="string"&&p.name.trim()&&PLATFORMS[p.platform])
+      .filter(p=>!firstCleanup||!RETIRED_DEFAULT_NAMES.has(p.name.trim().toLowerCase()))
+      .slice(0,16).map(p=>({name:p.name,platform:p.platform})):[];
     const snapshots={};
     if(data.snapshots&&typeof data.snapshots==="object"&&!Array.isArray(data.snapshots)){
       for(const p of players){
@@ -41,8 +47,17 @@
         snapshots[key]=list.filter(x=>Number.isFinite(x?.ts)&&x.ts>0&&x.ts<=Date.now()+3600000&&x.values&&typeof x.values==="object"&&["wins","losses","kills","deaths"].some(k=>Number.isSafeInteger(x.values[k])&&x.values[k]>=0)).slice(-2500).sort((a,b)=>a.ts-b.ts);
       }
     }
-    // Keep the existing manual records as-is. The manual UI is retired, not deleted.
-    return {...data,players,trackedPlayer:typeof data.trackedPlayer==="string"?data.trackedPlayer:"",snapshots};
+    // Preserve archived records even for names no longer shown in the player selector.
+    if(data.snapshots&&typeof data.snapshots==="object"&&!Array.isArray(data.snapshots)){
+      for(const [key,points] of Object.entries(data.snapshots)){
+        if(!Object.prototype.hasOwnProperty.call(snapshots,key)&&Array.isArray(points))
+          snapshots[key]=points.slice(-2500);
+      }
+    }
+    // Keep old manual records and statistical snapshots untouched.
+    const previous=typeof data.trackedPlayer==="string"?data.trackedPlayer:"";
+    const trackedPlayer=players.some(p=>playerKey(p)===previous)?previous:"";
+    return {...data,players,trackedPlayer,snapshots,defaultBotsClearedV19:true};
   };
   const state=loadState();
   const playerData=new Map();
@@ -69,6 +84,9 @@
           for(const p of config.players){
             if(!p||p.enabled===false||!PLATFORMS[p.platform]||
               typeof p.name!=="string"||!p.name.trim())continue;
+            // Ignore a stale offline cache of the removed default roster.
+            if(RETIRED_DEFAULT_NAMES.has(p.name.trim().toLowerCase())&&
+               !state.players.some(x=>playerKey(x)===playerKey(p)))continue;
             if(!state.players.some(existing=>playerKey(existing)===playerKey(p))){
               if(state.players.length>=16)break;
               state.players.push({name:p.name,platform:p.platform});
@@ -89,6 +107,7 @@
     renderPlayers();renderAuto();
   }
   const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));return true}catch{return false}};
+  save(); // Persist the one-time migration before any API refresh repopulates UI.
   const activePlayer=()=>state.players.find(p=>playerKey(p)===state.trackedPlayer)||state.players[0]||null;
   function unpack(data){
     if(!data||typeof data!=="object")return {};
