@@ -264,15 +264,21 @@
         const query=new URLSearchParams({name:p.name,platform,format_values:"false",seperation:"true"});
         return fetch("https://api.gametools.network/bf6/stats/?"+query.toString(),{signal:controller.signal,headers:{"Accept":"application/json"}});
       };
-      let response,usedFallback=false;
+      let response,usedPlatform=p.platform;
+      const fallbackPlatforms=p.platform==="xbox"?["ea"]:
+        p.platform==="psn"?["ea","ps5","ps4"]:[];
       try{
         response=await request(p.platform);
-        if(response.status===404&&p.platform==="xbox"){
-          response=await request("ea");
-          usedFallback=response.ok;
+        for(const platform of fallbackPlatforms){
+          if(response.status!==404)break;
+          response=await request(platform);
+          if(response.ok)usedPlatform=platform;
         }
       }finally{clearTimeout(timer);}
-      if(response.status===404)throw Object.assign(new Error("Spieler nicht gefunden (HTTP 404). Prüfe die exakte EA-ID."),{status:404});
+      if(response.status===404)throw Object.assign(new Error(
+        "Spieler nicht gefunden (HTTP 404). "+(p.platform==="psn"
+          ?"PlayStation-, PS5-, PS4- und EA-Abfrage erfolglos. Prüfe die EA-ID, sie kann anders lauten als dein PSN-Online-Name."
+          :"Prüfe die exakte EA-ID.")),{status:404});
       if(!response.ok)throw Object.assign(new Error("GameTools antwortet mit HTTP "+response.status),{status:response.status});
       const json=await response.json();
       const rapid=findRapidMode(json);
@@ -283,7 +289,7 @@
       }
       recordSnapshot(p,rapid.parsed.stats);
       const suffix=rapid.seasonal?" · nur Saisonwerte":"";
-      const fallback=usedFallback?" · über EA/PC gefunden":"";
+      const fallback=usedPlatform!==p.platform?" · über "+(usedPlatform==="ea"?"EA/PC":usedPlatform.toUpperCase())+" gefunden":"";
       playerData.set(key,{stats:rapid.parsed.stats,message:rapid.modeTitle+suffix+fallback+" · GameTools.Network · "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})});
       $("api-feedback").textContent="Rapid-Royale-Statistiken geladen. Verlauf lokal gespeichert.";
     }catch(err){
