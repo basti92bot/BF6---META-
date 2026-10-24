@@ -8,8 +8,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>BF6 | WIN / LOST</title>
 <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
-<link rel="stylesheet" href="./tracker.css?v=1.1.0">
-<script src="./tracker.js?v=1.1.0" defer></script>
+<link rel="stylesheet" href="./tracker.css?v=1.2.0">
+<script src="./tracker.js?v=1.2.0" defer></script>
 </head>
 <body>
 <div class="tracker-shell">
@@ -22,6 +22,15 @@
   <section class="panel capture" aria-labelledby="capture-heading">
     <div class="section-line"><h2 id="capture-heading">MATCH EINTRAGEN</h2><span>01 / SESSION</span></div>
     <div class="select-row"><label for="match-mode">SPIELMODUS</label><select id="match-mode"><option value="mp">MEHRSPIELER</option><option value="rapid">RAPID ROYALE</option><option value="br">BATTLE ROYALE</option></select></div>
+    <div class="contributors-picker">
+      <div class="pick-heading"><span>WER HAT BEIM WIN MITGEWONNEN?</span><small>Mehrfachauswahl</small></div>
+      <div id="teammate-picks" class="teammate-picks" role="group" aria-label="Mitspieler für nächsten Sieg">
+        <button type="button" data-teammate="rockbotmasterR" aria-pressed="false">rockbotmasterR</button>
+        <button type="button" data-teammate="strausbot" aria-pressed="false">strausbot</button>
+        <button type="button" data-teammate="botuturn" aria-pressed="false">botuturn</button>
+      </div>
+      <p>Die Auswahl bleibt für weitere Siege aktiv. LOST speichert keine Mitspieler.</p>
+    </div>
     <div class="action-grid"><button type="button" id="record-win" class="record win"><span class="action-symbol">↗</span><span>WIN</span><small>SPIEL GEWONNEN</small></button><button type="button" id="record-loss" class="record loss"><span class="action-symbol">↘</span><span>LOST</span><small>SPIEL VERLOREN</small></button></div>
     <p class="feedback" id="record-feedback" role="status" aria-live="polite">Nach jedem Match einfach WIN oder LOST antippen.</p>
   </section>
@@ -59,7 +68,7 @@
   </details>
   <details class="settings"><summary>DATEN & VERWALTUNG <span>⌄</span></summary><div class="settings-body"><p>Die WIN/LOST-Historie und eure Spielerliste werden nur auf diesem Gerät im Browser gespeichert. Andere Geräte sehen diese Einträge nicht automatisch.</p><button type="button" id="clear-matches" class="danger">MATCH-HISTORIE LÖSCHEN</button></div></details>
 </main>
-<footer>BF6 TRACKER · V1.1.0 · UNABHÄNGIGES FANPROJEKT</footer>
+<footer>BF6 TRACKER · V1.2.0 · UNABHÄNGIGES FANPROJEKT</footer>
 </div>
 </body>
 </html>
