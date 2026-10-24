@@ -62,3 +62,13 @@
 .period-kpis strong{display:block;font-size:20px;line-height:1.45;overflow-wrap:anywhere;font-weight:950}
 .period-note{font-size:11px;line-height:1.6;color:#9daf9d;margin:10px 2px 0}
 @media(max-width:690px){.period-grid{grid-template-columns:1fr}.period-kpis strong{font-size:21px}}
+
+
+/* v1.9.0: player enrollment as the final dashboard section */
+.add-player-panel{margin-top:24px;margin-bottom:12px;border-color:#537451;background:#1b2920}
+.add-player-panel .section-line{margin-bottom:10px}
+.add-player-panel .section-line h2{color:var(--lime)}
+.add-player-explainer{font-size:11px;color:#afc4b3;line-height:1.6;margin:0 0 15px}
+.add-player-panel .player-form button{background:var(--lime)}
+.add-player-panel .api-feedback{margin:11px 0 0}
+@media(max-width:560px){.add-player-panel{margin-top:18px}}
