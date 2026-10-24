@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#101614">
-<meta name="description" content="Battlefield 6: WIN/LOST-Sessiontracker und echte Spielerstatistiken.">
+<meta name="description" content="Automatische Battlefield 6 Rapid-Royale-Statistiken mit 24-Stunden- und 7-Tage-Verlauf.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>BF6 | WIN / LOST</title>
 <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
-<link rel="stylesheet" href="./tracker.css?v=1.5.0">
-<script src="./tracker.js?v=1.5.0" defer></script>
+<link rel="stylesheet" href="./tracker.css?v=1.6.0">
+<script src="./tracker.js?v=1.6.0" defer></script>
 </head>
 <body>
 <div class="tracker-shell">
@@ -33,45 +33,36 @@
       <div class="number"><span>MATCHES</span><strong id="auto-matches">–</strong></div>
     </div>
     <p class="auto-status" id="auto-status" role="status" aria-live="polite">Noch keine Spielerstatistik geladen. EA-ID unten hinzufügen.</p>
-    <p class="auto-note">Automatisch beim Öffnen und alle 2 Minuten, solange die Seite offen ist. Das sind die vom Spiel gemeldeten Rapid-Royale-Gesamtwerte, keine automatisch erkannten Einzelmatches.</p>
+    <p class="auto-note">Automatischer Abruf beim Öffnen und alle 2 Minuten, solange die Seite offen ist. Das sind Rapid-Royale-Gesamtwerte, keine Einzelmatch-Ergebnisse.</p>
   </section>
-  <details class="manual-section" id="manual-section">
-    <summary>MANUELLE MATCH-HISTORIE <span>OPTIONAL ⌄</span></summary>
-    <div class="manual-content">
-  <section class="panel capture" aria-labelledby="capture-heading">
-    <div class="section-line"><h2 id="capture-heading">MATCH EINTRAGEN</h2><span>01 / SESSION</span></div>
-    <div class="select-row"><label for="match-mode">SPIELMODUS</label><select id="match-mode"><option value="mp">MEHRSPIELER</option><option value="rapid">RAPID ROYALE</option><option value="br">BATTLE ROYALE</option></select></div>
-    <div class="contributors-picker">
-      <div class="pick-heading"><span>WER HAT BEIM WIN MITGEWONNEN?</span><small>Mehrfachauswahl</small></div>
-      <div id="teammate-picks" class="teammate-picks" role="group" aria-label="Mitspieler für nächsten Sieg">
-        <button type="button" data-teammate="rockbotmasterR" aria-pressed="false">rockbotmasterR</button>
-        <button type="button" data-teammate="strausbot" aria-pressed="false">strausbot</button>
-        <button type="button" data-teammate="botuturn" aria-pressed="false">botuturn</button>
-      </div>
-      <p>Die Auswahl bleibt für weitere Siege aktiv. LOST speichert keine Mitspieler.</p>
+  <section class="period-overview" aria-labelledby="period-heading">
+    <div class="period-header"><h2 id="period-heading">VERLAUF</h2><small>GEMESSENE API-VERÄNDERUNGEN</small></div>
+    <div class="period-grid">
+      <article class="period-card">
+        <div class="period-heading"><strong>LETZTE 24 STUNDEN</strong><span id="day-window">Noch keine Vergleichsdaten</span></div>
+        <div class="period-kpis">
+          <div><small>WINS</small><strong id="day-wins">–</strong></div>
+          <div><small>LOSSES</small><strong id="day-losses">–</strong></div>
+          <div><small>WINRATE</small><strong id="day-winrate">–</strong></div>
+          <div><small>K/D</small><strong id="day-kd">–</strong></div>
+          <div><small>KILLS</small><strong id="day-kills">–</strong></div>
+          <div><small>DEATHS</small><strong id="day-deaths">–</strong></div>
+        </div>
+      </article>
+      <article class="period-card">
+        <div class="period-heading"><strong>LETZTE 7 TAGE</strong><span id="week-window">Noch keine Vergleichsdaten</span></div>
+        <div class="period-kpis">
+          <div><small>WINS</small><strong id="week-wins">–</strong></div>
+          <div><small>LOSSES</small><strong id="week-losses">–</strong></div>
+          <div><small>WINRATE</small><strong id="week-winrate">–</strong></div>
+          <div><small>K/D</small><strong id="week-kd">–</strong></div>
+          <div><small>KILLS</small><strong id="week-kills">–</strong></div>
+          <div><small>DEATHS</small><strong id="week-deaths">–</strong></div>
+        </div>
+      </article>
     </div>
-    <div class="action-grid"><button type="button" id="record-win" class="record win"><span class="action-symbol">↗</span><span>WIN</span><small>SPIEL GEWONNEN</small></button><button type="button" id="record-loss" class="record loss"><span class="action-symbol">↘</span><span>LOST</span><small>SPIEL VERLOREN</small></button></div>
-    <p class="feedback" id="record-feedback" role="status" aria-live="polite">Nach jedem Match einfach WIN oder LOST antippen.</p>
+    <p class="period-note" id="period-note">Die Auswertung beginnt mit dem ersten gespeicherten Rapid-Royale-API-Abruf. Historische Tage vor dem ersten Abruf können nicht rekonstruiert werden.</p>
   </section>
-  <section class="numbers manual-numbers" aria-label="Manuell erfasste Sessionstatistiken">
-    <div class="number"><span>WINS</span><strong id="wins">0</strong></div>
-    <div class="number"><span>LOSSES</span><strong id="losses">0</strong></div>
-    <div class="number featured"><span>WINRATE</span><strong id="winrate">0%</strong></div>
-    <div class="number"><span>SERIE</span><strong id="streak">–</strong></div>
-  </section>
-  <section class="panel history" aria-labelledby="history-heading">
-    <div class="section-line"><h2 id="history-heading">LETZTE MATCHES</h2><button type="button" class="text-button" id="undo" disabled>LETZTES RÜCKGÄNGIG ↶</button></div>
-    <div class="filter-tabs" role="group" aria-label="Historie filtern">
-      <button type="button" data-filter="all" class="active" aria-pressed="true">ALLE</button>
-      <button type="button" data-filter="mp" aria-pressed="false">MEHRSPIELER</button>
-      <button type="button" data-filter="rapid" aria-pressed="false">RAPID</button>
-      <button type="button" data-filter="br" aria-pressed="false">BATTLE ROYALE</button>
-    </div>
-    <div class="history-list" id="history-list" aria-live="polite"><p class="empty">Noch keine Matches erfasst.</p></div>
-    <div class="history-foot"><span id="history-count">0 Matches</span><button type="button" class="text-button" id="export" disabled>CSV EXPORTIEREN ↓</button></div>
-  </section>
-    </div>
-  </details>
   <details class="panel api-panel" id="api-panel">
     <summary><span><small>02 / LIVE DATEN</small><strong>EA-IDS & DETAILSTATISTIKEN</strong><em>Spieler hinzufügen oder entfernen</em></span><span class="chevron">⌄</span></summary>
     <div class="api-body">
@@ -87,9 +78,9 @@
       <p class="api-disclaimer">GameTools ist eine inoffizielle Community-API. Der Abruf nutzt die Aufschlüsselung nach Spielmodus. Nur eindeutig als Rapid Royale gekennzeichnete Werte werden übernommen, keine Multiplayer- oder REDSEC-Gesamtstatistiken. API-Ausfälle und Browser-CORS können den Abruf verhindern.</p>
     </div>
   </details>
-  <details class="settings"><summary>DATEN & VERWALTUNG <span>⌄</span></summary><div class="settings-body"><p>Die manuell erfasste WIN/LOST-Historie und eure Spieler-Einstellungen bleiben lokal auf diesem Gerät erhalten. Die automatische Bilanz stammt direkt von GameTools und wird beim Öffnen neu geladen. Einzelne Matches und Mitspieler kann die API derzeit nicht zuverlässig zuordnen.</p><button type="button" id="clear-matches" class="danger">MATCH-HISTORIE LÖSCHEN</button></div></details>
+  <details class="settings"><summary>DATEN & VERWALTUNG <span>⌄</span></summary><div class="settings-body"><p>Spielerliste, historische API-Messstände und bisherige manuelle Einträge bleiben lokal auf diesem Gerät gespeichert. Die manuelle Erfassung wurde aus der Oberfläche entfernt. Tages- und Wochenvergleiche benötigen ausreichend alte Messstände und lassen sich nicht rückwirkend aus der API beziehen.</p><button type="button" id="clear-matches" class="danger">MATCH-HISTORIE LÖSCHEN</button></div></details>
 </main>
-<footer>BF6 TRACKER · V1.5.0 · UNABHÄNGIGES FANPROJEKT</footer>
+<footer>BF6 TRACKER · V1.6.0 · UNABHÄNGIGES FANPROJEKT</footer>
 </div>
 </body>
 </html>
