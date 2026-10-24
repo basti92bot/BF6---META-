@@ -1,6 +1,12 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **1.9.1**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **2.0.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Zwei-Runden-Livevergleich (V2.0.0)
+
+In der Rapid-Royale-Verlaufsansicht gibt es einen separaten Live-Test für genau zwei geplante Runden. Zuerst „Startwert laden“ antippen: Die App ruft live echte Rapid-Royale-Statistiken des gewählten Spielers ab und speichert die absoluten Zähler mit Zeitstempel lokal. Dann zwei Runden spielen und „Nach 2 Runden prüfen“ antippen: Die App ruft live neu ab und zeigt Differenzen bei Wins, Losses, Kills, Deaths, Winrate und K/D seit dem Startwert. Wenn erst 0 oder 1 Match von der API erfasst wurde oder mehr als zwei neue Matches auftauchen, kennzeichnet sie dies ausdrücklich. Es werden keine Werte simuliert.
+
+Der Test übersteht App-Neustarts und ist pro Spieler getrennt. Ein neuer Klick auf „Startwert laden“ überschreibt absichtlich den bisherigen Teststart für den ausgewählten Spieler. Match-Modus oder Saison müssen zwischen zwei Abrufen gleich bleiben, ansonsten werden keine irreführenden Werte verglichen. Ein Tagesvergleich über die echten vergangenen 24 Stunden bleibt unabhängig davon und benötigt weiterhin den älteren historischen API-Messstand.
 
 ## Korrektur Spielerbestand (V1.9.1)
 
