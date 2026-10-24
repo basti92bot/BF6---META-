@@ -1,4 +1,10 @@
 {
   "schemaVersion": 1,
-  "players": []
+  "players": [
+    {
+      "name": "RockmasterR",
+      "platform": "ea",
+      "enabled": true
+    }
+  ]
 }
