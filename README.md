@@ -1,8 +1,12 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **1.1.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **1.2.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
 
-## NEU: WIN/LOST Tracker (V1.1.0)
+## Mitgewinner je Sieg auswählen (V1.2.0)
+
+Beim Eintragen eines WINs können die Mitspieler \`rockbotmasterR\`, \`strausbot\` und \`botuturn\` unabhängig voneinander ausgewählt werden. Die Auswahl bleibt für folgende Siege aktiv und wird beim jeweiligen WIN als Momentaufnahme gespeichert. Bei LOST werden keine Mitspieler gespeichert. In der Match-Historie sind die Mitgewinner sichtbar und nachträglich über das Stiftsymbol korrigierbar. Der CSV-Export enthält jetzt die Spalte „Mitgewonnen“. Bestehende Siege ohne Mitspieler bleiben unverändert und können nachbearbeitet werden.
+
+## WIN/LOST Tracker (V1.1.0)
 
 Die Startseite verlinkt auf `tracker.html`. Dort können Battlefield-6-Runden mit genau zwei großen Buttons als WIN oder LOST erfasst werden. Die Historie zeigt Siegquote, Siege, Niederlagen und aktuelle Serie. Filter nach Multiplayer, Rapid Royale und Battle Royale, Undo und CSV-Export sind enthalten. Die Historie wird ausschließlich im Browser auf dem jeweiligen Gerät gespeichert. Es gibt noch keine Synchronisierung zwischen Geräten.
 
