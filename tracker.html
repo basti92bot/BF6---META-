@@ -8,8 +8,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>BF6 | WIN / LOST</title>
 <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
-<link rel="stylesheet" href="./tracker.css?v=1.2.0">
-<script src="./tracker.js?v=1.4.0" defer></script>
+<link rel="stylesheet" href="./tracker.css?v=1.5.0">
+<script src="./tracker.js?v=1.5.0" defer></script>
 </head>
 <body>
 <div class="tracker-shell">
@@ -18,7 +18,26 @@
   <a class="nav-back" href="./index.html">LOADOUTS ↗</a>
 </header>
 <main>
-  <div class="intro"><div><span class="eyebrow">EURE SPIELE. EURE BILANZ.</span><h1>WIN <span>/</span> LOST</h1></div><span class="live-label"><i></i> MANUELLER TRACKER</span></div>
+  <div class="intro"><div><span class="eyebrow">RAPID ROYALE · SPIELERSTATISTIKEN</span><h1>WIN <span>/</span> LOST</h1></div><span class="live-label"><i></i> API-TRACKER</span></div>
+  <section class="panel auto-panel" aria-labelledby="auto-heading">
+    <div class="section-line"><h2 id="auto-heading">AUTOMATISCHE BILANZ</h2><span>RAPID ROYALE</span></div>
+    <div class="auto-select-row">
+      <label for="tracked-player">SPIELER</label>
+      <select id="tracked-player" aria-label="Spieler für die automatische Bilanz"><option value="">EA-ID hinzufügen</option></select>
+      <button type="button" id="refresh-tracked" class="auto-refresh" disabled>↻ AKTUALISIEREN</button>
+    </div>
+    <div class="numbers auto-numbers" aria-label="Automatische Rapid-Royale-Statistiken">
+      <div class="number"><span>WINS</span><strong id="auto-wins">–</strong></div>
+      <div class="number"><span>LOSSES</span><strong id="auto-losses">–</strong></div>
+      <div class="number featured"><span>WINRATE</span><strong id="auto-winrate">–</strong></div>
+      <div class="number"><span>MATCHES</span><strong id="auto-matches">–</strong></div>
+    </div>
+    <p class="auto-status" id="auto-status" role="status" aria-live="polite">Noch keine Spielerstatistik geladen. EA-ID unten hinzufügen.</p>
+    <p class="auto-note">Automatisch beim Öffnen und alle 2 Minuten, solange die Seite offen ist. Das sind die vom Spiel gemeldeten Rapid-Royale-Gesamtwerte, keine automatisch erkannten Einzelmatches.</p>
+  </section>
+  <details class="manual-section" id="manual-section">
+    <summary>MANUELLE MATCH-HISTORIE <span>OPTIONAL ⌄</span></summary>
+    <div class="manual-content">
   <section class="panel capture" aria-labelledby="capture-heading">
     <div class="section-line"><h2 id="capture-heading">MATCH EINTRAGEN</h2><span>01 / SESSION</span></div>
     <div class="select-row"><label for="match-mode">SPIELMODUS</label><select id="match-mode"><option value="mp">MEHRSPIELER</option><option value="rapid">RAPID ROYALE</option><option value="br">BATTLE ROYALE</option></select></div>
@@ -34,7 +53,7 @@
     <div class="action-grid"><button type="button" id="record-win" class="record win"><span class="action-symbol">↗</span><span>WIN</span><small>SPIEL GEWONNEN</small></button><button type="button" id="record-loss" class="record loss"><span class="action-symbol">↘</span><span>LOST</span><small>SPIEL VERLOREN</small></button></div>
     <p class="feedback" id="record-feedback" role="status" aria-live="polite">Nach jedem Match einfach WIN oder LOST antippen.</p>
   </section>
-  <section class="numbers" aria-label="Sessionstatistiken">
+  <section class="numbers manual-numbers" aria-label="Manuell erfasste Sessionstatistiken">
     <div class="number"><span>WINS</span><strong id="wins">0</strong></div>
     <div class="number"><span>LOSSES</span><strong id="losses">0</strong></div>
     <div class="number featured"><span>WINRATE</span><strong id="winrate">0%</strong></div>
@@ -51,10 +70,12 @@
     <div class="history-list" id="history-list" aria-live="polite"><p class="empty">Noch keine Matches erfasst.</p></div>
     <div class="history-foot"><span id="history-count">0 Matches</span><button type="button" class="text-button" id="export" disabled>CSV EXPORTIEREN ↓</button></div>
   </section>
+    </div>
+  </details>
   <details class="panel api-panel" id="api-panel">
-    <summary><span><small>02 / LIVE DATEN</small><strong>RAPID ROYALE STATISTIKEN</strong><em>Nur Rapid Royale, keine Gesamtwerte</em></span><span class="chevron">⌄</span></summary>
+    <summary><span><small>02 / LIVE DATEN</small><strong>EA-IDS & DETAILSTATISTIKEN</strong><em>Spieler hinzufügen oder entfernen</em></span><span class="chevron">⌄</span></summary>
     <div class="api-body">
-      <p class="api-explainer">Gebt die exakte EA-ID ein, sie kann vom Xbox-Gamertag abweichen. Die App lädt nur separat erkennbare Rapid-Royale-Statistiken. Bei HTTP 404 versucht sie für Xbox-Nutzer auch die EA/PC-Zuordnung. Gesamtwerte werden nicht als Rapid Royale angezeigt.</p>
+      <p class="api-explainer">Hier Spieler mit der exakten EA-ID hinzufügen. Der Abruf startet automatisch. Auf der Startseite lässt sich auswählen, wessen Rapid-Royale-Bilanz angezeigt wird. Eine Xbox-ID kann vom EA-Namen abweichen.</p>
       <form id="player-form" class="player-form">
         <label>SPIELERNAME / EA-ID<input id="player-name" autocomplete="off" maxlength="60" placeholder="EA-ID eingeben" required></label>
         <label>PLATTFORM<select id="player-platform"><option value="ea">EA / PC</option><option value="xbox">XBOX</option><option value="psn">PLAYSTATION</option><option value="steam">STEAM</option></select></label>
@@ -66,9 +87,9 @@
       <p class="api-disclaimer">GameTools ist eine inoffizielle Community-API. Der Abruf nutzt die Aufschlüsselung nach Spielmodus. Nur eindeutig als Rapid Royale gekennzeichnete Werte werden übernommen, keine Multiplayer- oder REDSEC-Gesamtstatistiken. API-Ausfälle und Browser-CORS können den Abruf verhindern.</p>
     </div>
   </details>
-  <details class="settings"><summary>DATEN & VERWALTUNG <span>⌄</span></summary><div class="settings-body"><p>Die WIN/LOST-Historie und eure Spielerliste werden nur auf diesem Gerät im Browser gespeichert. Andere Geräte sehen diese Einträge nicht automatisch.</p><button type="button" id="clear-matches" class="danger">MATCH-HISTORIE LÖSCHEN</button></div></details>
+  <details class="settings"><summary>DATEN & VERWALTUNG <span>⌄</span></summary><div class="settings-body"><p>Die manuell erfasste WIN/LOST-Historie und eure Spieler-Einstellungen bleiben lokal auf diesem Gerät erhalten. Die automatische Bilanz stammt direkt von GameTools und wird beim Öffnen neu geladen. Einzelne Matches und Mitspieler kann die API derzeit nicht zuverlässig zuordnen.</p><button type="button" id="clear-matches" class="danger">MATCH-HISTORIE LÖSCHEN</button></div></details>
 </main>
-<footer>BF6 TRACKER · V1.4.0 · UNABHÄNGIGES FANPROJEKT</footer>
+<footer>BF6 TRACKER · V1.5.0 · UNABHÄNGIGES FANPROJEKT</footer>
 </div>
 </body>
 </html>
