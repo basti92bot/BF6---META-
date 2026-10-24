@@ -1,6 +1,14 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **1.5.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **1.6.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Gemessener Tages- und Wochenverlauf ohne manuelle Match-Eingabe (V1.6.0)
+
+Die manuelle WIN/LOST-Erfassung, Filter und manuelle Historie sind aus der Benutzeroberfläche entfernt. Bereits erfasste lokale Daten bleiben im ursprünglichen lokalen Speicher erhalten und werden nicht mit API-Werten vermischt.
+
+Nach erfolgreichen GameTools-API-Abrufen werden pro EA-ID Rapid-Royale-Messstände lokal gespeichert. Tages- und Wochenansicht zeigen echte Differenzen bei Wins, Losses, Kills, Deaths und daraus berechnete Winrate und K/D. Die Vergleichsfenster sind 24 Stunden und 7 Tage, mit begrenzter Messtoleranz. Wenn ein passender Vergleichswert fehlt oder Gesamtzähler zurückgesetzt wurden, werden statt erfundener Zahlen Striche angezeigt. Neue Messstände kommen nur hinzu, wenn die App geöffnet und die API erreichbar ist, maximal im 15-Minuten-Abstand bei unveränderten Werten. Die Daten bleiben pro Browser lokal und werden nicht mit Freunden synchronisiert.
+
+GameTools stellt für BF6 derzeit `/bf6/stats/` mit Modusaufschlüsselung zur Verfügung. Ein persönlicher BF6-`statsarray`-Endpunkt mit rückwirkendem Tagesverlauf ist nicht dokumentiert. `/bf6/statusarray/` beschreibt globale Server-/Spielerzahlen, keine persönlichen Werte. Historische Rapid-Royale-Ergebnisse vor dem Beginn der eigenen Aufzeichnung können nicht berechnet werden.
 
 ## Automatische Rapid-Royale-Bilanz als Startbildschirm (V1.5.0)
 
