@@ -1,6 +1,16 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **1.6.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **1.7.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Serverbasierte stündliche Rapid-Royale-Historie (V1.7.0)
+
+`.github/workflows/rapid-hourly.yml` führt nach einem stündlichen UTC-Cron den Sammler `scripts/collect-rapid-history.mjs` aus. Der Sammler übernimmt ausschließlich eindeutig Rapid Royale zugeordnete GameTools-Zähler und schreibt sie nach `data/rapid-history.json`. Der Workflow benötigt GitHub Actions und Schreibzugriff im Repository. GitHub-Schedules können verspätet starten oder bei Inaktivität deaktiviert sein. Der Workflow kann auch über GitHub Actions manuell gestartet werden.
+
+Die zentrale Spielerliste `data/rapid-players.json` enthält zunächst RockmasterR mit EA/PC sowie die vom Benutzer genannten Namen strausbot und botuturn über EA (die beiden letzteren EA-ID-Zuordnungen sind noch unbestätigt). Fehlgeschlagene Einzelabfragen überschreiben keine bestehenden Zähler. Falls kein Spieler valide Rapid-Royale-Daten liefert, schlägt der Job fehl.
+
+Beim Öffnen lädt die App die zentral konfigurierten Spieler und vorhandene Servermessungen, ohne lokale Einträge zu löschen. Die 24-Stunden- und 7-Tage-Auswertungen nutzen vorzugsweise die gemeinsame Historie, auch nach Schließen des Browsers und auf anderen Geräten. Bei fehlenden Messständen, zu alten Daten oder einem Zählerreset werden keine Werte erfunden. Lokale Spieler, die nur in der Webseite hinzugefügt werden, sind nicht automatisch Teil der zentralen serverseitigen Erfassung. Für sie muss die GitHub-Konfiguration ergänzt werden.
+
+Die Einrichtung des Workflows bedeutet noch nicht, dass ein geplanter Lauf tatsächlich erfolgreich war. Der erste erfolgreiche Lauf ist anhand der GitHub Actions Runs und eines neuen Zeitstempels in `data/rapid-history.json` zu überprüfen.
 
 ## Gemessener Tages- und Wochenverlauf ohne manuelle Match-Eingabe (V1.6.0)
 
