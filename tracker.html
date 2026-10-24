@@ -9,7 +9,7 @@
 <title>BF6 | WIN / LOST</title>
 <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
 <link rel="stylesheet" href="./tracker.css?v=1.2.0">
-<script src="./tracker.js?v=1.3.0" defer></script>
+<script src="./tracker.js?v=1.4.0" defer></script>
 </head>
 <body>
 <div class="tracker-shell">
@@ -54,7 +54,7 @@
   <details class="panel api-panel" id="api-panel">
     <summary><span><small>02 / LIVE DATEN</small><strong>RAPID ROYALE STATISTIKEN</strong><em>Nur Rapid Royale, keine Gesamtwerte</em></span><span class="chevron">⌄</span></summary>
     <div class="api-body">
-      <p class="api-explainer">Hier könnt ihr eure EA-IDs hinterlegen und ausschließlich separat erkennbare Rapid-Royale-Statistiken abrufen. Liefert die API keine passenden Moduswerte, bleiben die Felder leer. Die Daten sind unabhängig von eurer manuell erfassten WIN/LOST-Session.</p>
+      <p class="api-explainer">Gebt die exakte EA-ID ein, sie kann vom Xbox-Gamertag abweichen. Die App lädt nur separat erkennbare Rapid-Royale-Statistiken. Bei HTTP 404 versucht sie für Xbox-Nutzer auch die EA/PC-Zuordnung. Gesamtwerte werden nicht als Rapid Royale angezeigt.</p>
       <form id="player-form" class="player-form">
         <label>SPIELERNAME / EA-ID<input id="player-name" autocomplete="off" maxlength="60" placeholder="EA-ID eingeben" required></label>
         <label>PLATTFORM<select id="player-platform"><option value="ea">EA / PC</option><option value="xbox">XBOX</option><option value="psn">PLAYSTATION</option><option value="steam">STEAM</option></select></label>
@@ -68,7 +68,7 @@
   </details>
   <details class="settings"><summary>DATEN & VERWALTUNG <span>⌄</span></summary><div class="settings-body"><p>Die WIN/LOST-Historie und eure Spielerliste werden nur auf diesem Gerät im Browser gespeichert. Andere Geräte sehen diese Einträge nicht automatisch.</p><button type="button" id="clear-matches" class="danger">MATCH-HISTORIE LÖSCHEN</button></div></details>
 </main>
-<footer>BF6 TRACKER · V1.3.0 · UNABHÄNGIGES FANPROJEKT</footer>
+<footer>BF6 TRACKER · V1.4.0 · UNABHÄNGIGES FANPROJEKT</footer>
 </div>
 </body>
 </html>
