@@ -8,8 +8,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>BF6 | WIN / LOST</title>
 <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
-<link rel="stylesheet" href="./tracker.css?v=2.3.1">
-<script src="./tracker.js?v=2.3.2" defer></script>
+<link rel="stylesheet" href="./tracker.css?v=2.4.0">
+<script src="./tracker.js?v=2.4.0" defer></script>
 </head>
 <body>
 <div class="tracker-shell">
@@ -23,7 +23,7 @@
     <div class="section-line"><h2 id="auto-heading">AUTOMATISCHE BILANZ</h2><span>RAPID ROYALE</span></div>
     <div class="auto-select-row">
       <label for="tracked-player">SPIELER</label>
-      <select id="tracked-player" aria-label="Spieler für die automatische Bilanz"><option value="">EA-ID hinzufügen</option></select>
+      <select id="tracked-player" aria-label="Spieler für die automatische Bilanz"><option value="">Spieler wählen</option></select>
       <button type="button" id="refresh-tracked" class="auto-refresh" disabled>↻ AKTUALISIEREN</button>
     </div>
     <div class="numbers auto-numbers" aria-label="Automatische Rapid-Royale-Statistiken">
@@ -32,8 +32,7 @@
       <div class="number featured"><span>WINRATE</span><strong id="auto-winrate">–</strong></div>
       <div class="number"><span>MATCHES</span><strong id="auto-matches">–</strong></div>
     </div>
-    <p class="auto-status" id="auto-status" role="status" aria-live="polite">Noch keine Spielerstatistik geladen. EA-ID unten hinzufügen.</p>
-    <p class="auto-note">Der Tracker prüft beim Öffnen, alle 2 Minuten während der Nutzung und auf dem Server stündlich auf neue Rapid-Royale-Werte. Nach einer Runde erscheinen die Änderungen, sobald GameTools sie bereitstellt. Einzelne Matches werden nicht separat ausgewiesen.</p>
+    <p class="auto-status" id="auto-status" role="status" aria-live="polite">Lädt …</p>
   </section>
   <section class="period-overview" aria-labelledby="period-heading">
     <div class="period-header"><h2 id="period-heading">VERLAUF</h2><small id="period-player">SPIELER AUSWÄHLEN</small></div>
@@ -48,7 +47,7 @@
           <div><small>KILLS</small><strong id="day-kills">–</strong></div>
           <div><small>DEATHS</small><strong id="day-deaths">–</strong></div>
         </div>
-        <p id="day-coverage" class="period-note">Der Spieltag startet täglich um 07:00 Uhr deutscher Zeit. Verglichen werden nur ab dann gemessene API-Werte.</p>
+        <p id="day-coverage" class="period-note" aria-live="polite"></p>
       </article>
       <article class="period-card">
         <div class="period-heading"><strong>LETZTE 7 TAGE</strong><span id="week-window">Noch keine Vergleichsdaten</span></div>
@@ -60,36 +59,21 @@
           <div><small>KILLS</small><strong id="week-kills">–</strong></div>
           <div><small>DEATHS</small><strong id="week-deaths">–</strong></div>
         </div>
-        <p id="week-coverage" class="period-note">Die Wochenansicht hat einen eigenen Zeitraum.</p>
+        <p id="week-coverage" class="period-note" aria-live="polite"></p>
       </article>
     </div>
 
-    <p class="period-note" id="period-note">Alle Spieler haben denselben Statistiktag von 07:00 bis 07:00 Uhr (Europe/Berlin). Nur echte Messungen im jeweiligen Spieltag zählen.</p>
   </section>
   <section class="panel api-panel" id="api-panel" aria-labelledby="api-heading">
-    <div class="api-header"><span><small>02 / LIVE DATEN</small><h2 id="api-heading">SPIELER & DETAILSTATISTIKEN</h2><em>Erfasste Spieler anzeigen oder entfernen</em></span></div>
+    <div class="api-header"><span><small>02 / LIVE DATEN</small><h2 id="api-heading">SPIELER & DETAILSTATISTIKEN</h2></span></div>
     <div class="api-body">
-      <p class="api-explainer">Die K/D-Dreiecke vergleichen den aktuellen Wert mit dem letzten abweichenden Rapid-Royale-Messstand. Grün ▲ bedeutet Anstieg, Rot ▼ Rückgang. Auch ältere gespeicherte API-Daten werden dafür genutzt.</p>
-
-
       <div id="player-list" class="player-list"></div>
-      <div class="api-bottom"><button type="button" class="refresh-button" id="refresh-all" disabled>↻ ALLE STATISTIKEN LADEN</button><a href="https://api.gametools.network/docs" target="_blank" rel="noopener noreferrer">API-DOKUMENTATION ↗</a></div>
-      <p class="api-disclaimer">GameTools ist eine inoffizielle Community-API. Der Abruf nutzt die Aufschlüsselung nach Spielmodus. Nur eindeutig als Rapid Royale gekennzeichnete Werte werden übernommen, keine Multiplayer- oder REDSEC-Gesamtstatistiken. API-Ausfälle und Browser-CORS können den Abruf verhindern.</p>
+      <div class="api-bottom"><button type="button" class="refresh-button" id="refresh-all" disabled>↻ ALLE AKTUALISIEREN</button></div>
     </div>
   </section>
-  <details class="settings"><summary>DATEN & VERWALTUNG <span>⌄</span></summary><div class="settings-body"><p>Die stündliche gemeinsame Historie steht als JSON im öffentlichen GitHub-Repository. Bisherige lokale Daten bleiben erhalten. Die API liefert keine rückwirkenden täglichen persönlichen Statistiken.</p></div></details>
-  <section class="panel add-player-panel" aria-labelledby="add-player-heading">
-    <div class="section-line"><h2 id="add-player-heading">SPIELER HINZUFÜGEN</h2><span>EA-ID / PLATTFORM</span></div>
-    <p class="add-player-explainer">Neue Spieler werden hier auf diesem Gerät gespeichert und sofort abgefragt. Für den stündlichen Serververlauf muss die EA-ID zusätzlich in der GitHub-Spielerliste hinterlegt werden. Bei PlayStation versucht die App auch alternative Plattformkennungen.</p>
-      <form id="player-form" class="player-form">
-        <label>SPIELERNAME / EA-ID<input id="player-name" autocomplete="off" maxlength="60" placeholder="EA-ID eingeben" required></label>
-        <label>PLATTFORM<select id="player-platform"><option value="ea">EA / PC</option><option value="xbox">XBOX</option><option value="psn">PLAYSTATION</option><option value="steam">STEAM</option></select></label>
-        <button type="submit">+ SPIELER HINZUFÜGEN</button>
-      </form>
-      <div id="api-feedback" role="status" aria-live="polite" class="api-feedback">Noch keine Spieler hinterlegt.</div>
-  </section>
+  <div id="api-feedback" class="sr-only" role="status" aria-live="polite"></div>
 </main>
-<footer>BF6 TRACKER · V2.3.2 · UNABHÄNGIGES FANPROJEKT</footer>
+<footer>BF6 TRACKER · V2.4.0</footer>
 </div>
 </body>
 </html>
