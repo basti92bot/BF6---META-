@@ -1,6 +1,10 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **2.3.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **2.3.1**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Ausgefüllte K/D-Richtungsdreiecke (V2.3.1)
+
+Die K/D-Trendmarkierungen verwenden jetzt keine Schriftzeichen mehr, sondern echte **vollständig gefüllte CSS-Dreiecke**. Positiv: grünes ▲ (Spitze nach oben), negativ: rotes ▼ (Spitze nach unten). Die Dreiecksfüllung ist unabhängig von der Emoji-/Systemschrift auf dem iPhone. Ein HTML-Label erläutert Screenreadern und über den Titel den Trend. Die Auswertung und ihre zeitliche Speicherung bleiben wie in V2.3.0 unverändert.
 
 ## Detailstatistiken ohne Dropdown und K/D-Trend (V2.3.0)
 
