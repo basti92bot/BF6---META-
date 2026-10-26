@@ -1,6 +1,12 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **2.2.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **2.2.1**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Spieltag von 07:00 bis 07:00 Uhr (V2.2.1)
+
+Die Tagesstatistik läuft nun als fester Spieltag von **07:00 Uhr bis 07:00 Uhr am Folgetag in Europe/Berlin** statt rollierend ab dem Zeitpunkt des Seitenaufrufs. Die Anzeige verwendet für alle Spieler dieselben Start- und Endpunkte und setzt jeden Morgen um 07:00 Uhr auf den neuen Spieltag um. Nur wirklich während des Tages gespeicherte Rapid-Royale-API-Messwerte fließen in die angezeigte Differenz ein. Bei nur einem oder keinem Vergleichspunkt werden Striche samt konkreter Erklärung gezeigt, statt über den vorigen Spieltag hinaus zu vergleichen oder Ergebnisse zu erfinden.
+
+Der aktuelle Spieltag kann vor dem nächsten Morgen noch unvollständig sein. Der Zeitstempel der tatsächlichen Messabdeckung wird separat angezeigt. Tagesgrenzen werden in der festen Zeitzone Europe/Berlin über Intl-Zoneninformationen berechnet und passen sich Zeitumstellungen an (beim Wechsel zur Sommer-/Winterzeit kann 07:00–07:00 ausnahmsweise 23 oder 25 reale Stunden umfassen). Die 7-Tage-Statistik bleibt rollierend und unverändert.
 
 ## Festes rollierendes 24-Stunden-Fenster (V2.2.0)
 
