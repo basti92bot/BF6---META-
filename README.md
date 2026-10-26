@@ -1,6 +1,12 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **2.0.4**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **2.1.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Automatischer Verlauf ohne manuelle Testoberfläche (V2.1.0)
+
+Die komplette Zwei-Runden-Testoberfläche, die dazugehörigen Browser-Interaktionsfunktionen und ihre CSS-Regeln wurden entfernt. Der normale Verlauf mit ~24-Stunden-Vergleich (oder, wenn nicht genügend alte Daten vorliegen, mit explizit gekennzeichnetem tatsächlich verfügbaren Vergleichszeitraum) und die 7-Tage-Ansicht bleiben bestehen. Die App ruft Spieler-Statistikwerte beim Öffnen, über die manuelle allgemeine Aktualisierung und alle zwei Minuten auf einer sichtbaren offenen Seite ab; GitHub Actions sammelt unabhängig davon stündlich. Sobald GameTools nach einer Runde aktualisierte Rapid-Royale-Gesamtzähler liefert, wird die Veränderung bei Wins, Losses, Kills und Deaths gegenüber dem Vergleichsmessstand angezeigt. GameTools liefert keine bestätigten einzelnen Rapid-Royale-Match-Statistiken – daher werden keine Match-für-Match-Zeilen erzeugt. Der erste Abruf und ein späterer Vergleich müssen vorliegen, um eine Veränderung ausweisen zu können.
+
+Die Spieler-Liste und historischen Messstände bleiben erhalten. Alte im Browser gespeicherte `roundTests`-Daten werden nicht mehr verarbeitet; sie erscheinen nicht in der App.
 
 ## Doppelten Strausbrot-Eintrag korrigiert (V2.0.4)
 
