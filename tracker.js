@@ -4,7 +4,11 @@
   const KEY = "bf6-winlost-v1";
   const PLATFORMS = {ea:"EA / PC",xbox:"XBOX",psn:"PLAYSTATION",steam:"STEAM"};
   // Remove only the obsolete BOT defaults. RockmasterR is deliberately retained.
-  const RETIRED_DEFAULT_NAMES = new Set(["rockbotmasterr","strausbot","botuturn"]);
+  const FIXED_PLAYERS=[
+    {name:"Strausbrot",platform:"xbox"},
+    {name:"RockmasterR",platform:"ea"},
+    {name:"Pathogeno",platform:"psn"}
+  ];
   const safe = value => String(value ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const num = value => {
     if(value===null||value===undefined||String(value).trim()==="")return null;
@@ -39,14 +43,7 @@
   const loadState = () => {
     let data={};
     try{data=JSON.parse(localStorage.getItem(KEY))||{}}catch{}
-    const firstCleanup=data.defaultBotsClearedV19!==true;
-    const players=Array.isArray(data.players)?data.players
-      .filter(p=>typeof p?.name==="string"&&p.name.trim()&&PLATFORMS[p.platform])
-      .filter(p=>!firstCleanup||!RETIRED_DEFAULT_NAMES.has(p.name.trim().toLowerCase()))
-      .map(p=>({name:p.name.trim(),platform:p.platform}))
-      // Deduplicate Xbox and EA lookup of the same confirmed account.
-      .filter((p,i,list)=>list.findIndex(other=>playerKey(other)===playerKey(p))===i)
-      .slice(0,16):[];
+    const players=FIXED_PLAYERS.map(p=>({...p}));
     const snapshots={};
     if(data.snapshots&&typeof data.snapshots==="object"&&!Array.isArray(data.snapshots)){
       for(const p of players){
@@ -90,38 +87,14 @@
       .sort((a,b)=>a.ts-b.ts);
   }
   async function loadServerHistory(){
-    try {
-      const [playersResponse,historyResponse]=await Promise.all([
-        fetch("./data/rapid-players.json",{cache:"no-store"}),
-        fetch("./data/rapid-history.json",{cache:"no-store"})
-      ]);
-      if(playersResponse.ok){
-        const config=await playersResponse.json();
-        if(Array.isArray(config.players)){
-          let modified=false;
-          for(const p of config.players){
-            if(!p||p.enabled===false||!PLATFORMS[p.platform]||
-              typeof p.name!=="string"||!p.name.trim())continue;
-            // Ignore a stale offline cache of the removed default roster.
-            if(RETIRED_DEFAULT_NAMES.has(p.name.trim().toLowerCase())&&
-               !state.players.some(x=>playerKey(x)===playerKey(p)))continue;
-            if(!state.players.some(existing=>playerKey(existing)===playerKey(p))){
-              if(state.players.length>=16)break;
-              state.players.push({name:p.name,platform:p.platform});
-              modified=true;
-            }
-          }
-          if(modified)save();
-        }
-      }
-      if(historyResponse.ok){
-        const data=await historyResponse.json();
+    try{
+      const response=await fetch("./data/rapid-history.json",{cache:"no-store"});
+      if(response.ok){
+        const data=await response.json();
         if(data?.schemaVersion===1&&data.players&&typeof data.players==="object")
           serverHistory=data;
       }
-    }catch(error){
-      console.warn("Stündliche BF6-Historie konnte nicht geladen werden",error);
-    }
+    }catch(error){console.warn("BF6-Verlauf konnte nicht geladen werden",error);}
     renderPlayers();renderAuto();
   }
   const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));return true}catch{return false}};
@@ -323,60 +296,36 @@
       windowStart,windowEnd:now};
   }
   function drawPeriod(prefix,data,days,now){
-    for(const key of ["wins","losses","kills","deaths"]){
+    for(const key of ["wins","losses","kills","deaths"])
       $(prefix+"-"+key).textContent=data?.[key]==null?"–":data[key].toLocaleString("de-DE");
-    }
     $(prefix+"-winrate").textContent=data?.winrate==null?"–":fmt(data.winrate)+"%";
     $(prefix+"-kd").textContent=data?.kd==null?"–":fmt(data.kd);
     const window=periodWindow(days,now);
-    const windowStart=window.start;
-    const windowDescription=days===1
-      ?"Spieltag: "+dateTime(window.start)+" – "+dateTime(window.end)+" (07:00–07:00)"
-      :"7-Tage-Fenster: "+dateTime(window.start)+" – "+dateTime(window.end);
-    $(prefix+"-window").textContent=windowDescription;
+    $(prefix+"-window").textContent=dateTime(window.start)+" – "+dateTime(window.end);
     if(prefix==="day"){
-      const points=getPoints(activePlayer()?playerKey(activePlayer()):"")
-        .filter(p=>p.ts>=windowStart&&p.ts<=now);
-      const latest=points.at(-1);
-      const same=latest?points.filter(p=>p.series===latest.series):[];
-      const text=!latest
-        ?"Heute seit 07:00 Uhr noch keine API-Messung. Keine geschätzten Spiele."
-        :!data
-          ?"Seit 07:00 Uhr erst "+same.length+" vergleichbare API-Messung(en). Mindestens zwei sind für die Differenz erforderlich."
-          :"Gemessene Teilspanne heute: "+dateTime(data.from)+" – "+dateTime(data.to)+
-           " ("+fmt((data.to-data.from)/3600000)+" Stunden). Vor 07:00 Uhr liegende Daten zählen nicht.";
-      $("day-coverage").textContent=text+
-        (latest&&now-latest.ts>3*3600000?" Letzte API-Messung älter als 3 Stunden.":"");
-    } else {
-      $("week-coverage").textContent=!data?
-        "Noch keine vergleichbaren Messstände im 7-Tage-Fenster.":
-        "Gemessene Teilspanne: "+dateTime(data.from)+" – "+dateTime(data.to)+".";
-    }
+      const current=activePlayer();
+      const samples=getPoints(current?playerKey(current):"")
+        .filter(point=>point.ts>=window.start&&point.ts<=now);
+      const latest=samples.at(-1);
+      const valid=latest?samples.filter(point=>point.series===latest.series):[];
+      $("day-coverage").textContent=!latest?"Noch keine Messung seit 07:00":
+        !data?"Erst "+valid.length+" Messwert(e) seit 07:00":
+        now-latest.ts>3*3600000?"Letzter Messwert: "+dateTime(latest.ts):"";
+    }else $("week-coverage").textContent=data?"":"Noch keine Vergleichswerte";
   }
   function renderPeriods(){
-    const current=activePlayer();
-    const key=current?playerKey(current):"";
+    const current=activePlayer(),key=current?playerKey(current):"";
     const now=Date.now();
-    const day=key?periodStats(key,1,now):null;
-    const week=key?periodStats(key,7,now):null;
-    drawPeriod("day",day,1,now);
-    drawPeriod("week",week,7,now);
-    $("period-player").textContent=current?"SPIELER: "+current.name:"SPIELER AUSWÄHLEN";
-    const points=getPoints(key);
-    const last=points.at(-1);
-    const remote=!!serverHistory.players?.[key]?.points?.length;
-    $("period-note").textContent=!current?"Zuerst einen Spieler auswählen."
-      :!points.length?"Für "+current.name+" wurde bisher kein erfolgreicher Messstand gespeichert."
-      :(remote?"Server- und lokale API-Messungen":"Lokale API-Messungen")+
-       " für "+current.name+". Letzter Messstand: "+dateTime(last.ts)+
-       ". Der Spieltag läuft für alle Spieler von 07:00 bis 07:00 Uhr deutscher Zeit. Nur API-Messungen seit der heutigen 07:00-Uhr-Grenze zählen. Eine Runde wird sichtbar, sobald GameTools neue Gesamtzähler liefert. Striche bedeuten fehlende Daten, nicht null Spiele.";
+    drawPeriod("day",key?periodStats(key,1,now):null,1,now);
+    drawPeriod("week",key?periodStats(key,7,now):null,7,now);
+    $("period-player").textContent=current?current.name:"";
   }
 
   function renderAuto(){
     const current=activePlayer(),key=current?playerKey(current):"";
     if(state.trackedPlayer!==key){state.trackedPlayer=key;save();}
     const select=$("tracked-player");
-    select.innerHTML=current?state.players.map(p=>'<option value="'+safe(playerKey(p))+'">'+safe(p.name)+' · '+safe(playerKey(p)==="ea:strausbrot"?"XBOX · EA-ID":PLATFORMS[p.platform])+'</option>').join(""):'<option value="">EA-ID hinzufügen</option>';
+    select.innerHTML=current?state.players.map(p=>'<option value="'+safe(playerKey(p))+'">'+safe(p.name)+' · '+safe(playerKey(p)==="ea:strausbrot"?"XBOX":PLATFORMS[p.platform])+'</option>').join(""):'<option value="">Spieler wählen</option>';
     select.value=key;
     select.disabled=!current;
     $("refresh-tracked").disabled=!current||pending.has(key);
@@ -394,9 +343,8 @@
     $("auto-losses").textContent=losses===null?"–":losses.toLocaleString("de-DE");
     $("auto-winrate").textContent=stats.winrate??(wins!==null&&losses!==null&&wins+losses>0?fmt(100*wins/(wins+losses))+"%":"–");
     $("auto-matches").textContent=wins!==null&&losses!==null?(wins+losses).toLocaleString("de-DE"):"–";
-    $("auto-status").textContent=!current?"Noch kein Spieler hinterlegt. Unten EA-ID hinzufügen."
-      :pending.has(key)?"Lade Rapid-Royale-Daten für "+current.name+"…"
-      :d?.message||(last?"Stündlicher Serverstand vom "+dateTime(last.ts):"Rapid-Royale-Daten noch nicht geladen.");
+    $("auto-status").textContent=pending.has(key)?"Lädt …":
+      d?.message||(last?"Stand: "+dateTime(last.ts):"Noch keine Daten");
     renderPeriods();
   }
   function renderPlayers(){
@@ -423,7 +371,7 @@
         '<span class="kd-trend up" role="img" aria-label="K/D gestiegen" title="K/D gestiegen"></span>':
         direction==="down"?
         '<span class="kd-trend down" role="img" aria-label="K/D gesunken" title="K/D gesunken"></span>':"";
-      return '<article class="player-card"><div class="player-title"><div><strong>'+safe(p.name)+'</strong><small>'+safe(platformLabel)+'</small></div><div class="player-actions"><button type="button" data-refresh-player="'+safe(key)+'" '+(loading?'disabled':'')+'>'+(loading?'LÄDT…':'↻ LADEN')+'</button><button type="button" class="remove-player" data-remove-player="'+safe(key)+'" aria-label="Spieler entfernen">×</button></div></div><div class="player-metrics">'+vals.map(([label,value])=>'<div class="player-metric"><small>'+label+'</small><b>'+safe(value===null||value===undefined?"–":value)+(label==="K/D"?arrow:"")+'</b></div>').join("")+'</div><p class="player-status">'+safe(loading?'API wird abgefragt…':d?.message||"Noch nicht abgerufen")+'</p></article>';
+      return '<article class="player-card"><div class="player-title"><div><strong>'+safe(p.name)+'</strong><small>'+safe(platformLabel)+'</small></div><div class="player-actions"><button type="button" data-refresh-player="'+safe(key)+'" '+(loading?'disabled':'')+'>'+(loading?'LÄDT…':'↻ LADEN')+'</button></div></div><div class="player-metrics">'+vals.map(([label,value])=>'<div class="player-metric"><small>'+label+'</small><b>'+safe(value===null||value===undefined?"–":value)+(label==="K/D"?arrow:"")+'</b></div>').join("")+'</div><p class="player-status">'+safe(loading?'API wird abgefragt…':d?.message||"Noch nicht abgerufen")+'</p></article>';
     }).join("");
     $("refresh-all").disabled=!state.players.length;
   }
@@ -461,10 +409,8 @@
       }
       recordSnapshot(p,rapid.parsed.stats,rapid);
       updateKdTrend(p,rapid.parsed.stats);
-      const suffix=rapid.seasonal?" · nur Saisonwerte":"";
-      const fallback=usedPlatform!==p.platform?" · über "+(usedPlatform==="ea"?"EA/PC":usedPlatform.toUpperCase())+" gefunden":"";
-      playerData.set(key,{stats:rapid.parsed.stats,message:rapid.modeTitle+suffix+fallback+" · GameTools.Network · "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})});
-      $("api-feedback").textContent="Rapid-Royale-Statistiken geladen. Verlauf lokal gespeichert.";
+      playerData.set(key,{stats:rapid.parsed.stats,message:"Aktualisiert "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})});
+      $("api-feedback").textContent="Aktualisiert";
       return {stats:rapid.parsed.stats,mode:rapid.modeTitle,seasonal:rapid.seasonal};
     }catch(err){
       const message=err.status===404?err.message
@@ -485,30 +431,11 @@
     if(!playerData.has(playerKey(p)))fetchPlayer(p);
   });
   $("refresh-tracked").addEventListener("click",()=>{const p=activePlayer();if(p)fetchPlayer(p);});
-  $("player-form").addEventListener("submit",e=>{
-    e.preventDefault();
-    const name=$("player-name").value.trim(),platform=$("player-platform").value;
-    if(!name||!PLATFORMS[platform])return;
-    const p={name,platform},key=playerKey(p);
-    if(state.players.some(x=>playerKey(x)===key)){$("api-feedback").textContent="Spieler bereits vorhanden – Xbox und EA/PC sind für diese EA-ID dasselbe Konto.";return;}
-    if(state.players.length>=16){$("api-feedback").textContent="Maximal 16 Spieler möglich.";return;}
-    state.players.push(p);
-    if(!state.trackedPlayer)state.trackedPlayer=key;
-    save();
-    $("player-name").value="";
-    $("api-feedback").textContent=name+" hinzugefügt. Werte werden geladen.";
-    renderPlayers();renderAuto();fetchPlayer(p);
-  });
   $("player-list").addEventListener("click",e=>{
-    const refresh=e.target.closest("[data-refresh-player]"),remove=e.target.closest("[data-remove-player]");
-    if(refresh){const p=state.players.find(x=>playerKey(x)===refresh.dataset.refreshPlayer);if(p)fetchPlayer(p);}
-    if(remove){
-      const key=remove.dataset.removePlayer;
-      state.players=state.players.filter(p=>playerKey(p)!==key);
-      playerData.delete(key);
-      // Keep the earlier snapshots, so removing and re-adding a player does not discard history.
-      if(state.trackedPlayer===key)state.trackedPlayer="";
-      save();renderPlayers();renderAuto();
+    const refresh=e.target.closest("[data-refresh-player]");
+    if(refresh){
+      const p=state.players.find(x=>playerKey(x)===refresh.dataset.refreshPlayer);
+      if(p)fetchPlayer(p);
     }
   });
   $("refresh-all").addEventListener("click",refreshAll);
