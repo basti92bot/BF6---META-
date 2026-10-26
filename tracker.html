@@ -8,8 +8,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>BF6 | WIN / LOST</title>
 <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
-<link rel="stylesheet" href="./tracker.css?v=2.0.0">
-<script src="./tracker.js?v=2.0.4" defer></script>
+<link rel="stylesheet" href="./tracker.css?v=2.1.0">
+<script src="./tracker.js?v=2.1.0" defer></script>
 </head>
 <body>
 <div class="tracker-shell">
@@ -33,7 +33,7 @@
       <div class="number"><span>MATCHES</span><strong id="auto-matches">–</strong></div>
     </div>
     <p class="auto-status" id="auto-status" role="status" aria-live="polite">Noch keine Spielerstatistik geladen. EA-ID unten hinzufügen.</p>
-    <p class="auto-note">GitHub Actions speichert stündlich Rapid-Royale-Messstände, auch wenn die App geschlossen ist. Beim Öffnen holt die App den gemeinsamen Verlauf und aktualisiert die Livewerte.</p>
+    <p class="auto-note">Der Tracker prüft beim Öffnen, alle 2 Minuten während der Nutzung und auf dem Server stündlich auf neue Rapid-Royale-Werte. Nach einer Runde erscheinen die Änderungen, sobald GameTools sie bereitstellt. Einzelne Matches werden nicht separat ausgewiesen.</p>
   </section>
   <section class="period-overview" aria-labelledby="period-heading">
     <div class="period-header"><h2 id="period-heading">VERLAUF</h2><small id="period-player">SPIELER AUSWÄHLEN</small></div>
@@ -62,27 +62,7 @@
       </article>
     </div>
 
-    <section class="round-test" aria-labelledby="round-test-heading">
-      <div class="round-test-head">
-        <div><span class="eyebrow">LIVE API-VERGLEICH</span><h3 id="round-test-heading">TEST NACH 2 RUNDEN</h3></div>
-        <span class="test-label">ECHTE WERTE</span>
-      </div>
-      <div class="round-test-buttons">
-        <button type="button" id="round-test-start">1 · STARTWERT LADEN</button>
-        <button type="button" id="round-test-check" disabled>2 · NACH 2 RUNDEN PRÜFEN ↻</button>
-      </div>
-      <p class="round-test-status" id="round-test-status" aria-live="polite">Erst den aktuellen API-Stand speichern, dann zwei Rapid-Royale-Runden spielen und erneut vergleichen.</p>
-      <div class="period-kpis round-test-results" aria-label="Ergebnisse seit Testbeginn">
-        <div><small>WINS</small><strong id="test-wins">–</strong></div>
-        <div><small>LOSSES</small><strong id="test-losses">–</strong></div>
-        <div><small>WINRATE</small><strong id="test-winrate">–</strong></div>
-        <div><small>KILLS</small><strong id="test-kills">–</strong></div>
-        <div><small>DEATHS</small><strong id="test-deaths">–</strong></div>
-        <div><small>K/D</small><strong id="test-kd">–</strong></div>
-      </div>
-      <p class="round-test-hint">Eigener Testzeitraum, nicht die letzten 24 Stunden. API-Werte können verzögert aktualisiert werden. Der Startwert bleibt auf diesem Gerät gespeichert.</p>
-    </section>
-    <p class="period-note" id="period-note">Der gemeinsame Verlauf beginnt ab dem ersten erfolgreichen stündlichen API-Abruf. Ältere Spieltage lassen sich nicht rückwirkend auslesen.</p>
+    <p class="period-note" id="period-note">Die Auswertung zeigt Unterschiede zwischen gespeicherten Rapid-Royale-Gesamtzählern. Einzelne Matches werden nicht separat aufgelistet.</p>
   </section>
   <details class="panel api-panel" id="api-panel">
     <summary><span><small>02 / LIVE DATEN</small><strong>SPIELER & DETAILSTATISTIKEN</strong><em>Erfasste Spieler anzeigen oder entfernen</em></span><span class="chevron">⌄</span></summary>
@@ -107,7 +87,7 @@
       <div id="api-feedback" role="status" aria-live="polite" class="api-feedback">Noch keine Spieler hinterlegt.</div>
   </section>
 </main>
-<footer>BF6 TRACKER · V2.0.4 · UNABHÄNGIGES FANPROJEKT</footer>
+<footer>BF6 TRACKER · V2.1.0 · UNABHÄNGIGES FANPROJEKT</footer>
 </div>
 </body>
 </html>
