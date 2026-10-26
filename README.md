@@ -1,6 +1,12 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **2.0.3**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **2.0.4**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Doppelten Strausbrot-Eintrag korrigiert (V2.0.4)
+
+Strausbrot ist ein Xbox-Spieler, dessen Battlefield-6-Rapid-Royale-Daten über die EA/PC-Plattformabfrage gefunden werden. Dadurch wurden auf demselben Gerät die Einträge `xbox:strausbrot` und `ea:strausbrot` parallel dargestellt. Die App verwendet für diese beiden nachweislich identischen Spieler-Einträge jetzt den gemeinsamen Schlüssel `ea:strausbrot`. Die lokale Liste wird beim Start dedupliziert, wobei der zuerst vorhandene Eintrag hinsichtlich seiner Plattformpräferenz erhalten bleibt; die Anzeige markiert Strausbrot als `XBOX · EA-ID`. Der serverseitige Verlauf verwendet weiterhin `ea:strausbrot`.
+
+Bestehende lokale Zähler-Snapshots, die vor der Änderung unter `xbox:strausbrot` gespeichert wurden, werden zusätzlich mit dem zentralen Verlauf verglichen statt verworfen. Ein laufender Zwei-Runden-Test unter der alten Xbox-ID wird in die neue Kennung übernommen, wenn noch kein anderer Test existiert. Bereits ausgewählte `xbox:strausbrot`-Konten werden auf `ea:strausbrot` umgeleitet. Benutzer können Strausbrot nicht erneut als Xbox- oder EA-Spieler hinzufügen, solange er bereits eingetragen ist. Andere Spieler oder Plattformen werden nicht zusammengelegt. Die zentralen drei Spieler bleiben unverändert.
 
 ## Fehlende Tages-Vergleichsstände transparent behandeln (V2.0.3)
 
