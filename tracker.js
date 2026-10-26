@@ -215,11 +215,40 @@
     return current-before;
   }
   const DAY_MS=24*60*60*1000;
+  const BERLIN_PARTS=new Intl.DateTimeFormat("en-GB",{
+    timeZone:"Europe/Berlin",year:"numeric",month:"2-digit",
+    day:"2-digit",hour:"2-digit",hourCycle:"h23"
+  });
+  function berlinParts(timestamp){
+    const out={};
+    for(const p of BERLIN_PARTS.formatToParts(new Date(timestamp)))
+      if(["year","month","day","hour"].includes(p.type))out[p.type]=Number(p.value);
+    return out;
+  }
+  function atBerlinSeven(dateUTC){
+    const year=dateUTC.getUTCFullYear(),month=dateUTC.getUTCMonth(),day=dateUTC.getUTCDate();
+    const guess=Date.UTC(year,month,day,7);
+    const p=berlinParts(guess);
+    const guessBerlinAsUTC=Date.UTC(p.year,p.month-1,p.day,p.hour);
+    return guess+(guess-guessBerlinAsUTC);
+  }
+  function dailyWindow(now=Date.now()){
+    const p=berlinParts(now);
+    let dateUTC=Date.UTC(p.year,p.month-1,p.day);
+    if(p.hour<7)dateUTC-=DAY_MS;
+    // Build *both* ends at 07:00 Europe/Berlin, including DST changes.
+    return {start:atBerlinSeven(new Date(dateUTC)),
+      end:atBerlinSeven(new Date(dateUTC+DAY_MS))};
+  }
+  function periodWindow(days,now){
+    return days===1?dailyWindow(now):{start:now-days*DAY_MS,end:now};
+  }
   function periodStats(key,days,now=Date.now()){
-    // All players share the same rolling clock window. Never use measurements
-    // older than its start, even if that means not having a baseline.
-    const windowStart=now-days*DAY_MS;
-    const points=getPoints(key).filter(p=>p.ts>=windowStart&&p.ts<=now);
+    // The gaming day is 07:00 to 07:00, identical for every player.
+    // Never use a baseline from a previous day to fill gaps.
+    const window=periodWindow(days,now);
+    const windowStart=window.start;
+    const points=getPoints(key).filter(p=>p.ts>=windowStart&&p.ts<=Math.min(now,window.end));
     const latest=points.at(-1);
     if(!latest)return null;
     const sameMode=points.filter(p=>p.series===latest.series);
@@ -241,9 +270,11 @@
     }
     $(prefix+"-winrate").textContent=data?.winrate==null?"–":fmt(data.winrate)+"%";
     $(prefix+"-kd").textContent=data?.kd==null?"–":fmt(data.kd);
-    const windowStart=now-days*DAY_MS;
-    const windowDescription=(days===1?"24-Stunden-Fenster: ":"7-Tage-Fenster: ")+
-      dateTime(windowStart)+" – "+dateTime(now);
+    const window=periodWindow(days,now);
+    const windowStart=window.start;
+    const windowDescription=days===1
+      ?"Spieltag: "+dateTime(window.start)+" – "+dateTime(window.end)+" (07:00–07:00)"
+      :"7-Tage-Fenster: "+dateTime(window.start)+" – "+dateTime(window.end);
     $(prefix+"-window").textContent=windowDescription;
     if(prefix==="day"){
       const points=getPoints(activePlayer()?playerKey(activePlayer()):"")
@@ -251,11 +282,11 @@
       const latest=points.at(-1);
       const same=latest?points.filter(p=>p.series===latest.series):[];
       const text=!latest
-        ?"Noch kein API-Messstand innerhalb der letzten 24 Stunden."
+        ?"Heute seit 07:00 Uhr noch keine API-Messung. Keine geschätzten Spiele."
         :!data
-          ?"Nur "+same.length+" vergleichbare Messung(en) innerhalb der letzten 24 Stunden. Für eine Differenz sind mindestens zwei nötig."
-          :"Tatsächlich erfasst: "+dateTime(data.from)+" – "+dateTime(data.to)+
-           " ("+fmt((data.to-data.from)/3600000)+" Stunden). Es werden keine Werte vor dem 24h-Fenster verwendet.";
+          ?"Seit 07:00 Uhr erst "+same.length+" vergleichbare API-Messung(en). Mindestens zwei sind für die Differenz erforderlich."
+          :"Gemessene Teilspanne heute: "+dateTime(data.from)+" – "+dateTime(data.to)+
+           " ("+fmt((data.to-data.from)/3600000)+" Stunden). Vor 07:00 Uhr liegende Daten zählen nicht.";
       $("day-coverage").textContent=text+
         (latest&&now-latest.ts>3*3600000?" Letzte API-Messung älter als 3 Stunden.":"");
     } else {
@@ -280,7 +311,7 @@
       :!points.length?"Für "+current.name+" wurde bisher kein erfolgreicher Messstand gespeichert."
       :(remote?"Server- und lokale API-Messungen":"Lokale API-Messungen")+
        " für "+current.name+". Letzter Messstand: "+dateTime(last.ts)+
-       ". Die 24h-Werte enthalten ausschließlich Unterschiede zwischen echten API-Messungen aus demselben festen 24-Stunden-Zeitfenster. Eine Runde wird sichtbar, sobald GameTools neue Gesamtzähler liefert. Striche bedeuten fehlende Daten, nicht null Spiele.";
+       ". Der Spieltag läuft für alle Spieler von 07:00 bis 07:00 Uhr deutscher Zeit. Nur API-Messungen seit der heutigen 07:00-Uhr-Grenze zählen. Eine Runde wird sichtbar, sobald GameTools neue Gesamtzähler liefert. Striche bedeuten fehlende Daten, nicht null Spiele.";
   }
 
   function renderAuto(){
