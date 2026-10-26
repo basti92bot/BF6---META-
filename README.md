@@ -1,6 +1,12 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **2.2.1**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **2.3.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Detailstatistiken ohne Dropdown und K/D-Trend (V2.3.0)
+
+Die Detailstatistik-Sektion für alle Spieler ist jetzt dauerhaft sichtbar: Das frühere ausklappbare `details/summary`-Element wurde durch einen normalen Abschnitt mit statischer Überschrift ersetzt. Das Spieler-Dropdown oben in der automatischen Bilanz bleibt zur Spielerauswahl erhalten.
+
+Neben der K/D im jeweiligen Spieler-Detailfeld erscheint ein kleines **grünes ▲** bei Anstieg bzw. **rotes ▼** bei Rückgang. Der Vergleich erfolgt zwischen den letzten zwei tatsächlich **verschiedenen, auf zwei Dezimalstellen gerundeten** erfolgreichen API-K/D-Werten dieses Spielers, nicht zwischen verschiedenen Spielern oder aus dem täglichen K/D-Wert. Der vorherige geänderte Wert und die Richtung werden im bestehenden lokalen Browser-Speicher pro Spieler aufbewahrt; unveränderte API-Abrufe entfernen den Pfeil nicht. Beim ersten erfolgreichen Wert ist noch keine Richtung vorhanden. Nur wenn der aktuell gezeigte K/D-Wert zum gespeicherten API-Wert passt, wird der Pfeil angezeigt, damit veraltete Serverwerte keine irreführende Richtung erhalten. Tages- und Wochenberechnung, automatische Abrufe und die zentrale Dreier-Spielerliste bleiben unverändert.
 
 ## Spieltag von 07:00 bis 07:00 Uhr (V2.2.1)
 
