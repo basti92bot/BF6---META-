@@ -384,9 +384,9 @@
       const sameKd=shownKd!==null&&trend&&shownKd===trend.current;
       const direction=sameKd?trend.direction:null;
       const arrow=direction==="up"?
-        '<span class="kd-trend up" aria-label="K/D gestiegen" title="K/D gestiegen">▲</span>':
+        '<span class="kd-trend up" role="img" aria-label="K/D gestiegen" title="K/D gestiegen"></span>':
         direction==="down"?
-        '<span class="kd-trend down" aria-label="K/D gesunken" title="K/D gesunken">▼</span>':"";
+        '<span class="kd-trend down" role="img" aria-label="K/D gesunken" title="K/D gesunken"></span>':"";
       return '<article class="player-card"><div class="player-title"><div><strong>'+safe(p.name)+'</strong><small>'+safe(platformLabel)+'</small></div><div class="player-actions"><button type="button" data-refresh-player="'+safe(key)+'" '+(loading?'disabled':'')+'>'+(loading?'LÄDT…':'↻ LADEN')+'</button><button type="button" class="remove-player" data-remove-player="'+safe(key)+'" aria-label="Spieler entfernen">×</button></div></div><div class="player-metrics">'+vals.map(([label,value])=>'<div class="player-metric"><small>'+label+'</small><b>'+safe(value===null||value===undefined?"–":value)+(label==="K/D"?arrow:"")+'</b></div>').join("")+'</div><p class="player-status">'+safe(loading?'API wird abgefragt…':d?.message||"Noch nicht abgerufen")+'</p></article>';
     }).join("");
     $("refresh-all").disabled=!state.players.length;
