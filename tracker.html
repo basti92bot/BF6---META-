@@ -9,7 +9,7 @@
 <title>BF6 | WIN / LOST</title>
 <link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
 <link rel="stylesheet" href="./tracker.css?v=2.1.0">
-<script src="./tracker.js?v=2.1.0" defer></script>
+<script src="./tracker.js?v=2.2.0" defer></script>
 </head>
 <body>
 <div class="tracker-shell">
@@ -48,6 +48,7 @@
           <div><small>KILLS</small><strong id="day-kills">–</strong></div>
           <div><small>DEATHS</small><strong id="day-deaths">–</strong></div>
         </div>
+        <p id="day-coverage" class="period-note">Der Vergleich berücksichtigt nur Messpunkte aus den letzten 24 Stunden.</p>
       </article>
       <article class="period-card">
         <div class="period-heading"><strong>LETZTE 7 TAGE</strong><span id="week-window">Noch keine Vergleichsdaten</span></div>
@@ -59,10 +60,11 @@
           <div><small>KILLS</small><strong id="week-kills">–</strong></div>
           <div><small>DEATHS</small><strong id="week-deaths">–</strong></div>
         </div>
+        <p id="week-coverage" class="period-note">Die Wochenansicht hat einen eigenen Zeitraum.</p>
       </article>
     </div>
 
-    <p class="period-note" id="period-note">Die Auswertung zeigt Unterschiede zwischen gespeicherten Rapid-Royale-Gesamtzählern. Einzelne Matches werden nicht separat aufgelistet.</p>
+    <p class="period-note" id="period-note">Alle Spieler nutzen dasselbe rollierende 24-Stunden-Fenster. Nur echte Messungen innerhalb dieses Zeitraums zählen; Einzelmatches werden nicht separat aufgelistet.</p>
   </section>
   <details class="panel api-panel" id="api-panel">
     <summary><span><small>02 / LIVE DATEN</small><strong>SPIELER & DETAILSTATISTIKEN</strong><em>Erfasste Spieler anzeigen oder entfernen</em></span><span class="chevron">⌄</span></summary>
@@ -87,7 +89,7 @@
       <div id="api-feedback" role="status" aria-live="polite" class="api-feedback">Noch keine Spieler hinterlegt.</div>
   </section>
 </main>
-<footer>BF6 TRACKER · V2.1.0 · UNABHÄNGIGES FANPROJEKT</footer>
+<footer>BF6 TRACKER · V2.2.0 · UNABHÄNGIGES FANPROJEKT</footer>
 </div>
 </body>
 </html>
