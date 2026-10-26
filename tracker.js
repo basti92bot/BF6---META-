@@ -214,68 +214,73 @@
     if(!Number.isSafeInteger(current)||!Number.isSafeInteger(before)||current<before)return null;
     return current-before;
   }
-  function periodStats(key,days,maxGap){
-    const points=getPoints(key);
-    const last=points.at(-1);
-    if(!last)return null;
-    const valid=points.filter(p=>p.ts<last.ts&&p.series===last.series);
-    const target=last.ts-days*86400000;
-    // Prefer the closest real observation near the requested time window.
-    const nearby=valid.filter(p=>Math.abs(p.ts-target)<=maxGap)
-      .sort((a,b)=>Math.abs(a.ts-target)-Math.abs(b.ts-target))[0];
-    // If no ~24h comparison exists, provide an explicitly marked *different*
-    // observation span rather than empty cards or inventing hourly matches.
-    const partial=days===1&&!nearby?valid.find(p=>p.ts>=last.ts-7*86400000):null;
-    const earlier=nearby||partial;
-    if(!earlier)return null;
-    const wins=diffCounts(last,earlier,"wins"),losses=diffCounts(last,earlier,"losses");
-    const kills=diffCounts(last,earlier,"kills"),deaths=diffCounts(last,earlier,"deaths");
+  const DAY_MS=24*60*60*1000;
+  function periodStats(key,days,now=Date.now()){
+    // All players share the same rolling clock window. Never use measurements
+    // older than its start, even if that means not having a baseline.
+    const windowStart=now-days*DAY_MS;
+    const points=getPoints(key).filter(p=>p.ts>=windowStart&&p.ts<=now);
+    const latest=points.at(-1);
+    if(!latest)return null;
+    const sameMode=points.filter(p=>p.series===latest.series);
+    if(sameMode.length<2)return null;
+    const first=sameMode[0];
+    if(first.ts>=latest.ts)return null;
+    const wins=diffCounts(latest,first,"wins"),losses=diffCounts(latest,first,"losses");
+    const kills=diffCounts(latest,first,"kills"),deaths=diffCounts(latest,first,"deaths");
     if([wins,losses,kills,deaths].every(x=>x===null))return null;
     const matches=wins!==null&&losses!==null?wins+losses:null;
     const winrate=matches&&matches>0?100*wins/matches:null;
     const kd=kills!==null&&deaths!==null?(deaths===0?(kills===0?null:kills):kills/deaths):null;
-    return {wins,losses,kills,deaths,winrate,kd,from:earlier.ts,to:last.ts,
-      coverage:nearby?"approximate":"available"};
+    return {wins,losses,kills,deaths,winrate,kd,from:first.ts,to:latest.ts,
+      windowStart,windowEnd:now};
   }
-  function drawPeriod(prefix,data){
+  function drawPeriod(prefix,data,days,now){
     for(const key of ["wins","losses","kills","deaths"]){
-      $(prefix+"-"+key).textContent=data?.[key]===null||data?.[key]===undefined?"–":data[key].toLocaleString("de-DE");
+      $(prefix+"-"+key).textContent=data?.[key]==null?"–":data[key].toLocaleString("de-DE");
     }
-    $(prefix+"-winrate").textContent=data?.winrate===null||data?.winrate===undefined?"–":fmt(data.winrate)+"%";
-    $(prefix+"-kd").textContent=data?.kd===null||data?.kd===undefined?"–":fmt(data.kd);
-    const hours=data?(data.to-data.from)/3600000:null;
-    $(prefix+"-window").textContent=data?
-      (data.coverage==="available"?"Nur vorhandener Messzeitraum, nicht 24h: ":"Gemessener Zeitraum: ")+
-      dateTime(data.from)+" – "+dateTime(data.to)+" ("+fmt(hours)+" Std.)":
-      "Noch keine passenden Vergleichsdaten";
+    $(prefix+"-winrate").textContent=data?.winrate==null?"–":fmt(data.winrate)+"%";
+    $(prefix+"-kd").textContent=data?.kd==null?"–":fmt(data.kd);
+    const windowStart=now-days*DAY_MS;
+    const windowDescription=(days===1?"24-Stunden-Fenster: ":"7-Tage-Fenster: ")+
+      dateTime(windowStart)+" – "+dateTime(now);
+    $(prefix+"-window").textContent=windowDescription;
+    if(prefix==="day"){
+      const points=getPoints(activePlayer()?playerKey(activePlayer()):"")
+        .filter(p=>p.ts>=windowStart&&p.ts<=now);
+      const latest=points.at(-1);
+      const same=latest?points.filter(p=>p.series===latest.series):[];
+      const text=!latest
+        ?"Noch kein API-Messstand innerhalb der letzten 24 Stunden."
+        :!data
+          ?"Nur "+same.length+" vergleichbare Messung(en) innerhalb der letzten 24 Stunden. Für eine Differenz sind mindestens zwei nötig."
+          :"Tatsächlich erfasst: "+dateTime(data.from)+" – "+dateTime(data.to)+
+           " ("+fmt((data.to-data.from)/3600000)+" Stunden). Es werden keine Werte vor dem 24h-Fenster verwendet.";
+      $("day-coverage").textContent=text+
+        (latest&&now-latest.ts>3*3600000?" Letzte API-Messung älter als 3 Stunden.":"");
+    } else {
+      $("week-coverage").textContent=!data?
+        "Noch keine vergleichbaren Messstände im 7-Tage-Fenster.":
+        "Gemessene Teilspanne: "+dateTime(data.from)+" – "+dateTime(data.to)+".";
+    }
   }
   function renderPeriods(){
     const current=activePlayer();
     const key=current?playerKey(current):"";
-    const day=key?periodStats(key,1,6*3600000):null;
-    const week=key?periodStats(key,7,18*3600000):null;
-    drawPeriod("day",day);drawPeriod("week",week);
-    $("day-title").textContent=day?.coverage==="available"?"VERFÜGBARER VERLAUF":"LETZTE 24 STUNDEN";
+    const now=Date.now();
+    const day=key?periodStats(key,1,now):null;
+    const week=key?periodStats(key,7,now):null;
+    drawPeriod("day",day,1,now);
+    drawPeriod("week",week,7,now);
     $("period-player").textContent=current?"SPIELER: "+current.name:"SPIELER AUSWÄHLEN";
     const points=getPoints(key);
-    const remote=!!serverHistory.players?.[key]?.points?.length;
     const last=points.at(-1);
-    const delayed=last&&Date.now()-last.ts>3*3600000;
-    if(!week&&points.length){
-      const elapsed=(last.ts-points[0].ts)/86400000;
-      $("week-window").textContent="Noch kein 7-Tage-Vergleich (aufgezeichnet: "+
-        fmt(Math.max(0,elapsed))+" Tage)";
-    }
-    if(!day&&points.length===1)
-      $("day-window").textContent="Erster Messstand: "+dateTime(points[0].ts)+" · zweiter fehlt";
+    const remote=!!serverHistory.players?.[key]?.points?.length;
     $("period-note").textContent=!current?"Zuerst einen Spieler auswählen."
-      :!points.length?"Für "+current.name+" wurde noch kein erfolgreicher Verlaufsstand gespeichert."
+      :!points.length?"Für "+current.name+" wurde bisher kein erfolgreicher Messstand gespeichert."
       :(remote?"Server- und lokale API-Messungen":"Lokale API-Messungen")+
-        " für "+current.name+" seit "+dateTime(points[0].ts)+
-        ". Letzter Messstand: "+dateTime(last.ts)+
-        (delayed?" (älter als 3 Stunden).":"")+
-        (day?.coverage==="available"?" Ein vollständiger 24-Stunden-Vergleich fehlt noch; oben steht der tatsächliche Messzeitraum.":"")+
-        " Eine neue Runde zählt mit, sobald GameTools sie in den Gesamtwerten erfasst. Striche bedeuten fehlende Vergleichsdaten, nicht null Spiele."
+       " für "+current.name+". Letzter Messstand: "+dateTime(last.ts)+
+       ". Die 24h-Werte enthalten ausschließlich Unterschiede zwischen echten API-Messungen aus demselben festen 24-Stunden-Zeitfenster. Eine Runde wird sichtbar, sobald GameTools neue Gesamtzähler liefert. Striche bedeuten fehlende Daten, nicht null Spiele.";
   }
 
   function renderAuto(){
