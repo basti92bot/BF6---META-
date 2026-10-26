@@ -1,6 +1,12 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **2.0.2**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **2.0.3**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Fehlende Tages-Vergleichsstände transparent behandeln (V2.0.3)
+
+Seit dem 26. Oktober sind Strausbrot, RockmasterR und Pathogeno in der zentralen Abfrageliste, aber im Serverarchiv standen beim Prüfen nur historische Messungen von RockmasterR. Alte lokale Messstände wurden bei vorhandenen Serverständen bisher vollständig verdrängt. Jetzt kombiniert die App valide lokale und serverseitige Rapid-Royale-Zähler nach Zeitstempel, verwendet nur vergleichbare Modusreihen und erklärt den tatsächlich gewählten Spieler.
+
+Gibt es einen passenden Messstand ungefähr 24 Stunden vor dem jüngsten echten API-Abruf, wird die 24h-Bilanz gezeigt. Ist dieser nicht verfügbar, kann die App nach mindestens zwei vergleichbaren Messungen die Veränderung seit dem ältesten vorhandenen Messstand anzeigen, aber **unter der geänderten Überschrift „VERFÜGBARER VERLAUF“** und mit eindeutig sichtbarem tatsächlichem Zeitabstand (also nicht fälschlich als 24h-Statistik). Bei nur einem Messstand wird der fehlende zweite Stand erklärt. Für 7 Tage werden nach wie vor echte ungefähr 7 Tage auseinanderliegende Vergleichsstände verlangt. Unbekannte oder zurückgesetzte Zähler werden nicht als null ausgegeben. Dies ändert keine serverseitigen Werte.
 
 ## Drei aktive Spieler zentral erfasst (V2.0.2)
 
