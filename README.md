@@ -1,6 +1,10 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **2.4.1**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **2.4.2**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Squad-Stats-Header bereinigt (V2.4.2)
+
+Der überflüssige Hinweis „02 / LIVE DATEN“ über „SQUAD STATS“ wurde entfernt. Die Tabellen, Karten, Werte, Buttons, K/D-Pfeile und der Spieltag 07:00–07:00 bleiben unverändert.
 
 ## Battlefield-Überschriften (V2.4.1)
 
