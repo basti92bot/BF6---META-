@@ -2,8 +2,18 @@
   "schemaVersion": 1,
   "players": [
     {
+      "name": "Strausbrot",
+      "platform": "ea",
+      "enabled": true
+    },
+    {
       "name": "RockmasterR",
       "platform": "ea",
+      "enabled": true
+    },
+    {
+      "name": "Pathogeno",
+      "platform": "psn",
       "enabled": true
     }
   ]
