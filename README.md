@@ -1,6 +1,10 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **2.4.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **2.4.1**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Battlefield-Überschriften (V2.4.1)
+
+Die bestehenden Statistik-Kacheln, ihre Reihenfolge und Berechnungen bleiben unverändert. Nur Überschriften wurden moderner benannt: "WIN RATE 🥇" statt "AUTOMATISCHE BILANZ", "PERFORMANCE" statt "VERLAUF", "DAILY OPS" statt "SPIELTAG · 07:00–07:00", "WEEKLY OPS" statt "LETZTE 7 TAGE" und "SQUAD STATS" statt "SPIELER & DETAILSTATISTIKEN". Die 07:00-Uhr-Grenze wird nicht in der Überschrift genannt. Die Logik des Statistiktags von 07:00 bis 07:00 Uhr deutscher Zeit und die Datumsangaben bleiben bestehen.
 
 ## Festes Dreier-Team und aufgeräumtes Design (V2.4.0)
 
