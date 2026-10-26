@@ -66,12 +66,16 @@
   const pending=new Set();
   let serverHistory={schemaVersion:1,players:{}};
   function getPoints(key) {
-    const remote=serverHistory.players?.[key]?.points;
-    if(Array.isArray(remote)&&remote.length){
-      return remote.filter(p=>Number.isFinite(p?.ts)&&p?.values&&
-        Number.isSafeInteger(p.values.wins)&&Number.isSafeInteger(p.values.losses)).sort((a,b)=>a.ts-b.ts);
-    }
-    return state.snapshots[key]||[];
+    // Keep both sources: a recent local API read must not disappear just because
+    // an older hourly server snapshot exists. All counters are actual API reads.
+    const remote=serverHistory.players?.[key]?.points||[];
+    const local=state.snapshots[key]||[];
+    return [...remote,...local]
+      .filter(p=>Number.isFinite(p?.ts)&&p.ts>0&&p.ts<=Date.now()+60000&&
+        p?.values&&Number.isSafeInteger(p.values.wins)&&
+        Number.isSafeInteger(p.values.losses))
+      .map(p=>({...p,series:p.series||"rapid-royale|"}))
+      .sort((a,b)=>a.ts-b.ts);
   }
   async function loadServerHistory(){
     try {
@@ -179,9 +183,13 @@
     if(Object.values(values).every(v=>v===null))return null;
     return {ts:Date.now(),values};
   }
-  function recordSnapshot(player,stats){
+  function recordSnapshot(player,stats,mode){
     const point=parseSnapshot(stats);
     if(!point)return;
+    const label=mode?.modeTitle||"Rapid Royale";
+    const normalized=label.toLowerCase().replace(/[\s_-]+/g,"-");
+    const season=mode?.seasonal?"|season": "|";
+    point.series=normalized+season;
     const key=playerKey(player),list=state.snapshots[key]||[];
     const last=list[list.length-1];
     // Limit stored points: at least every 15 minutes or when the counters change.
@@ -198,22 +206,26 @@
   }
   function periodStats(key,days,maxGap){
     const points=getPoints(key);
-    const last=points[points.length-1];
+    const last=points.at(-1);
     if(!last)return null;
-    // Compare relative to the last actual sample, NOT Date.now().
-    // GameTools / GitHub may have gaps of several hours between snapshots.
+    const valid=points.filter(p=>p.ts<last.ts&&p.series===last.series);
     const target=last.ts-days*86400000;
-    const earlier=points.filter(p=>p.ts<last.ts&&
-      Math.abs(p.ts-target)<=maxGap&&
-      (p.series??"local")===(last.series??"local"))
+    // Prefer the closest real observation near the requested time window.
+    const nearby=valid.filter(p=>Math.abs(p.ts-target)<=maxGap)
       .sort((a,b)=>Math.abs(a.ts-target)-Math.abs(b.ts-target))[0];
+    // If no ~24h comparison exists, provide an explicitly marked *different*
+    // observation span rather than empty cards or inventing hourly matches.
+    const partial=days===1&&!nearby?valid.find(p=>p.ts>=last.ts-7*86400000):null;
+    const earlier=nearby||partial;
     if(!earlier)return null;
     const wins=diffCounts(last,earlier,"wins"),losses=diffCounts(last,earlier,"losses");
     const kills=diffCounts(last,earlier,"kills"),deaths=diffCounts(last,earlier,"deaths");
+    if([wins,losses,kills,deaths].every(x=>x===null))return null;
     const matches=wins!==null&&losses!==null?wins+losses:null;
     const winrate=matches&&matches>0?100*wins/matches:null;
     const kd=kills!==null&&deaths!==null?(deaths===0?(kills===0?null:kills):kills/deaths):null;
-    return {wins,losses,kills,deaths,winrate,kd,from:earlier.ts,to:last.ts};
+    return {wins,losses,kills,deaths,winrate,kd,from:earlier.ts,to:last.ts,
+      coverage:nearby?"approximate":"available"};
   }
   function drawPeriod(prefix,data){
     for(const key of ["wins","losses","kills","deaths"]){
@@ -222,8 +234,10 @@
     $(prefix+"-winrate").textContent=data?.winrate===null||data?.winrate===undefined?"–":fmt(data.winrate)+"%";
     $(prefix+"-kd").textContent=data?.kd===null||data?.kd===undefined?"–":fmt(data.kd);
     const hours=data?(data.to-data.from)/3600000:null;
-    $(prefix+"-window").textContent=data?"Gemessen "+dateTime(data.from)+" – "+dateTime(data.to)+
-      " (ca. "+fmt(hours)+" Std.)":"Noch keine passenden Vergleichsdaten";
+    $(prefix+"-window").textContent=data?
+      (data.coverage==="available"?"Nur vorhandener Messzeitraum, nicht 24h: ":"Gemessener Zeitraum: ")+
+      dateTime(data.from)+" – "+dateTime(data.to)+" ("+fmt(hours)+" Std.)":
+      "Noch keine passenden Vergleichsdaten";
   }
   function renderPeriods(){
     const current=activePlayer();
@@ -231,16 +245,27 @@
     const day=key?periodStats(key,1,6*3600000):null;
     const week=key?periodStats(key,7,18*3600000):null;
     drawPeriod("day",day);drawPeriod("week",week);
+    $("day-title").textContent=day?.coverage==="available"?"VERFÜGBARER VERLAUF":"LETZTE 24 STUNDEN";
+    $("period-player").textContent=current?"SPIELER: "+current.name:"SPIELER AUSWÄHLEN";
     const points=getPoints(key);
     const remote=!!serverHistory.players?.[key]?.points?.length;
     const last=points.at(-1);
     const delayed=last&&Date.now()-last.ts>3*3600000;
-    $("period-note").textContent=!current?"Zuerst unter EA-IDs einen Spieler hinzufügen."
-      :!points.length?"Noch kein erfolgreicher API-Messstand. Der stündliche Serverabruf ist vorbereitet."
-      :(remote?"Gemeinsamer stündlicher Verlauf":"Lokaler Verlauf")+" seit "+dateTime(points[0].ts)+
-        ". Letzter erfolgreicher Abruf: "+dateTime(last.ts)+
-        (delayed?" (älter als 3 Stunden; die neuesten Runden fehlen möglicherweise).":"")+
-        " Berechnet wird immer vom letzten echten Messstand aus. Sind nicht genug Vergleichspunkte vorhanden, bleiben die Felder leer.";
+    if(!week&&points.length){
+      const elapsed=(last.ts-points[0].ts)/86400000;
+      $("week-window").textContent="Noch kein 7-Tage-Vergleich (aufgezeichnet: "+
+        fmt(Math.max(0,elapsed))+" Tage)";
+    }
+    if(!day&&points.length===1)
+      $("day-window").textContent="Erster Messstand: "+dateTime(points[0].ts)+" · zweiter fehlt";
+    $("period-note").textContent=!current?"Zuerst einen Spieler auswählen."
+      :!points.length?"Für "+current.name+" wurde noch kein erfolgreicher Verlaufsstand gespeichert."
+      :(remote?"Server- und lokale API-Messungen":"Lokale API-Messungen")+
+        " für "+current.name+" seit "+dateTime(points[0].ts)+
+        ". Letzter Messstand: "+dateTime(last.ts)+
+        (delayed?" (älter als 3 Stunden).":"")+
+        (day?.coverage==="available"?" Ein vollständiger 24-Stunden-Vergleich fehlt noch; oben steht der tatsächliche Messzeitraum.":"")+
+        " Striche bedeuten fehlende Vergleichsdaten, nicht null Spiele.";
   }
 
   function testDiff(start,end){
@@ -388,7 +413,7 @@
         $("api-feedback").textContent="Profil gefunden. Rapid-Royale-Daten fehlen in der API-Antwort.";
         return null;
       }
-      recordSnapshot(p,rapid.parsed.stats);
+      recordSnapshot(p,rapid.parsed.stats,rapid);
       const suffix=rapid.seasonal?" · nur Saisonwerte":"";
       const fallback=usedPlatform!==p.platform?" · über "+(usedPlatform==="ea"?"EA/PC":usedPlatform.toUpperCase())+" gefunden":"";
       playerData.set(key,{stats:rapid.parsed.stats,message:rapid.modeTitle+suffix+fallback+" · GameTools.Network · "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})});
