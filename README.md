@@ -1,6 +1,12 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **2.3.2**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **2.4.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Festes Dreier-Team und aufgeräumtes Design (V2.4.0)
+
+Die Seite orientiert sich am gelieferten Referenzbild: dunkles Grün, deutlich umrandete Spieler-Karten, dreispaltige Statistikkacheln und hellgrüne Aktionsbuttons. Lange Erklärungen zu API, Datenherkunft, Aktualisierungsroutinen, Formulare, API-Dokumentationslink und technische Einstellungssektion sind aus der Oberfläche entfernt. Wesentliche Fehlermeldungen und der Zeitpunkt einer erfolgreichen Aktualisierung bleiben sichtbar.
+
+Die angezeigte Spielerliste ist nun auf **Strausbrot (Xbox/EA-Abfrage), RockmasterR (EA/PC) und Pathogeno (PlayStation/EA-Fallback)** fest eingestellt. Der Bereich „Spieler hinzufügen“ sowie alle Löschbuttons sind nicht mehr vorhanden; jeder Spieler kann weiterhin separat aktualisiert werden. Der zentrale GitHub-Collector nutzt unverändert die konfigurierte Dreier-Spielerliste. Bestehende lokale Messstände inklusive älterer Xbox-Schlüssel und die Serverhistorie bleiben gespeichert und nutzbar; weitere eventuell lokal gespeicherte Spieler werden nicht mehr angezeigt, aber historische Daten nicht gelöscht. Die Spielerauswahl oben in der Automatischen Bilanz, die Statistik von 07:00 bis 07:00 Uhr, die 7-Tage-Statistik und die ausgefüllten grünen/roten K/D-Trenddreiecke bleiben funktional.
 
 ## K/D-Pfeile aus gespeicherten API-Verlaufsdaten (V2.3.2)
 
