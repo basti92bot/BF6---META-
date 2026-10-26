@@ -70,6 +70,8 @@
     return {...data,players,trackedPlayer,snapshots,defaultBotsClearedV19:true};
   };
   const state=loadState();
+  if(!state.kdTrends||typeof state.kdTrends!=="object"||Array.isArray(state.kdTrends))
+    state.kdTrends={};
   const playerData=new Map();
   const pending=new Set();
   let serverHistory={schemaVersion:1,players:{}};
@@ -207,6 +209,29 @@
     if(changed||point.ts-(last?.ts||0)>=15*60*1000)list.push(point);
     const minTime=Date.now()-45*86400000;
     state.snapshots[key]=list.filter(x=>x.ts>=minTime).slice(-2500);
+    save();
+  }
+  function kdValue(stats){
+    const direct=num(stats?.kd);
+    if(direct!==null&&direct>=0)return Math.round(direct*100)/100;
+    const kills=countFrom(stats?.kills),deaths=countFrom(stats?.deaths);
+    return kills!==null&&deaths!==null&&deaths>0?
+      Math.round(kills/deaths*100)/100:null;
+  }
+  function updateKdTrend(player,stats){
+    const current=kdValue(stats);
+    if(current===null)return;
+    const key=playerKey(player);
+    const prior=state.kdTrends[key];
+    if(!prior||!Number.isFinite(prior.current)){
+      state.kdTrends[key]={current,previous:null,direction:null,at:Date.now()};
+      save();return;
+    }
+    // Only an actual displayed 0.01 change flips the arrow. Unchanged polls
+    // retain the last direction instead of hiding it two minutes later.
+    if(prior.current===current)return;
+    state.kdTrends[key]={current,previous:prior.current,
+      direction:current>prior.current?"up":"down",at:Date.now()};
     save();
   }
   function diffCounts(now,then,key){
@@ -354,7 +379,15 @@
       };
       const vals=[["K/D",stats.kd],["KILLS",stats.kills],["DEATHS",stats.deaths],["WINS",stats.wins],["LOSSES",stats.losses],["WINRATE",stats.winrate],["ACCURACY",stats.accuracy],["REVIVES",stats.revives],["ASSISTS",stats.assists]];
       const platformLabel=key==="ea:strausbrot"?"XBOX · EA-ID":PLATFORMS[p.platform];
-      return '<article class="player-card"><div class="player-title"><div><strong>'+safe(p.name)+'</strong><small>'+safe(platformLabel)+'</small></div><div class="player-actions"><button type="button" data-refresh-player="'+safe(key)+'" '+(loading?'disabled':'')+'>'+(loading?'LÄDT…':'↻ LADEN')+'</button><button type="button" class="remove-player" data-remove-player="'+safe(key)+'" aria-label="Spieler entfernen">×</button></div></div><div class="player-metrics">'+vals.map(([label,value])=>'<div class="player-metric"><small>'+label+'</small><b>'+safe(value===null||value===undefined?"–":value)+'</b></div>').join("")+'</div><p class="player-status">'+safe(loading?'API wird abgefragt…':d?.message||"Noch nicht abgerufen")+'</p></article>';
+      const trend=state.kdTrends[key];
+      const shownKd=kdValue(stats);
+      const sameKd=shownKd!==null&&trend&&shownKd===trend.current;
+      const direction=sameKd?trend.direction:null;
+      const arrow=direction==="up"?
+        '<span class="kd-trend up" aria-label="K/D gestiegen" title="K/D gestiegen">▲</span>':
+        direction==="down"?
+        '<span class="kd-trend down" aria-label="K/D gesunken" title="K/D gesunken">▼</span>':"";
+      return '<article class="player-card"><div class="player-title"><div><strong>'+safe(p.name)+'</strong><small>'+safe(platformLabel)+'</small></div><div class="player-actions"><button type="button" data-refresh-player="'+safe(key)+'" '+(loading?'disabled':'')+'>'+(loading?'LÄDT…':'↻ LADEN')+'</button><button type="button" class="remove-player" data-remove-player="'+safe(key)+'" aria-label="Spieler entfernen">×</button></div></div><div class="player-metrics">'+vals.map(([label,value])=>'<div class="player-metric"><small>'+label+'</small><b>'+safe(value===null||value===undefined?"–":value)+(label==="K/D"?arrow:"")+'</b></div>').join("")+'</div><p class="player-status">'+safe(loading?'API wird abgefragt…':d?.message||"Noch nicht abgerufen")+'</p></article>';
     }).join("");
     $("refresh-all").disabled=!state.players.length;
   }
@@ -391,6 +424,7 @@
         return null;
       }
       recordSnapshot(p,rapid.parsed.stats,rapid);
+      updateKdTrend(p,rapid.parsed.stats);
       const suffix=rapid.seasonal?" · nur Saisonwerte":"";
       const fallback=usedPlatform!==p.platform?" · über "+(usedPlatform==="ea"?"EA/PC":usedPlatform.toUpperCase())+" gefunden":"";
       playerData.set(key,{stats:rapid.parsed.stats,message:rapid.modeTitle+suffix+fallback+" · GameTools.Network · "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})});
