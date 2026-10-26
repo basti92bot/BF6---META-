@@ -218,20 +218,53 @@
     return kills!==null&&deaths!==null&&deaths>0?
       Math.round(kills/deaths*100)/100:null;
   }
+  function kdFromSnapshot(point){
+    const kills=point?.values?.kills,deaths=point?.values?.deaths;
+    if(!Number.isSafeInteger(kills)||!Number.isSafeInteger(deaths)||
+       kills<0||deaths<=0)return null;
+    return Math.round(kills/deaths*100)/100;
+  }
+  function kdTrendFromHistory(key,current){
+    if(current===null)return null;
+    const points=getPoints(key);
+    const latest=points.at(-1);
+    // Never compare a fresh API result with a different/stale history value.
+    if(!latest||kdFromSnapshot(latest)!==current)return null;
+    // Prior *different* displayed K/D within the SAME Rapid-Royale series.
+    // This survives page reloads and works on other devices using server history.
+    for(let i=points.length-2;i>=0;i--){
+      const point=points[i];
+      if(point.series!==latest.series)continue;
+      const previous=kdFromSnapshot(point);
+      if(previous===null||previous===current)continue;
+      // Resets or incomparable counters must not create a false trend.
+      if(point.values.kills>latest.values.kills||
+         point.values.deaths>latest.values.deaths)return null;
+      return current>previous?"up":"down";
+    }
+    return null;
+  }
   function updateKdTrend(player,stats){
     const current=kdValue(stats);
     if(current===null)return;
     const key=playerKey(player);
     const prior=state.kdTrends[key];
+    const fromHistory=kdTrendFromHistory(key,current);
     if(!prior||!Number.isFinite(prior.current)){
-      state.kdTrends[key]={current,previous:null,direction:null,at:Date.now()};
+      // Import an older real API measurement instead of starting neutral.
+      state.kdTrends[key]={current,previous:null,direction:fromHistory,at:Date.now()};
       save();return;
     }
-    // Only an actual displayed 0.01 change flips the arrow. Unchanged polls
-    // retain the last direction instead of hiding it two minutes later.
-    if(prior.current===current)return;
+    if(prior.current===current){
+      // Repair earlier neutral initialization once stored data becomes available.
+      if(!prior.direction&&fromHistory){
+        state.kdTrends[key]={...prior,direction:fromHistory};
+        save();
+      }
+      return;
+    }
     state.kdTrends[key]={current,previous:prior.current,
-      direction:current>prior.current?"up":"down",at:Date.now()};
+      direction:fromHistory||(current>prior.current?"up":"down"),at:Date.now()};
     save();
   }
   function diffCounts(now,then,key){
@@ -381,8 +414,11 @@
       const platformLabel=key==="ea:strausbrot"?"XBOX · EA-ID":PLATFORMS[p.platform];
       const trend=state.kdTrends[key];
       const shownKd=kdValue(stats);
+      // Prefer observed historical changes over device-only trend state.
+      // In particular, a neutral first-run state must NOT hide existing history.
+      const historical=kdTrendFromHistory(key,shownKd);
       const sameKd=shownKd!==null&&trend&&shownKd===trend.current;
-      const direction=sameKd?trend.direction:null;
+      const direction=historical||(sameKd?trend.direction:null);
       const arrow=direction==="up"?
         '<span class="kd-trend up" role="img" aria-label="K/D gestiegen" title="K/D gestiegen"></span>':
         direction==="down"?
