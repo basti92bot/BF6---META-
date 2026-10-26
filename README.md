@@ -1,6 +1,10 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **2.0.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **2.0.1**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Reparatur des Tagesfensters (V2.0.1)
+
+Fehler in V2.0.0: `periodStats` nahm `Date.now() - 24 Stunden` als Zielzeitpunkt, verlangte aber zusätzlich, dass der letzte API-Messstand höchstens vier Stunden alt sein durfte. Bei GitHub-Action-Pausen (beispielsweise 25.10. 06:22 UTC bis 26.10. 06:40 UTC) scheiterte deshalb selbst ein sehr gut passender 24-Stunden-Vergleich. Nun werden Zielzeitpunkt und Vergleich ausschließlich relativ zum zuletzt wirklich gespeicherten Messstand berechnet. Innerhalb einer Toleranz von 6 Stunden wird der zeitlich nächste passende Messstand derselben Serie genutzt. Der wirkliche Zeitbereich und seine Länge werden sichtbar angegeben, ebenso ein Warnhinweis, wenn der jüngste API-Abruf bereits älter als drei Stunden ist. Die Statistik besteht weiterhin nur aus echten Zählerdifferenzen, ohne erfundene oder nachträglich interpolierte Werte. Für 7 Tage bleiben historische Vergleichsmessungen erforderlich.
 
 ## Zwei-Runden-Livevergleich (V2.0.0)
 
