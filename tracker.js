@@ -29,7 +29,13 @@
     const n=Number(s.replace(/\./g,""));
     return Number.isSafeInteger(n)&&n>=0?n:null;
   };
-  const playerKey = p => p.platform+":"+p.name.toLowerCase();
+  // Strausbrot on Xbox and Strausbrot looked up through EA/PC are the
+  // same confirmed account. Keep EA as its history/selection key.
+  const playerKey = p => {
+    const name=p.name.trim().toLowerCase();
+    const platform=name==="strausbrot"&&p.platform==="xbox"?"ea":p.platform;
+    return platform+":"+name;
+  };
   const loadState = () => {
     let data={};
     try{data=JSON.parse(localStorage.getItem(KEY))||{}}catch{}
@@ -37,7 +43,10 @@
     const players=Array.isArray(data.players)?data.players
       .filter(p=>typeof p?.name==="string"&&p.name.trim()&&PLATFORMS[p.platform])
       .filter(p=>!firstCleanup||!RETIRED_DEFAULT_NAMES.has(p.name.trim().toLowerCase()))
-      .slice(0,16).map(p=>({name:p.name,platform:p.platform})):[];
+      .map(p=>({name:p.name.trim(),platform:p.platform}))
+      // Deduplicate Xbox and EA lookup of the same confirmed account.
+      .filter((p,i,list)=>list.findIndex(other=>playerKey(other)===playerKey(p))===i)
+      .slice(0,16):[];
     const snapshots={};
     if(data.snapshots&&typeof data.snapshots==="object"&&!Array.isArray(data.snapshots)){
       for(const p of players){
@@ -56,12 +65,16 @@
     }
     // Keep old manual records and statistical snapshots untouched.
     const previous=typeof data.trackedPlayer==="string"?data.trackedPlayer:"";
-    const trackedPlayer=players.some(p=>playerKey(p)===previous)?previous:"";
+    const canonicalSelected=previous.toLowerCase()==="xbox:strausbrot"?"ea:strausbrot":previous;
+    const trackedPlayer=players.some(p=>playerKey(p)===canonicalSelected)?canonicalSelected:"";
     return {...data,players,trackedPlayer,snapshots,defaultBotsClearedV19:true};
   };
   const state=loadState();
   if(!state.roundTests||typeof state.roundTests!=="object"||Array.isArray(state.roundTests))
     state.roundTests={};
+  // Recover unfinished two-round tests created under the old Xbox key.
+  if(state.roundTests["xbox:strausbrot"]&&!state.roundTests["ea:strausbrot"])
+    state.roundTests["ea:strausbrot"]=state.roundTests["xbox:strausbrot"];
   const playerData=new Map();
   const pending=new Set();
   let serverHistory={schemaVersion:1,players:{}};
@@ -70,7 +83,9 @@
     // an older hourly server snapshot exists. All counters are actual API reads.
     const remote=serverHistory.players?.[key]?.points||[];
     const local=state.snapshots[key]||[];
-    return [...remote,...local]
+    // Keep pre-migration Xbox snapshots available for the canonical EA key.
+    const legacy=key==="ea:strausbrot"?(state.snapshots["xbox:strausbrot"]||[]):[];
+    return [...remote,...local,...legacy]
       .filter(p=>Number.isFinite(p?.ts)&&p.ts>0&&p.ts<=Date.now()+60000&&
         p?.values&&Number.isSafeInteger(p.values.wins)&&
         Number.isSafeInteger(p.values.losses))
@@ -341,7 +356,7 @@
     const current=activePlayer(),key=current?playerKey(current):"";
     if(state.trackedPlayer!==key){state.trackedPlayer=key;save();}
     const select=$("tracked-player");
-    select.innerHTML=current?state.players.map(p=>'<option value="'+safe(playerKey(p))+'">'+safe(p.name)+' · '+safe(PLATFORMS[p.platform])+'</option>').join(""):'<option value="">EA-ID hinzufügen</option>';
+    select.innerHTML=current?state.players.map(p=>'<option value="'+safe(playerKey(p))+'">'+safe(p.name)+' · '+safe(playerKey(p)==="ea:strausbrot"?"XBOX · EA-ID":PLATFORMS[p.platform])+'</option>').join(""):'<option value="">EA-ID hinzufügen</option>';
     select.value=key;
     select.disabled=!current;
     $("refresh-tracked").disabled=!current||pending.has(key);
@@ -377,7 +392,8 @@
           ?fmt(100*saved.wins/(saved.wins+saved.losses))+"%":null
       };
       const vals=[["K/D",stats.kd],["KILLS",stats.kills],["DEATHS",stats.deaths],["WINS",stats.wins],["LOSSES",stats.losses],["WINRATE",stats.winrate],["ACCURACY",stats.accuracy],["REVIVES",stats.revives],["ASSISTS",stats.assists]];
-      return '<article class="player-card"><div class="player-title"><div><strong>'+safe(p.name)+'</strong><small>'+safe(PLATFORMS[p.platform])+'</small></div><div class="player-actions"><button type="button" data-refresh-player="'+safe(key)+'" '+(loading?'disabled':'')+'>'+(loading?'LÄDT…':'↻ LADEN')+'</button><button type="button" class="remove-player" data-remove-player="'+safe(key)+'" aria-label="Spieler entfernen">×</button></div></div><div class="player-metrics">'+vals.map(([label,value])=>'<div class="player-metric"><small>'+label+'</small><b>'+safe(value===null||value===undefined?"–":value)+'</b></div>').join("")+'</div><p class="player-status">'+safe(loading?'API wird abgefragt…':d?.message||"Noch nicht abgerufen")+'</p></article>';
+      const platformLabel=key==="ea:strausbrot"?"XBOX · EA-ID":PLATFORMS[p.platform];
+      return '<article class="player-card"><div class="player-title"><div><strong>'+safe(p.name)+'</strong><small>'+safe(platformLabel)+'</small></div><div class="player-actions"><button type="button" data-refresh-player="'+safe(key)+'" '+(loading?'disabled':'')+'>'+(loading?'LÄDT…':'↻ LADEN')+'</button><button type="button" class="remove-player" data-remove-player="'+safe(key)+'" aria-label="Spieler entfernen">×</button></div></div><div class="player-metrics">'+vals.map(([label,value])=>'<div class="player-metric"><small>'+label+'</small><b>'+safe(value===null||value===undefined?"–":value)+'</b></div>').join("")+'</div><p class="player-status">'+safe(loading?'API wird abgefragt…':d?.message||"Noch nicht abgerufen")+'</p></article>';
     }).join("");
     $("refresh-all").disabled=!state.players.length;
   }
@@ -443,7 +459,7 @@
     const name=$("player-name").value.trim(),platform=$("player-platform").value;
     if(!name||!PLATFORMS[platform])return;
     const p={name,platform},key=playerKey(p);
-    if(state.players.some(x=>playerKey(x)===key)){$("api-feedback").textContent="Spieler bereits gespeichert.";return;}
+    if(state.players.some(x=>playerKey(x)===key)){$("api-feedback").textContent="Spieler bereits vorhanden – Xbox und EA/PC sind für diese EA-ID dasselbe Konto.";return;}
     if(state.players.length>=16){$("api-feedback").textContent="Maximal 16 Spieler möglich.";return;}
     state.players.push(p);
     if(!state.trackedPlayer)state.trackedPlayer=key;
