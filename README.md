@@ -1,6 +1,12 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **2.3.1**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **2.3.2**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## K/D-Pfeile aus gespeicherten API-Verlaufsdaten (V2.3.2)
+
+Die K/D-Pfeile fehlten bisher bei vielen Spielern, obwohl sich die Gesamt-K/D nachweislich verändert hatte: Die neue lokale Trendlogik begann beim ersten Abruf mit `direction=null` und benutzte ältere gespeicherte API-Messwerte nicht. Jetzt wird die aktuelle, auf zwei Nachkommastellen angezeigte Gesamt-K/D mit dem **letzten abweichenden K/D-Wert aus früheren Rapid-Royale-Snapshots** verglichen. Zentrale und lokale Historien werden gemeinsam verwendet; damit funktionieren die Pfeile direkt beim Öffnen und auch auf einem anderen Gerät, sofern die entsprechenden Messungen auf dem Server vorhanden sind. Nur dieselbe Statistikserie wird verglichen; nicht vergleichbare bzw. zurückgesetzte Zähler werden ignoriert.
+
+Die bisherige gerätebezogene Speicherung dient als Fallback. Alte neutrale Trendzustände werden bei passender Historie automatisch repariert. Unveränderte Abrufe löschen die Richtung nicht. Wenn keine validen historischen Werte vorhanden sind, erscheint kein Pfeil – statt einer erfundenen Richtung. Die CSS-Dreiecke aus Version 2.3.1 bleiben ausgefüllt: Grün zeigt nach oben, Rot nach unten.
 
 ## Ausgefüllte K/D-Richtungsdreiecke (V2.3.1)
 
