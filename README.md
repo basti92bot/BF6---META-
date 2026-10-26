@@ -1,6 +1,12 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **2.0.1**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **2.0.2**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Drei aktive Spieler zentral erfasst (V2.0.2)
+
+Die stündliche GameTools-Rapid-Royale-Aufzeichnung umfasst genau die drei anhand der Screenshots erfolgreich geladenen Spieler: **Strausbrot** (Plattformcode `ea`, in der App EA/PC), **RockmasterR** (`ea`) und **Pathogeno** (`psn`, mit bereits implementiertem EA/PC-Fallback bei HTTP 404). Die zentrale Liste in `data/rapid-players.json` ist in dieser Reihenfolge gespeichert. Beim nächsten Öffnen der Webseite werden diese Spieler ohne erneute manuelle Eingabe auf dem Gerät hinzugefügt; bestehende lokale Messstände werden nicht gelöscht.
+
+Im gezeigten Screenshot hatte Strausbrot 35 Wins/124 Losses/562 Kills, RockmasterR 36 Wins/121 Losses/1328 Kills und Pathogeno 15 Wins/30 Losses/198 Kills. Diese Werte werden nicht als historische Servermessungen importiert, weil der Screenshot allein keinen rückverfolgbaren API-Zeitstempel liefert. Die serverseitige Historie wird nur durch tatsächliche automatisierte API-Abrufe fortgeschrieben. Das bisherige RockmasterR-Archiv bleibt unverändert; für Strausbrot und Pathogeno beginnt die Serverhistorie mit dem ersten erfolgreichen stündlichen Lauf.
 
 ## Reparatur des Tagesfensters (V2.0.1)
 
