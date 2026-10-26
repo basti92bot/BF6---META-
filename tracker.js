@@ -199,10 +199,14 @@
   function periodStats(key,days,maxGap){
     const points=getPoints(key);
     const last=points[points.length-1];
-    if(!last||Date.now()-last.ts>4*3600000)return null;
-    const target=Date.now()-days*86400000;
-    const earlier=points.filter(p=>p.ts<=target&&target-p.ts<=maxGap&&
-      (p.series??"local")===(last.series??"local")).at(-1);
+    if(!last)return null;
+    // Compare relative to the last actual sample, NOT Date.now().
+    // GameTools / GitHub may have gaps of several hours between snapshots.
+    const target=last.ts-days*86400000;
+    const earlier=points.filter(p=>p.ts<last.ts&&
+      Math.abs(p.ts-target)<=maxGap&&
+      (p.series??"local")===(last.series??"local"))
+      .sort((a,b)=>Math.abs(a.ts-target)-Math.abs(b.ts-target))[0];
     if(!earlier)return null;
     const wins=diffCounts(last,earlier,"wins"),losses=diffCounts(last,earlier,"losses");
     const kills=diffCounts(last,earlier,"kills"),deaths=diffCounts(last,earlier,"deaths");
@@ -217,21 +221,26 @@
     }
     $(prefix+"-winrate").textContent=data?.winrate===null||data?.winrate===undefined?"–":fmt(data.winrate)+"%";
     $(prefix+"-kd").textContent=data?.kd===null||data?.kd===undefined?"–":fmt(data.kd);
-    $(prefix+"-window").textContent=data?"Vergleich ab "+dateTime(data.from):"Noch keine passenden Vergleichsdaten";
+    const hours=data?(data.to-data.from)/3600000:null;
+    $(prefix+"-window").textContent=data?"Gemessen "+dateTime(data.from)+" – "+dateTime(data.to)+
+      " (ca. "+fmt(hours)+" Std.)":"Noch keine passenden Vergleichsdaten";
   }
   function renderPeriods(){
     const current=activePlayer();
     const key=current?playerKey(current):"";
-    const day=key?periodStats(key,1,3*3600000):null;
+    const day=key?periodStats(key,1,6*3600000):null;
     const week=key?periodStats(key,7,18*3600000):null;
     drawPeriod("day",day);drawPeriod("week",week);
     const points=getPoints(key);
     const remote=!!serverHistory.players?.[key]?.points?.length;
+    const last=points.at(-1);
+    const delayed=last&&Date.now()-last.ts>3*3600000;
     $("period-note").textContent=!current?"Zuerst unter EA-IDs einen Spieler hinzufügen."
       :!points.length?"Noch kein erfolgreicher API-Messstand. Der stündliche Serverabruf ist vorbereitet."
       :(remote?"Gemeinsamer stündlicher Verlauf":"Lokaler Verlauf")+" seit "+dateTime(points[0].ts)+
-        ". Zuletzt erfasst: "+dateTime(points.at(-1).ts)+
-        ". Die Auswertung vergleicht näherungsweise 24 Stunden bzw. 7 Tage. Fehlt ein Vergleichswert, bleibt das Feld leer.";
+        ". Letzter erfolgreicher Abruf: "+dateTime(last.ts)+
+        (delayed?" (älter als 3 Stunden; die neuesten Runden fehlen möglicherweise).":"")+
+        " Berechnet wird immer vom letzten echten Messstand aus. Sind nicht genug Vergleichspunkte vorhanden, bleiben die Felder leer.";
   }
 
   function testDiff(start,end){
