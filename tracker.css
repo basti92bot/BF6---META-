@@ -74,7 +74,15 @@
 @media(max-width:560px){.add-player-panel{margin-top:18px}}
 
 
-/* v2.3.0: subtle K/D trend indicator in the always-open details */
-.player-metric b .kd-trend{display:inline-block;margin-left:5px;font-size:13px;line-height:1;vertical-align:2px;white-space:nowrap}
-.player-metric b .kd-trend.up{color:#8be994}
-.player-metric b .kd-trend.down{color:#ff7474}
+/* v2.3.1: solid, directionally correct K/D triangles independent of fonts */
+.player-metric b .kd-trend{
+  display:inline-block;
+  width:0;
+  height:0;
+  border-left:6px solid transparent;
+  border-right:6px solid transparent;
+  margin-left:7px;
+  vertical-align:3px;
+}
+.player-metric b .kd-trend.up{border-bottom:11px solid #8be994}
+.player-metric b .kd-trend.down{border-top:11px solid #ff7474}
