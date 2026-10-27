@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastSuccessAt": "2026-10-26T20:38:20.906Z",
+  "lastSuccessAt": "2026-10-27T19:29:53.311Z",
   "players": {
     "ea:rockmasterr": {
       "name": "RockmasterR",
@@ -115,9 +115,21 @@
             "assists": 413,
             "revives": 111
           }
+        },
+        {
+          "ts": 1793129393311,
+          "series": "rapid-royale|",
+          "values": {
+            "wins": 38,
+            "losses": 129,
+            "kills": 1435,
+            "deaths": 463,
+            "assists": 418,
+            "revives": 113
+          }
         }
       ],
-      "lastSuccessAt": "2026-10-26T20:38:18.574Z"
+      "lastSuccessAt": "2026-10-27T19:29:53.311Z"
     },
     "ea:strausbrot": {
       "name": "Strausbrot",
