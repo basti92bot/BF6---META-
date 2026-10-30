@@ -25,7 +25,7 @@
     return null;
   };
   const fmt = n => n===null?"–":Number(n).toLocaleString("de-DE",{maximumFractionDigits:2});
-  const dateTime = t => new Date(t).toLocaleString("de-DE",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+  const dateTime = t => new Date(t).toLocaleString("de-DE",{timeZone:"Europe/Berlin",day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
   const countFrom = value => {
     if(value===null||value===undefined)return null;
     const s=String(value).trim();
@@ -274,50 +274,76 @@
   function periodWindow(days,now){
     return days===1?dailyWindow(now):{start:now-days*DAY_MS,end:now};
   }
+  const BASELINE_TOLERANCE_MS=6*60*60*1000;
+  const STALE_MS=3*60*60*1000;
   function periodStats(key,days,now=Date.now()){
-    // The gaming day is 07:00 to 07:00, identical for every player.
-    // Never use a baseline from a previous day to fill gaps.
+    // Use a recent measurement before the reset where possible, so results
+    // between 07:00 and the first late morning snapshot are not dropped.
     const window=periodWindow(days,now);
-    const windowStart=window.start;
-    const points=getPoints(key).filter(p=>p.ts>=windowStart&&p.ts<=Math.min(now,window.end));
-    const latest=points.at(-1);
+    const points=getPoints(key).filter(p=>p.ts<=now);
+    const inWindow=points.filter(p=>p.ts>=window.start&&p.ts<=Math.min(now,window.end));
+    const latest=inWindow.at(-1);
     if(!latest)return null;
-    const sameMode=points.filter(p=>p.series===latest.series);
-    if(sameMode.length<2)return null;
-    const first=sameMode[0];
-    if(first.ts>=latest.ts)return null;
-    const wins=diffCounts(latest,first,"wins"),losses=diffCounts(latest,first,"losses");
-    const kills=diffCounts(latest,first,"kills"),deaths=diffCounts(latest,first,"deaths");
+    const matching=inWindow.filter(p=>p.series===latest.series);
+    const before=points.filter(p=>p.ts<window.start&&
+      p.series===latest.series&&window.start-p.ts<=BASELINE_TOLERANCE_MS).at(-1);
+    const baseline=before||matching[0];
+    if(!baseline||baseline.ts>=latest.ts)return null;
+    const wins=diffCounts(latest,baseline,"wins"),losses=diffCounts(latest,baseline,"losses");
+    const kills=diffCounts(latest,baseline,"kills"),deaths=diffCounts(latest,baseline,"deaths");
     if([wins,losses,kills,deaths].every(x=>x===null))return null;
     const matches=wins!==null&&losses!==null?wins+losses:null;
     const winrate=matches&&matches>0?100*wins/matches:null;
     const kd=kills!==null&&deaths!==null?(deaths===0?(kills===0?null:kills):kills/deaths):null;
-    return {wins,losses,kills,deaths,winrate,kd,from:first.ts,to:latest.ts,
-      windowStart,windowEnd:now};
+    return {wins,losses,kills,deaths,winrate,kd,from:baseline.ts,to:latest.ts,
+      coverage:before?"approximate":"partial",
+      windowStart:window.start,windowEnd:window.end,
+      stale:now-latest.ts>STALE_MS};
   }
-  function drawPeriod(prefix,data,days,now){
-    for(const key of ["wins","losses","kills","deaths"])
-      $(prefix+"-"+key).textContent=data?.[key]==null?"–":data[key].toLocaleString("de-DE");
+  function unchangedSince(key){
+    const points=getPoints(key),latest=points.at(-1);
+    if(!latest)return null;
+    const fields=["wins","losses","kills","deaths"];
+    let from=latest.ts;
+    for(let i=points.length-2;i>=0;i--){
+      const p=points[i];
+      if(p.series!==latest.series)continue;
+      if(fields.some(k=>p.values[k]!==latest.values[k]))break;
+      from=p.ts;
+    }
+    return from;
+  }
+  function drawPeriod(prefix,data,days,now,key){
+    for(const metric of ["wins","losses","kills","deaths"])
+      $(prefix+"-"+metric).textContent=data?.[metric]==null?"–":data[metric].toLocaleString("de-DE");
     $(prefix+"-winrate").textContent=data?.winrate==null?"–":fmt(data.winrate)+"%";
     $(prefix+"-kd").textContent=data?.kd==null?"–":fmt(data.kd);
     const window=periodWindow(days,now);
     $(prefix+"-window").textContent=dateTime(window.start)+" – "+dateTime(window.end);
-    if(prefix==="day"){
-      const current=activePlayer();
-      const samples=getPoints(current?playerKey(current):"")
-        .filter(point=>point.ts>=window.start&&point.ts<=now);
-      const latest=samples.at(-1);
-      const valid=latest?samples.filter(point=>point.series===latest.series):[];
-      $("day-coverage").textContent=!latest?"Noch keine Messung seit 07:00":
-        !data?"Erst "+valid.length+" Messwert(e) seit 07:00":
-        now-latest.ts>3*3600000?"Letzter Messwert: "+dateTime(latest.ts):"";
-    }else $("week-coverage").textContent=data?"":"Noch keine Vergleichswerte";
+    const points=getPoints(key);
+    const latest=points.at(-1);
+    const lastInWindow=points.filter(p=>p.ts>=window.start&&p.ts<=now).at(-1);
+    const messages=[];
+    if(!lastInWindow)messages.push("Noch kein Messwert im Zeitraum");
+    else if(!data)messages.push("Noch keine vergleichbaren Messwerte");
+    else if(data.coverage==="approximate")
+      messages.push("≈ Startmessung "+dateTime(data.from)+" (vor Zeitfenster)");
+    else if(days===1&&data.from-window.start>2*60*60*1000)
+      messages.push("Teilzeitraum ab "+dateTime(data.from));
+    if(latest&&now-latest.ts>STALE_MS)
+      messages.push("VERALTET · Stand "+dateTime(latest.ts));
+    else if(latest&&days===1){
+      const since=unchangedSince(key);
+      if(since&&now-since>18*60*60*1000)
+        messages.push("API-Zähler unverändert seit "+dateTime(since));
+    }
+    $(prefix+"-coverage").textContent=messages.join(" · ");
   }
   function renderPeriods(){
     const current=activePlayer(),key=current?playerKey(current):"";
     const now=Date.now();
-    drawPeriod("day",key?periodStats(key,1,now):null,1,now);
-    drawPeriod("week",key?periodStats(key,7,now):null,7,now);
+    drawPeriod("day",key?periodStats(key,1,now):null,1,now,key);
+    drawPeriod("week",key?periodStats(key,7,now):null,7,now,key);
     $("period-player").textContent=current?current.name:"";
   }
 
@@ -382,7 +408,7 @@
       const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
       const request=platform=>{
         const query=new URLSearchParams({name:p.name,platform,format_values:"false",seperation:"true"});
-        return fetch("https://api.gametools.network/bf6/stats/?"+query.toString(),{signal:controller.signal,headers:{"Accept":"application/json"}});
+        return fetch("https://api.gametools.network/bf6/stats/?"+query.toString(),{cache:"no-store",signal:controller.signal,headers:{"Accept":"application/json"}});
       };
       let response,usedPlatform=p.platform;
       const fallbackPlatforms=p.platform==="xbox"?["ea"]:
