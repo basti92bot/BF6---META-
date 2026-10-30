@@ -1,6 +1,14 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **2.4.2**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **2.5.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Daily Ops und Weekly Ops: zuverlässigere Tagesbasis (V2.5.0)
+
+Die tägliche Messung ab 07:00 Uhr wurde bislang gegen den ersten API-Messpunkt nach 07:00 Uhr verglichen. Dadurch konnten Matches zwischen dem Reset und dem ersten verspäteten Collector-Run fehlen. Die App verwendet ab jetzt als Vergleichsbasis den letzten echten Messwert vor dem Beginn des Zeitfensters, sofern höchstens sechs Stunden entfernt und zur selben Rapid-Royale-Serie gehörend. Das ist wegen möglicher Runden vor dem Cutoff ausdrücklich eine **Näherung** und wird mit dem Zeitpunkt der Basismessung direkt unter den Werten markiert. Wo kein passender vorheriger Messpunkt existiert, bleibt es bei der als Teilzeitraum deklarierten Differenz. Keine Matches werden erfunden, keine anderen Spielmodi vermischt.
+
+Die UI signalisiert zusätzlich, wenn der aktuellste Messwert älter als drei Stunden ist, und zeigt bei länger konstanten Countern, seit wann die API-Werte unverändert sind. Dadurch sind Tagesnullen nicht mehr mit einer verlässlichen Aussage „nicht gespielt“ zu verwechseln. Die API-Abfrage verwendet `cache:"no-store"`. Datums- und Zeitangaben werden unabhängig von der Reise-/Gerätezeitzone konsequent in Europe/Berlin formatiert, passend zur 07:00-Grenze.
+
+Die stündliche GitHub-Actions-Erfassung wird durch zwei über den Stundenverlauf verteilte Cron-Termine und eine zusätzliche 07:07-Berlin-Ausführung verbessert. GitHub kann geplante Jobs weiterhin verzögern, und die GameTools-API kann ebenfalls hinterherhinken. Eine exakte 07:00-Messung und lückenlose Spielhistorie sind damit nicht garantiert.
 
 ## Squad-Stats-Header bereinigt (V2.4.2)
 
