@@ -5,7 +5,7 @@
   const PLATFORMS = {ea:"EA / PC",xbox:"XBOX",psn:"PLAYSTATION",steam:"STEAM"};
   // Remove only the obsolete BOT defaults. RockmasterR is deliberately retained.
   const FIXED_PLAYERS=[
-    {name:"Strausbrot",platform:"xbox"},
+    {name:"Strausbrot",platform:"ea"},
     {name:"RockmasterR",platform:"ea"},
     {name:"Pathogeno",platform:"psn"}
   ];
@@ -76,10 +76,14 @@
     // Keep both sources: a recent local API read must not disappear just because
     // an older hourly server snapshot exists. All counters are actual API reads.
     const remote=serverHistory.players?.[key]?.points||[];
-    const local=state.snapshots[key]||[];
-    // Keep pre-migration Xbox snapshots available for the canonical EA key.
-    const legacy=key==="ea:strausbrot"?(state.snapshots["xbox:strausbrot"]||[]):[];
-    return [...remote,...local,...legacy]
+    const local=key==="ea:strausbrot"
+      // Older app builds queried Strausbrot via Xbox but stored those counters
+      // under the EA key. They have no source marker and may differ from the
+      // server collector, which has always used EA for this profile.
+      ?(state.snapshots[key]||[]).filter(p=>p.fetchPlatform==="ea")
+      :(state.snapshots[key]||[]);
+    // Do not merge historic xbox:strausbrot counters into the EA series.
+    return [...remote,...local]
       .filter(p=>Number.isFinite(p?.ts)&&p.ts>0&&p.ts<=Date.now()+60000&&
         p?.values&&Number.isSafeInteger(p.values.wins)&&
         Number.isSafeInteger(p.values.losses))
@@ -168,9 +172,12 @@
     if(Object.values(values).every(v=>v===null))return null;
     return {ts:Date.now(),values};
   }
-  function recordSnapshot(player,stats,mode){
+  function recordSnapshot(player,stats,mode,fetchPlatform){
     const point=parseSnapshot(stats);
     if(!point)return;
+    // Track the source platform so old mixed-source measurements can be
+    // excluded without deleting a player's local saved history.
+    point.fetchPlatform=fetchPlatform;
     const label=mode?.modeTitle||"Rapid Royale";
     const normalized=label.toLowerCase().replace(/[\s_-]+/g,"-");
     const season=mode?.seasonal?"|season": "|";
@@ -178,7 +185,8 @@
     const key=playerKey(player),list=state.snapshots[key]||[];
     const last=list[list.length-1];
     // Limit stored points: at least every 15 minutes or when the counters change.
-    const changed=!last||Object.keys(point.values).some(k=>point.values[k]!==last.values[k]);
+    const changed=!last||last.fetchPlatform!==point.fetchPlatform||
+      Object.keys(point.values).some(k=>point.values[k]!==last.values[k]);
     if(changed||point.ts-(last?.ts||0)>=15*60*1000)list.push(point);
     const minTime=Date.now()-45*86400000;
     state.snapshots[key]=list.filter(x=>x.ts>=minTime).slice(-2500);
@@ -433,7 +441,7 @@
         $("api-feedback").textContent="Profil gefunden. Rapid-Royale-Daten fehlen in der API-Antwort.";
         return null;
       }
-      recordSnapshot(p,rapid.parsed.stats,rapid);
+      recordSnapshot(p,rapid.parsed.stats,rapid,usedPlatform);
       updateKdTrend(p,rapid.parsed.stats);
       playerData.set(key,{stats:rapid.parsed.stats,message:"Aktualisiert "+new Date().toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})});
       $("api-feedback").textContent="Aktualisiert";
