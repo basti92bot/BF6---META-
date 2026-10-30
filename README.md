@@ -1,6 +1,14 @@
 # BF6 META – Loadout Lab und WIN/LOST Tracker
 
-Aktuelle App-Version **2.5.0**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+Aktuelle App-Version **2.5.1**. Unabhängiges, kostenloses Battlefield-6/REDSEC-Fanprojekt.
+
+## Strausbrot: konsistente API-Abfrage und saubere Verlaufswerte (V2.5.1)
+
+Der Browser fragte Strausbrot bisher per `platform=xbox` ab, während der zentrale Sammler `platform=ea` nutzt. Alte lokale Xbox- und EA-Abfragen wurden ununterscheidbar unter dem selben Schlüssel `ea:strausbrot` gespeichert und bei Tages- und Wochenberechnung zusammen mit den Serverwerten verrechnet. Diese Mischung kann die persönliche Anzeige verfälschen.
+
+Strausbrot wird jetzt im Browser ebenfalls per EA-ID abgefragt, bleibt in der App als Xbox-Spieler beschriftet. Neue lokale Messpunkte speichern ihre tatsächliche API-Plattform (`fetchPlatform`). Für Strausbrot nutzt die Verlaufsauswertung nur Servermessungen und neue, eindeutig als EA markierte lokale Messungen. Alte nicht zuordenbare lokale Werte und der frühere `xbox:strausbrot`-Verlauf bleiben in localStorage erhalten, werden aber nicht mehr eingerechnet. Das betrifft nur Strausbrot. RockmasterR und Pathogeno werden nicht verändert.
+
+Der Abgleich beseitigt eine mögliche Datenvermischung, garantiert aber keine Korrektur zeitlich verzögert ankommender Gesamtzähler. Die API liefert weiterhin kumulierte Rapid-Royale-Werte und keine nachträglich exakten Matchzeitpunkte. Eine von der API gelieferte Summe darf nicht auf gut Glück anhand der Teamergebnisse korrigiert werden.
 
 ## Daily Ops und Weekly Ops: zuverlässigere Tagesbasis (V2.5.0)
 
