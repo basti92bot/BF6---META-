@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-06T15:09:27.402Z",
-  "lastSuccessAt": "2026-11-06T15:09:27.402Z",
+  "checkedAt": "2026-11-07T14:08:06.337Z",
+  "lastSuccessAt": "2026-11-07T14:08:06.337Z",
   "weaponDataChangedAt": "2026-10-18",
   "weaponDataSource": "https://github.com/bdeland/bf6_guns/blob/main/data.csv",
   "latestPatch": {
@@ -35,12 +35,12 @@
     {
       "name": "INT.GG Multiplayer Waffen",
       "url": "https://int.gg/bf6/weapons",
-      "ok": true
+      "ok": false
     },
     {
       "name": "INT.GG REDSEC Elite Waffen",
       "url": "https://int.gg/bf6/redsec/weapons",
-      "ok": true
+      "ok": false
     },
     {
       "name": "EA Rapid Royale Guide",
@@ -49,6 +49,9 @@
     }
   ],
   "changes": [],
-  "errors": [],
+  "errors": [
+    "INT.GG Multiplayer Waffen: HTTP 403",
+    "INT.GG REDSEC Elite Waffen: HTTP 403"
+  ],
   "modeSourceCheckOnly": "INT.GG Verfügbarkeit täglich geprüft. Pick-Rates bleiben manuell übernommene Momentaufnahmen; keine automatische Zahlensynchronisierung."
 }
