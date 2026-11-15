@@ -56,3 +56,21 @@ await assert.rejects(
   requestRapid({name:"outage",platform:"ea"},async()=>({status:503,ok:false})),
   error=>!(error instanceof PlayerUnavailableError)&&/HTTP 503/.test(error.message));
 console.log("Unavailable-player handling tests passed.");
+
+const pinned={name:"demo",platform:"psn",statsPlatform:"ea",playerid:"123",nucleus_id:"456"};
+const pinnedCalls=[];
+const pinnedResult=await requestRapid(pinned,async url=>{
+  pinnedCalls.push(new URL(url));
+  return {ok:true,status:200,json:async()=>({id:"123",userId:"456",modes:{"Rapid Royale":{wins:4,losses:8}}})};
+});
+assert.equal(pinnedResult.values.wins,4);
+assert.equal(pinnedCalls.length,1);
+assert.equal(pinnedCalls[0].searchParams.get("playerid"),"123");
+assert.equal(pinnedCalls[0].searchParams.get("nucleus_id"),"456");
+assert.equal(pinnedCalls[0].searchParams.get("platform"),"ea");
+assert.equal(pinnedCalls[0].searchParams.has("name"),false);
+assert.equal(keyFor(pinned),"psn:demo");
+await assert.rejects(requestRapid(pinned,async()=>({
+  ok:true,status:200,json:async()=>({id:"999",userId:"456",modes:{"Rapid Royale":{wins:4,losses:8}}})
+})),/abweichende Spieler-ID/);
+console.log("Pinned identity tests passed.");

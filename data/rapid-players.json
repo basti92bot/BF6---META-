@@ -4,17 +4,26 @@
     {
       "name": "Strausbrot",
       "platform": "ea",
-      "enabled": true
+      "enabled": true,
+      "playerid": "1009347010676",
+      "nucleus_id": "1020588410676",
+      "statsPlatform": "ea"
     },
     {
       "name": "RockmasterR",
       "platform": "ea",
-      "enabled": true
+      "enabled": true,
+      "playerid": "809653737",
+      "nucleus_id": "2334082316",
+      "statsPlatform": "ea"
     },
     {
       "name": "Pathogeno",
       "platform": "psn",
-      "enabled": true
+      "enabled": true,
+      "playerid": "1006255010041",
+      "nucleus_id": "1013402210041",
+      "statsPlatform": "ea"
     }
   ]
 }

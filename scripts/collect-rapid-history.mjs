@@ -106,12 +106,16 @@ export function reportUnavailable(names){
 }
 export async function requestRapid(player,transport=fetch){
   const tryPlatform=async platform=>{
-    const qs=new URLSearchParams({name:player.name,platform,format_values:"false",seperation:"true"});
+    const qs=new URLSearchParams({platform,format_values:"false",seperation:"true"});
+    if(player.playerid&&player.nucleus_id){
+      qs.set("playerid",player.playerid);
+      qs.set("nucleus_id",player.nucleus_id);
+    }else qs.set("name",player.name);
     const url="https://api.gametools.network/bf6/stats/?"+qs.toString();
     return transport(url,{headers:{Accept:"application/json"},signal:AbortSignal.timeout(25000)});
   };
-  let reply=await tryPlatform(player.platform);
-  const fallbacks=player.platform==="xbox"?["ea"]:
+  let reply=await tryPlatform(player.statsPlatform||player.platform);
+  const fallbacks=player.playerid&&player.nucleus_id?[]:player.platform==="xbox"?["ea"]:
     player.platform==="psn"?["ea","ps5","ps4"]:[];
   for(const platform of fallbacks){
     if(reply.status!==404)break;
@@ -126,6 +130,9 @@ export async function requestRapid(player,transport=fetch){
   if(!reply.ok)throw new Error("HTTP "+reply.status+
     (player.platform==="psn"?" (PlayStation/EA-Namen prüfen)":""));
   const json=await reply.json();
+  if(player.playerid&&player.nucleus_id&&
+    (String(json.id)!==String(player.playerid)||String(json.userId)!==String(player.nucleus_id)))
+    throw new Error("API lieferte eine abweichende Spieler-ID");
   const rapid=findRapidStats(json);
   if(!rapid)throw new Error("Keine eindeutig getrennten Rapid-Royale-Zähler");
   return rapid;

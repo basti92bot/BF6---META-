@@ -5,10 +5,28 @@
   const PLATFORMS = {ea:"EA / PC",xbox:"XBOX",psn:"PLAYSTATION",steam:"STEAM"};
   // Remove only the obsolete BOT defaults. RockmasterR is deliberately retained.
   const FIXED_PLAYERS=[
-    {name:"Strausbrot",platform:"ea"},
-    {name:"RockmasterR",platform:"ea"},
-    {name:"Pathogeno",platform:"psn"}
-  ];
+  {
+    "name": "Strausbrot",
+    "platform": "ea",
+    "playerid": "1009347010676",
+    "nucleus_id": "1020588410676",
+    "statsPlatform": "ea"
+  },
+  {
+    "name": "RockmasterR",
+    "platform": "ea",
+    "playerid": "809653737",
+    "nucleus_id": "2334082316",
+    "statsPlatform": "ea"
+  },
+  {
+    "name": "Pathogeno",
+    "platform": "psn",
+    "playerid": "1006255010041",
+    "nucleus_id": "1013402210041",
+    "statsPlatform": "ea"
+  }
+];
   const safe = value => String(value ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const num = value => {
     if(value===null||value===undefined||String(value).trim()==="")return null;
@@ -415,14 +433,18 @@
     try{
       const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),20000);
       const request=platform=>{
-        const query=new URLSearchParams({name:p.name,platform,format_values:"false",seperation:"true"});
+        const query=new URLSearchParams({platform,format_values:"false",seperation:"true"});
+        if(p.playerid&&p.nucleus_id){
+          query.set("playerid",p.playerid);
+          query.set("nucleus_id",p.nucleus_id);
+        }else query.set("name",p.name);
         return fetch("https://api.gametools.network/bf6/stats/?"+query.toString(),{cache:"no-store",signal:controller.signal,headers:{"Accept":"application/json"}});
       };
-      let response,usedPlatform=p.platform;
-      const fallbackPlatforms=p.platform==="xbox"?["ea"]:
+      let response,usedPlatform=p.statsPlatform||p.platform;
+      const fallbackPlatforms=p.playerid&&p.nucleus_id?[]:p.platform==="xbox"?["ea"]:
         p.platform==="psn"?["ea","ps5","ps4"]:[];
       try{
-        response=await request(p.platform);
+        response=await request(usedPlatform);
         for(const platform of fallbackPlatforms){
           if(response.status!==404)break;
           response=await request(platform);
@@ -435,6 +457,9 @@
           :"Prüfe die exakte EA-ID.")),{status:404});
       if(!response.ok)throw Object.assign(new Error("GameTools antwortet mit HTTP "+response.status),{status:response.status});
       const json=await response.json();
+      if(p.playerid&&p.nucleus_id&&
+        (String(json.id)!==String(p.playerid)||String(json.userId)!==String(p.nucleus_id)))
+        throw new Error("API lieferte eine abweichende Spieler-ID");
       const rapid=findRapidMode(json);
       if(!rapid){
         playerData.set(key,{stats:{},message:"Spieler gefunden, keine getrennten Rapid-Royale-Daten verfügbar. Keine Gesamtstatistiken angezeigt."});
