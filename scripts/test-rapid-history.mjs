@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {findRapidStats,addPoint,asCount,requestRapid,keyFor} from "./collect-rapid-history.mjs";
+import {findRapidStats,addPoint,asCount,requestRapid,keyFor,PlayerUnavailableError} from "./collect-rapid-history.mjs";
 assert.equal(asCount("1.206"),1206);
 assert.equal(asCount("21,38%"),null);
 const result=findRapidStats({
@@ -43,3 +43,16 @@ const directSuccess=async url=>{
 await requestRapid({name:"directPSN",platform:"psn"},directSuccess);
 assert.equal(noFallbackCalls.length,1);
 console.log("Collector tests passed.");
+
+await assert.rejects(
+  requestRapid({name:"missing",platform:"ea"},async()=>({
+    status:404,ok:false,json:async()=>({errors:["Player not found"]})
+  })),PlayerUnavailableError);
+await assert.rejects(
+  requestRapid({name:"broken",platform:"ea"},async()=>({
+    status:404,ok:false,json:async()=>({detail:"Not Found"})
+  })),error=>!(error instanceof PlayerUnavailableError)&&/HTTP 404/.test(error.message));
+await assert.rejects(
+  requestRapid({name:"outage",platform:"ea"},async()=>({status:503,ok:false})),
+  error=>!(error instanceof PlayerUnavailableError)&&/HTTP 503/.test(error.message));
+console.log("Unavailable-player handling tests passed.");

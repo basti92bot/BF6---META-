@@ -1,6 +1,6 @@
 // Battlefield 6 Rapid Royale server-side hourly snapshots.
 // Only writes confirmed game-mode counters; never invents older matches.
-import {readFileSync, writeFileSync} from "node:fs";
+import {appendFileSync, readFileSync, writeFileSync} from "node:fs";
 import {resolve} from "node:path";
 import {pathToFileURL} from "node:url";
 
@@ -97,6 +97,13 @@ export function addPoint(history,player,sample,now=Date.now()){
   history.schemaVersion=1;
   return history;
 }
+export class PlayerUnavailableError extends Error {}
+export function reportUnavailable(names){
+  const message="Keine neuen Daten für "+names.join(", ")+": API meldet Player not found. Vorhandene Historie bleibt unverändert; der nächste geplante Lauf versucht es erneut.";
+  console.warn(message);
+  if(process.env.GITHUB_STEP_SUMMARY)
+    appendFileSync(process.env.GITHUB_STEP_SUMMARY,"\n### Statistikabruf unvollständig\n\n"+message+"\n");
+}
 export async function requestRapid(player,transport=fetch){
   const tryPlatform=async platform=>{
     const qs=new URLSearchParams({name:player.name,platform,format_values:"false",seperation:"true"});
@@ -109,6 +116,12 @@ export async function requestRapid(player,transport=fetch){
   for(const platform of fallbacks){
     if(reply.status!==404)break;
     reply=await tryPlatform(platform);
+  }
+  if(reply.status===404){
+    const body=await reply.json().catch(()=>null);
+    if(Array.isArray(body?.errors)&&body.errors.includes("Player not found")){
+      throw new PlayerUnavailableError(player.name+": Player not found");
+    }
   }
   if(!reply.ok)throw new Error("HTTP "+reply.status+
     (player.platform==="psn"?" (PlayStation/EA-Namen prüfen)":""));
@@ -129,6 +142,7 @@ async function main(){
     return;
   }
   let succeeded=0;
+  const unavailable=[];
   for(const player of enabledPlayers){
     if(player.enabled===false)continue;
     if(!player.name||!["ea","xbox","psn","steam","epic"].includes(player.platform))continue;
@@ -137,8 +151,13 @@ async function main(){
       addPoint(history,player,result);
       succeeded++;
       console.log(player.name+": "+result.modeLabel+" W "+result.values.wins+" / L "+result.values.losses);
-    }catch(err){console.error(player.name+": "+err.message);}
+    }catch(err){
+      console.error(player.name+": "+err.message);
+      if(err instanceof PlayerUnavailableError)unavailable.push(player.name);
+    }
   }
+  if(unavailable.length)reportUnavailable(unavailable);
+  if(!succeeded&&unavailable.length===enabledPlayers.length)return;
   if(!succeeded)throw new Error("Kein Spieler lieferte valide Rapid-Royale-Daten. Historie bleibt unverändert.");
   writeFileSync(file,JSON.stringify(history,null,2)+"\n");
   console.log("Erfolgreiche Spieler: "+succeeded);
