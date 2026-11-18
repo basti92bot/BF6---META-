@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-11-17T16:56:35.728Z",
-  "lastSuccessAt": "2026-11-17T16:56:35.728Z",
+  "checkedAt": "2026-11-18T16:31:32.524Z",
+  "lastSuccessAt": "2026-11-18T16:31:32.524Z",
   "weaponDataChangedAt": "2026-10-18",
   "weaponDataSource": "https://github.com/bdeland/bf6_guns/blob/main/data.csv",
   "latestPatch": {
@@ -25,7 +25,7 @@
     {
       "name": "Meta-Guide Season 5",
       "url": "https://worstguidesever.com/battlefield-6-siege-of-vegas-tier-list/",
-      "ok": true
+      "ok": false
     },
     {
       "name": "Build-Guide BF Tactics",
@@ -52,6 +52,7 @@
     "Neues EA-Spielupdate entdeckt: 2.1.1.0 → 2.1.2.0 (2026-11-10)."
   ],
   "errors": [
+    "Meta-Guide Season 5: Seiteninhalt nicht eindeutig",
     "INT.GG Multiplayer Waffen: HTTP 403",
     "INT.GG REDSEC Elite Waffen: HTTP 403"
   ],
