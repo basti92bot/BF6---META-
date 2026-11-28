@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "lastSuccessAt": "2026-11-28T15:23:15.110Z",
+  "lastSuccessAt": "2026-11-28T16:51:16.735Z",
   "players": {
     "ea:rockmasterr": {
       "name": "RockmasterR",
@@ -1171,9 +1171,21 @@
             "assists": 781,
             "revives": 205
           }
+        },
+        {
+          "ts": 1795884674920,
+          "series": "rapid-royale|",
+          "values": {
+            "wins": 71,
+            "losses": 229,
+            "kills": 2629,
+            "deaths": 826,
+            "assists": 781,
+            "revives": 205
+          }
         }
       ],
-      "lastSuccessAt": "2026-11-28T15:23:13.488Z"
+      "lastSuccessAt": "2026-11-28T16:51:14.920Z"
     },
     "ea:strausbrot": {
       "name": "Strausbrot",
@@ -2152,9 +2164,21 @@
             "assists": 646,
             "revives": 129
           }
+        },
+        {
+          "ts": 1795884672943,
+          "series": "rapid-royale|",
+          "values": {
+            "wins": 57,
+            "losses": 190,
+            "kills": 949,
+            "deaths": 646,
+            "assists": 646,
+            "revives": 129
+          }
         }
       ],
-      "lastSuccessAt": "2026-11-28T15:23:11.312Z"
+      "lastSuccessAt": "2026-11-28T16:51:12.943Z"
     },
     "psn:pathogeno": {
       "name": "Pathogeno",
@@ -3229,9 +3253,21 @@
             "assists": 474,
             "revives": 128
           }
+        },
+        {
+          "ts": 1795884676735,
+          "series": "rapid-royale|",
+          "values": {
+            "wins": 42,
+            "losses": 105,
+            "kills": 651,
+            "deaths": 424,
+            "assists": 474,
+            "revives": 128
+          }
         }
       ],
-      "lastSuccessAt": "2026-11-28T15:23:15.110Z"
+      "lastSuccessAt": "2026-11-28T16:51:16.735Z"
     }
   }
 }
